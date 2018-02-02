@@ -22,7 +22,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 
-
+//HOLA
 
 
 public class dbmanager{
