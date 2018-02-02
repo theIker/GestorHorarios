@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.password">iker2</property>
+    <property name="hibernate.connection.url">jdbc:mysql://10.22.82.146:3306/tiendadb</property>
+    <property name="hibernate.connection.username">iker2</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.search.autoregister_listeners">true</property>
+    <property name="hibernate.validator.apply_to_ddl">false</property>
+    
+    <mapping resource="Solicitudes.hbm.xml"/>
+    <mapping resource="Usuarios.hbm.xml"/>
+    <mapping resource="Jornadas.hbm.xml"/>
+    <mapping resource="Turnos.hbm.xml"/>
+    <mapping resource="Funciones.hbm.xml"/>
+    
+    <!--mapping package="entity.Solicitudes.hbm.xml"/>
+    <mapping package="entity.Usuarios.hbm.xml"/>
+    <mapping package="entity.Jornadas.hbm.xml"/>
+    <mapping package="entity.Turnos.hbm.xml"/>
+    <mapping package="entity.Funciones.hbm.xml"/-->
+    
+    
+  </session-factory>
+</hibernate-configuration>
