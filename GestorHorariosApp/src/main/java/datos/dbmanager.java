@@ -39,7 +39,7 @@ public class dbmanager{
 	//////////////////////////////////////////////////
 	
         /**
-         * e
+         * eee
          * @param dni
          * @param pass
          * @return
