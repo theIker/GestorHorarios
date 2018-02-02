@@ -5,7 +5,7 @@
  */
 package models;
 
-import enumerations.EstadoSolicitud;
+
 
 /**
  *
@@ -26,7 +26,7 @@ import enumerations.EstadoSolicitud;
 public class Solicitud {
 
     private int id;
-    private EstadoSolicitud estado;
+    private String estado;
     private String usuarioSolicita;
     private String usuarioAcepta;
     private String usuarioValida;
@@ -71,7 +71,7 @@ public class Solicitud {
      *                          that accepts to swap the workday.
      */
     public Solicitud (int id,
-                        EstadoSolicitud estado,
+                        String estado,
                         String usuarioSolicita,
                         String usuarioAcepta,
                         String usuarioValida,
@@ -96,22 +96,12 @@ public class Solicitud {
         this.id = id;
     }
     
-    public EstadoSolicitud getEstado () {
+    public String getEstado () {
         return this.estado;
     }
     
     public void setEstado (String estado) {
-        if(estado.equalsIgnoreCase("enviado"))
-            this.estado =EstadoSolicitud.Enviado;
-        
-        if(estado.equalsIgnoreCase("aceptado"))
-            this.estado=EstadoSolicitud.Aceptado;
-        
-        if(estado.equalsIgnoreCase("denegado"))
-            this.estado=EstadoSolicitud.Denegado;
-        
-        if(estado.equalsIgnoreCase("validado"))
-            this.estado=EstadoSolicitud.Validado;
+            this.estado=estado;
     }
     
     public String getUsuarioSolicita () {
