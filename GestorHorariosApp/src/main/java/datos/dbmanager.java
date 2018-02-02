@@ -22,7 +22,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 
-
+//Pedor branch
 
 
 public class dbmanager{
