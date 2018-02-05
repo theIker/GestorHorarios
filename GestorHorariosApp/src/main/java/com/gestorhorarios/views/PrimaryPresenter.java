@@ -9,6 +9,9 @@ import datos.DBManagerHibernate;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import models.Jornada;
+import models.Solicitud;
+import models.Usuario;
 
 
 
@@ -20,7 +23,6 @@ public class PrimaryPresenter {
 
     @FXML
     private Label label;
-    
 
     public void initialize() {
         primary.showingProperty().addListener((obs, oldValue, newValue) -> {
@@ -37,8 +39,10 @@ public class PrimaryPresenter {
     
     @FXML
     void buttonClick() {
-       
-
+        
+  
+         
+                
       
     }
     

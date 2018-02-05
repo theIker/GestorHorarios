@@ -126,12 +126,22 @@ public class DBManagerHibernate implements DataBaseInterface{
               Transaction tx=session.beginTransaction();
               
               //usuario solicitante
-              Usuarios u1 = (Usuarios) session.get(Usuarios.class, solicitud.getUsuarioSolicita());
-              
+              List  <Usuarios> result =  session.createQuery("FROM Usuarios where dni="+solicitud.getUsuarioSolicita()).list();
+              Iterator<Usuarios> l= result.iterator();
+              Usuarios u1=l.next();
               //usuario aceptante
-              Usuarios u2 = (Usuarios) session.get(Usuarios.class, solicitud.getJornadaAcepta());
-              Jornadas j1= (Jornadas) session.get(Jornadas.class, solicitud.getJornadaSolicita());
-              Jornadas j2= (Jornadas) session.get(Jornadas.class, solicitud.getJornadaAcepta());
+              List  <Usuarios> result2 =  session.createQuery("FROM Usuarios where dni="+solicitud.getUsuarioAcepta()).list();
+              Iterator<Usuarios> l2= result2.iterator();
+              Usuarios u2=l2.next();
+              
+             
+              List  <Jornadas> result3 =  session.createQuery("FROM Jornadas where id="+solicitud.getJornadaSolicita()).list();
+              Iterator<Jornadas> l3= result3.iterator();
+              Jornadas j1=l3.next();
+              
+              List  <Jornadas> result4 =  session.createQuery("FROM Jornadas where id="+solicitud.getJornadaAcepta()).list();
+              Iterator<Jornadas> l4= result4.iterator();
+              Jornadas j2=l4.next();
               
               //usuario solicitante
               u1.addJornada(j2);

@@ -13,6 +13,6 @@ import models.Usuario;
  *
  * @author Iker Iglesias
  */
-public interface LogicInterface {
+public interface GestorHorariosManager {
      public ArrayList<Usuario> getUsuarioByTurnoAndFecha(Jornada jornada);
 }
