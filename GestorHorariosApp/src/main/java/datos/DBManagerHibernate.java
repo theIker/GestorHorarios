@@ -8,8 +8,6 @@ import entity.Usuarios;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -28,14 +26,11 @@ import org.hibernate.Transaction;
  * 
  * @author Iker Iglesias
  */
+public class DBManagerHibernate implements DataBaseInterface{
+    
+    private Session session;
 
-
-
-public class dbmanager{
-
-	private Session session;
-
-	public void openConnection() throws Exception {
+	private void openConnection() throws Exception {
 		SessionFactory sesion=HibernateUtil.getSessionFactory();
 		session=sesion.openSession();
 	}
@@ -50,12 +45,14 @@ public class dbmanager{
              public void prueba() throws Exception{
             this.openConnection();
               
-		List<Usuarios> results = session.createQuery("FROM Usuarios where dni='12345678s' and hashPass='1'").list();	
-                Iterator<Usuarios> l= results.iterator();
+		List<Funciones> results = session.createQuery("FROM Funciones").list();	
+                Iterator<Funciones> l= results.iterator();
              
                 while(l.hasNext()){
-                    Usuarios u=l.next();
-                    System.out.println(u.getNombre()+" "+u.getDni());
+                    Funciones u=l.next();
+                    System.out.println(u.getFuncion());
+                   
+                   
                     
                 }
                 this.closeConnection();
@@ -70,6 +67,7 @@ public class dbmanager{
          * @param pass la contraseña generada a ese usuario
          * @throws Exception 
          */
+        @Override
         public void crearUsuario(Usuario usuario,String pass) throws Exception{
             
             this.openConnection();
@@ -83,7 +81,7 @@ public class dbmanager{
              u.setApellido2(usuario.getApellido2());
              u.setPerfil(usuario.getPerfil());
              //u.setJornadases((Set) usuario.getJornadas());
-             u.setSolicitudeses(setSolicitudes(usuario.getSolicitudes()));
+             
              u.setHashPass(pass);
               session.save(u);
 	     tx.commit();
@@ -91,12 +89,102 @@ public class dbmanager{
             this.closeConnection();
         }
         
-        private void crearSolicitud(Usuario usuario, Jornada jornada,String estado) throws Exception{
+     /**
+      * Metodo que valida finalmente el cambio de jornada
+      * @param usuario el usuario que valida ese cambio de jornada
+      * @param solicitud La solicitud que va a ser validada
+      * @param estado el estado final denegada o validada, si es validada la 
+      * jornada se cambiara entre los dos usuarios 
+      * @throws Exception 
+      */
+     @Override
+    public void validarSolicitud(Usuario usuario, Solicitud solicitud, String estado) throws Exception {
+             this.openConnection();
+              Transaction tx=session.beginTransaction();
+              List  <Solicitudes> result =  session.createQuery("FROM Solicitudes where id="+solicitud.getID()).list();
+              Iterator<Solicitudes> l= result.iterator();
+             
+                   Solicitudes s=l.next();
+                    s.setEstado(estado);
+                    s.setUsuarioValida(usuario.getDNI());
+                    session.update(s);
+                    tx.commit();
+              this.closeConnection();
+              if(estado.equals("validado"))
+                  cambiarJornadaUsuario(solicitud);
+    }
+    
+    /**
+     * Cuando se valida la solicitud entra en este metodo que cambia la jornada
+     * entre el usuario solicitante y el aceptante
+     * @param solicitud se envia la solicitud validada
+     * @throws Exception 
+     */
+     private void cambiarJornadaUsuario(Solicitud solicitud) throws Exception {
+             
+             this.openConnection();
+              Transaction tx=session.beginTransaction();
+              
+              //usuario solicitante
+              Usuarios u1 = (Usuarios) session.get(Usuarios.class, solicitud.getUsuarioSolicita());
+              
+              //usuario aceptante
+              Usuarios u2 = (Usuarios) session.get(Usuarios.class, solicitud.getJornadaAcepta());
+              Jornadas j1= (Jornadas) session.get(Jornadas.class, solicitud.getJornadaSolicita());
+              Jornadas j2= (Jornadas) session.get(Jornadas.class, solicitud.getJornadaAcepta());
+              
+              //usuario solicitante
+              u1.addJornada(j2);
+              u1.eliminarJornada(j1);
+              session.update(u1);
+              //usuario aceptante
+              u2.addJornada(j1);
+              u2.eliminarJornada(j2);
+              session.update(u2);
+              
+              tx.commit();
+              
+         this.closeConnection();
+         
+     }
+        
+   /**
+    * Otro usuario ve la solicitud y la acepta a la espera de ser validada
+    * @param usuario se envia el usuario que la acepta
+    * @param solicitud la solicitud que quiere aceptar
+    * @param jornada la jornada que va a intercambiar
+    * @throws Exception 
+    */ 
+    @Override
+    public void aceptarSolicitud(Usuario usuario, Solicitud solicitud,Jornada jornada) throws Exception {
+            this.openConnection();
+              Transaction tx=session.beginTransaction();
+              List  <Solicitudes> result =  session.createQuery("FROM Solicitudes where id="+solicitud.getID()).list();
+              Iterator<Solicitudes> l= result.iterator();
+             
+                   Solicitudes s=l.next();
+                    s.setEstado("aceptado");
+                    s.setUsuarioAcepta(usuario.getDNI());
+                    s.setJornadaAcepta(jornada.getID());
+                    session.update(s);
+                    tx.commit();
+              this.closeConnection();
+        
+    }
+        
+        /**
+         * Metodo para crear una solicitud de cambio de jornada
+         * @param usuario el usuario que solicita
+         * @param jornada la jornada que se quiere cambiar
+         * @throws Exception 
+         */
+        @Override
+        public void crearSolicitud(Usuario usuario, Jornada jornada) throws Exception{
             
             this.openConnection();
             Transaction tx=session.beginTransaction();
             Solicitudes s=new Solicitudes();
-             s.setEstado(estado);
+             s.setEstado("pendiente");
              s.setJornadaSolicita(jornada.getID());
              s.setUsuarioSolicita(usuario.getDNI());
              session.save(s);
@@ -106,52 +194,33 @@ public class dbmanager{
             asignarSolicitudUsuario(s);
         }
         
+        /**
+         * Tras realizarse esa solicitud, es asignada al usuario que la ha solicitado
+         * @param solicitud se envia la solicitud realizada ñpor el usuario
+         * @throws Exception 
+         */
         private void asignarSolicitudUsuario(Solicitudes solicitud) throws Exception {
              this.openConnection();
               Transaction tx=session.beginTransaction();
               List  <Usuarios> result =  session.createQuery("FROM Usuarios where dni='"+solicitud.getUsuarioSolicita()+"'").list();
               Iterator<Usuarios> l= result.iterator();
              
-             
-              Usuarios u=l.next();
-                   u.getSolicitudeses().add(solicitud);
+                   Usuarios u=l.next();
+                   u.addSolicitud(solicitud);
                    session.update(u);
                    tx.commit();
               this.closeConnection();
         }
         
-        /**
-         * Asigna las solicitudes al crear el usuario
-         * @param solicitudes solicitudes de ese usuario
-         * @return 
-         */
-        private Set setSolicitudes(Collection<Solicitud> solicitudes) {
-                 Set<Solicitudes> sol=new HashSet<Solicitudes>();;
-                 
-		 Solicitudes aux;
-               
-		for(Solicitud s : solicitudes) {
-			aux=new Solicitudes();
-                        
-                        aux.setEstado(s.getEstado());
-			//aux.setId(s.getID());
-                        aux.setJornadaAcepta(s.getJornadaAcepta());
-                        aux.setJornadaSolicita(s.getJornadaSolicita());
-                        aux.setUsuarioAcepta(s.getUsuarioAcepta());
-                        aux.setUsuarioSolicita(s.getUsuarioSolicita());
-                        aux.setUsuarioValida(s.getUsuarioValida());
-                        
-			sol.add(aux);
-		}
-                 
-                 return sol;
-       }
+      
+        
        
        /**
         * Devuelve todos los usuarios
         * @return coleccion de todos los usuarios
         * @throws Exception 
-        */      
+        */ 
+        @Override
        public ArrayList<Usuario> getUsuarios() throws Exception{
            
             ArrayList<Usuario>usu=new ArrayList<>();
@@ -183,10 +252,12 @@ public class dbmanager{
         * Devuelve un usuario a partir de su dni
         * @param usuario recibe el objeto usuario
         * @return todo el usuario
-        */   
-        public Usuario getUsuario(Usuario usuario){
+        */ 
+       @Override
+        public Usuario getUsuario(Usuario usuario) throws Exception{
             Usuario usu=new Usuario();
-            
+             this.openConnection();
+             
               List  <Usuarios> result =  session.createQuery("FROM Usuarios where dni='"+usuario.getDNI()+"'").list();
               Iterator<Usuarios> l= result.iterator();
              
@@ -200,7 +271,8 @@ public class dbmanager{
               usu.setJornadas(getJornadas(u.getJornadases()));
               usu.setSolicitudes(getSolicitudes(u.getSolicitudeses()));
               usu.setPerfil(u.getPerfil());
-              
+             
+              this.closeConnection();
               
             return usu;
         }     
@@ -212,6 +284,7 @@ public class dbmanager{
          * @param usuario recibe el objeto del usuario que quieres modificar
          * @throws Exception 
          */
+        @Override
         public void modificarPerfilUsuario(Usuario usuario) throws Exception{
             this.openConnection();
             
@@ -236,6 +309,7 @@ public class dbmanager{
          * @param usuario objeto usuario con todos sus datos
          * @throws Exception 
          */
+        @Override
         public void modificarDatos(Usuario usuario) throws Exception{
             
             this.openConnection();
@@ -263,6 +337,7 @@ public class dbmanager{
          * @param pass nueva contraseña
          * @throws Exception 
          */
+        @Override
         public void modificarPass(Usuario usuario,String pass) throws Exception{
             this.openConnection();
             
@@ -288,6 +363,7 @@ public class dbmanager{
          * @return devuelve al usuario con todos sus datos
          * @throws Exception 
          */
+        @Override
         public Usuario validarUsuario(String dni, String pass) throws Exception{
            Usuario usu =new Usuario();
             
@@ -318,6 +394,7 @@ public class dbmanager{
          * @param solicitudes
          * @return solicitudes
          */
+       
        private ArrayList<Solicitud> getSolicitudes(Set<Solicitudes> solicitudes) {
 		
 		ArrayList<Solicitud> sol=new ArrayList<>();
@@ -395,10 +472,58 @@ public class dbmanager{
                 
 		return jor;
         }
+    
+    /**
+     * Se borra un usuario con todas sus jornadas y solicitudes
+     * @param usuario el usuario
+     * @throws Exception 
+     */
+    @Override
+    public void borrarUsuario(Usuario usuario) throws Exception {
+        this.openConnection();
+        Transaction tx=session.beginTransaction();
+        Usuarios u = (Usuarios) session.get(Usuarios.class, usuario.getDNI());
+        session.delete(u);
+        
+        tx.commit();
+        
+        this.closeConnection();
+    }
 
+    /**
+     * Devuelve las solicitudes por ser validadas
+     * @return las solicitudes por validar
+     * @throws Exception 
+     */
+    @Override
+    public ArrayList<Solicitud> getSolicitudesPorValidar() throws Exception {
+         
+        ArrayList<Solicitud> s=new ArrayList<>();
+        Solicitud aux;
+        this.openConnection();
+        
+        List  <Solicitudes> result =  session.createQuery("FROM Solicitudes where estado='aceptado'").list();
+        Iterator<Solicitudes> l= result.iterator();
+         
+        while(l.hasNext()){
+              Solicitudes sol=l.next();
+              aux= new Solicitud();
+              aux.setEstado(sol.getEstado());
+              aux.setID(sol.getId());
+              aux.setJornadaAcepta(sol.getJornadaAcepta());
+              aux.setJornadaSolicita(sol.getJornadaSolicita());
+              aux.setUsuarioSolicita(sol.getUsuarioSolicita());
+              aux.setUsuarioAcepta(sol.getUsuarioSolicita());
+             
+              s.add(aux);
+        }
+        
+        this.closeConnection();
+        
+        return s;
+    }
    
-
+ 
   
-	
-	
+    
 }
