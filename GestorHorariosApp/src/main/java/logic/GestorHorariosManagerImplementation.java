@@ -16,7 +16,7 @@ import models.Usuario;
  *
  * @author Iker Iglesias
  */
-public class Logic implements LogicInterface{
+public class GestorHorariosManagerImplementation implements GestorHorariosManager{
     
     private DBManagerHibernate db= new DBManagerHibernate();
     
@@ -47,7 +47,7 @@ public class Logic implements LogicInterface{
                     }
         }
         } catch (Exception ex) {
-            Logger.getLogger(Logic.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GestorHorariosManagerImplementation.class.getName()).log(Level.SEVERE, null, ex);
         }
         
        
