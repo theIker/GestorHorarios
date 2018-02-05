@@ -2,6 +2,7 @@ package com.gestorhorarios;
 
 import com.gestorhorarios.views.PrimaryView;
 import com.gestorhorarios.views.SecondaryView;
+import com.gestorhorarios.views.VistaLoginUsuarioView;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.layout.layer.SidePopupView;
 import com.gluonhq.charm.glisten.visual.Swatch;
@@ -14,12 +15,15 @@ public class GestorHorarios extends MobileApplication {
     public static final String PRIMARY_VIEW = HOME_VIEW;
     public static final String SECONDARY_VIEW = "Secondary View";
     public static final String MENU_LAYER = "Side Menu";
+    public static final String LOGIN = "Login";
+    
+    
     
     @Override
     public void init() {
         addViewFactory(PRIMARY_VIEW, () -> new PrimaryView(PRIMARY_VIEW).getView());
         addViewFactory(SECONDARY_VIEW, () -> new SecondaryView(SECONDARY_VIEW).getView());
-        
+        addViewFactory(LOGIN, () -> new VistaLoginUsuarioView(LOGIN).getView());  
         addLayerFactory(MENU_LAYER, () -> new SidePopupView(new DrawerManager().getDrawer()));
     }
 

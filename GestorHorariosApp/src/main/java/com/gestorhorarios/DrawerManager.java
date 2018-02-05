@@ -1,5 +1,6 @@
 package com.gestorhorarios;
 
+import static com.gestorhorarios.GestorHorarios.LOGIN;
 import com.gluonhq.charm.down.Platform;
 import com.gluonhq.charm.down.Services;
 import com.gluonhq.charm.down.plugins.LifecycleService;
@@ -23,14 +24,16 @@ public class DrawerManager {
     public DrawerManager() {
         this.drawer = new NavigationDrawer();
         
-        NavigationDrawer.Header header = new NavigationDrawer.Header("Gluon Mobile",
-                "Multi View Project",
+        NavigationDrawer.Header header = new NavigationDrawer.Header("Eroski",
+                "Gestor de horarios",                                           //Añadir nuestro icono
                 new Avatar(21, new Image(DrawerManager.class.getResourceAsStream("/icon.png"))));
         drawer.setHeader(header);
         
-        final Item primaryItem = new ViewItem("Primary", MaterialDesignIcon.HOME.graphic(), PRIMARY_VIEW, ViewStackPolicy.SKIP);
-        final Item secondaryItem = new ViewItem("Secondary", MaterialDesignIcon.DASHBOARD.graphic(), SECONDARY_VIEW);
-        drawer.getItems().addAll(primaryItem, secondaryItem);
+        final Item primaryItem = new ViewItem("Agenda laboral", MaterialDesignIcon.HOME.graphic(), PRIMARY_VIEW, ViewStackPolicy.SKIP);
+        final Item secondaryItem = new ViewItem("Datos personales", MaterialDesignIcon.DASHBOARD.graphic(), SECONDARY_VIEW);
+        final Item loginItem = new ViewItem("Login",MaterialDesignIcon.HOME.graphic(), LOGIN );
+        drawer.getItems().addAll(primaryItem, secondaryItem,loginItem);
+        //Si la aplicacion se ejecuta en un escritorio se le añade el boton QUIT
         
         if (Platform.isDesktop()) {
             final Item quitItem = new Item("Quit", MaterialDesignIcon.EXIT_TO_APP.graphic());
