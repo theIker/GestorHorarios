@@ -5,11 +5,13 @@ import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import com.gestorhorarios.GestorHorarios;
-import datos.dbmanager;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import datos.DBManagerHibernate;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+
+
+
 
 public class PrimaryPresenter {
 
@@ -19,7 +21,6 @@ public class PrimaryPresenter {
     @FXML
     private Label label;
     
-    dbmanager m= new dbmanager();
 
     public void initialize() {
         primary.showingProperty().addListener((obs, oldValue, newValue) -> {
@@ -36,12 +37,9 @@ public class PrimaryPresenter {
     
     @FXML
     void buttonClick() {
-        label.setText("Hello JavaFX Universe!");
-        try {
-            m.prueba();
-        } catch (Exception ex) {
-            Logger.getLogger(PrimaryPresenter.class.getName()).log(Level.SEVERE, null, ex);
-        }
+       
+
+      
     }
     
 }
