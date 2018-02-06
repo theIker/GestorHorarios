@@ -8,9 +8,12 @@ import entity.Usuarios;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import models.Funcion;
 import models.Jornada;
@@ -29,6 +32,7 @@ import org.hibernate.Transaction;
 public class DBManagerHibernate implements DataBaseInterface{
     
     private Session session;
+    private static final Logger LOGGER=Logger.getLogger("GestorHorarios");
 
 	private void openConnection() throws Exception {
 		SessionFactory sesion=HibernateUtil.getSessionFactory();
@@ -37,29 +41,8 @@ public class DBManagerHibernate implements DataBaseInterface{
 	private void closeConnection() throws Exception {
 		session.close();
 	}
-	
-	
-        
-        
-            //Metodo para pruebas
-             public void prueba() throws Exception{
-            this.openConnection();
-              
-		List<Funciones> results = session.createQuery("FROM Funciones").list();	
-                Iterator<Funciones> l= results.iterator();
-             
-                while(l.hasNext()){
-                    Funciones u=l.next();
-                    System.out.println(u.getFuncion());
-                   
-                   
-                    
-                }
-                this.closeConnection();
 
-        }
-        
-             
+                    
              
         /**
          * Metodo de creacion de un nuevo usuario
@@ -71,7 +54,7 @@ public class DBManagerHibernate implements DataBaseInterface{
         public void crearUsuario(Usuario usuario,String pass) throws Exception{
             
             this.openConnection();
-            
+            LOGGER.info("DBManagerHibernate: creando usuario");
             Transaction tx=session.beginTransaction();
             Usuarios u=new Usuarios();
              u.setDni(usuario.getDNI());
@@ -80,14 +63,70 @@ public class DBManagerHibernate implements DataBaseInterface{
              u.setApellido1(usuario.getApellido1());
              u.setApellido2(usuario.getApellido2());
              u.setPerfil(usuario.getPerfil());
-             //u.setJornadases((Set) usuario.getJornadas());
+             u.setJornadases(setJornadas(usuario.getJornadas()));
              
              u.setHashPass(pass);
               session.save(u);
 	     tx.commit();
-             
+             LOGGER.info("DBManagerHibernate: guardando usuario");
             this.closeConnection();
         }
+        
+        /**
+         * Asingna jornadas al nuevo usuario
+         * @param jornadas las jornadas 
+         * @return jornadas
+         */
+        private Set<Jornadas> setJornadas(Collection<Jornada> jornadas) {
+          Set<Jornadas> j= new HashSet<>();
+               Jornadas aux;
+               for(Jornada jor:jornadas){
+                    aux= new Jornadas();
+                    aux.setFecha(jor.getFecha());
+                    aux.setId(jor.getID());
+                    aux.setTurnos(setTurno(jor.getTurno()));
+                    j.add(aux);
+               }
+               LOGGER.info("DBManagerHibernate: añadiendo jornadas");
+          
+          return j;
+        }
+        
+        /**
+         * Asigna el turno a cada jornada del usuario
+         * @param turno el turno
+         * @return el turno
+         */
+        private Turnos setTurno(Turno turno) {
+               Turnos tur = new Turnos();
+               tur.setHoraEntrada(turno.getHoraEntrada());
+               tur.setHoraSalida(turno.getHoraSalida());
+               tur.setId(turno.getID());
+               tur.setFuncioneses(setFunciones(turno.getFunciones()));
+               LOGGER.info("DBManagerHibernate: añadiento turnos");
+               return tur;
+        }
+       
+        /**
+         * Asigna funciones a cada turno del usuario
+         * @param funciones
+         * @return las funciones
+         */
+        private Set<Funciones> setFunciones(Collection<Funcion> funciones) {
+           Set <Funciones> fun= new HashSet<>();
+            Funciones aux;
+               for(Funcion f:funciones){
+                   aux=new Funciones();
+                   aux.setFuncion(f.getNombre());
+                   aux.setId(f.getID());
+                   
+                   fun.add(aux);
+               }
+               LOGGER.info("DBManagerHibernate: añadiendo funciones");
+               
+           return fun;
+         }
+
         
      /**
       * Metodo que valida finalmente el cambio de jornada
@@ -109,6 +148,7 @@ public class DBManagerHibernate implements DataBaseInterface{
                     s.setUsuarioValida(usuario.getDNI());
                     session.update(s);
                     tx.commit();
+                    LOGGER.info("DBManagerHibernate: validando solicitud");
               this.closeConnection();
               if(estado.equals("validado"))
                   cambiarJornadaUsuario(solicitud);
@@ -153,6 +193,7 @@ public class DBManagerHibernate implements DataBaseInterface{
               session.update(u2);
               
               tx.commit();
+              LOGGER.info("DBManagerHibernate: cambiando jornada despues de ser validado");
               
          this.closeConnection();
          
@@ -178,6 +219,7 @@ public class DBManagerHibernate implements DataBaseInterface{
                     s.setJornadaAcepta(jornada.getID());
                     session.update(s);
                     tx.commit();
+                    LOGGER.info("DBManagerHibernate: aceptando solicitud");
               this.closeConnection();
         
     }
@@ -201,6 +243,7 @@ public class DBManagerHibernate implements DataBaseInterface{
 	     tx.commit();
             
             this.closeConnection();
+            LOGGER.info("DBManagerHibernate: creando solicitud");
             asignarSolicitudUsuario(s);
         }
         
@@ -219,6 +262,7 @@ public class DBManagerHibernate implements DataBaseInterface{
                    u.addSolicitud(solicitud);
                    session.update(u);
                    tx.commit();
+                   LOGGER.info("DBManagerHibernate: asignando solicitud al usuario");
               this.closeConnection();
         }
         
@@ -253,7 +297,7 @@ public class DBManagerHibernate implements DataBaseInterface{
                     usu.add(aux);
              
              }
-             
+             LOGGER.info("DBManagerHibernate: devolviendo usuarios");
              this.closeConnection();
              return usu;
        }     
@@ -283,7 +327,7 @@ public class DBManagerHibernate implements DataBaseInterface{
               usu.setPerfil(u.getPerfil());
              
               this.closeConnection();
-              
+              LOGGER.info("DBManagerHibernate: devolviendo usuario por dni");
             return usu;
         }     
              
@@ -308,6 +352,7 @@ public class DBManagerHibernate implements DataBaseInterface{
               
                 session.update(u);
                 tx.commit();
+                LOGGER.info("DBManagerHibernate: modificando perfil usuario");
             
             this.closeConnection();
         }     
@@ -334,9 +379,11 @@ public class DBManagerHibernate implements DataBaseInterface{
               u.setNombre(usuario.getNombre());
               u.setApellido1(usuario.getApellido1());
               u.setApellido2(usuario.getApellido2());
+              u.setJornadases(setJornadas(usuario.getJornadas()));
               
                 session.update(u);
                 tx.commit();
+                LOGGER.info("DBManagerHibernate: modificando datos usuario");
             
             this.closeConnection();
             
@@ -360,7 +407,7 @@ public class DBManagerHibernate implements DataBaseInterface{
               u.setHashPass(pass);
               session.update(u);
               tx.commit();
-              
+              LOGGER.info("DBManagerHibernate: modificando contraseña usuario");
             this.closeConnection();
         }
         
@@ -392,7 +439,8 @@ public class DBManagerHibernate implements DataBaseInterface{
               usu.setJornadas(getJornadas(u.getJornadases()));
               usu.setSolicitudes(getSolicitudes(u.getSolicitudeses()));
               usu.setPerfil(u.getPerfil());
-            
+              
+              LOGGER.info("DBManagerHibernate: validando existencia del usuario");
            this.closeConnection();
            
            return usu;
@@ -422,7 +470,7 @@ public class DBManagerHibernate implements DataBaseInterface{
                         
 			sol.add(aux);
 		}
-                
+                LOGGER.info("DBManagerHibernate: devolviendo solicitudes del usuario");
 		return sol;
         }
        /**
@@ -442,7 +490,7 @@ public class DBManagerHibernate implements DataBaseInterface{
                         jor.add(aux);
 			
 		}
-                
+                LOGGER.info("DBManagerHibernate: devolviendo jornadas del usuario");
 		return jor;
         }
          
@@ -459,7 +507,7 @@ public class DBManagerHibernate implements DataBaseInterface{
             turno.setID(turnos.getId());
             turno.setFunciones(getFunciones(turnos.getFuncioneses()));
             
-            
+            LOGGER.info("DBManagerHibernate: devolviendo el turno de las jornadas del usuario");
             return turno;
         }
         
@@ -479,7 +527,7 @@ public class DBManagerHibernate implements DataBaseInterface{
                         jor.add(aux);
 			
 		}
-                
+                LOGGER.info("DBManagerHibernate: devolviendo las funciones de cada turno");
 		return jor;
         }
     
@@ -496,7 +544,7 @@ public class DBManagerHibernate implements DataBaseInterface{
         session.delete(u);
         
         tx.commit();
-        
+        LOGGER.info("DBManagerHibernate: Borrando usuario");
         this.closeConnection();
     }
 
@@ -527,11 +575,16 @@ public class DBManagerHibernate implements DataBaseInterface{
              
               s.add(aux);
         }
-        
+        LOGGER.info("DBManagerHibernate: devolviendo solicitudes por validar");
         this.closeConnection();
         
         return s;
     }
+
+
+
+ 
+    
    
  
   

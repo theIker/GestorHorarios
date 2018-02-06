@@ -6,6 +6,7 @@
 package logic;
 
 import datos.DBManagerHibernate;
+import datos.DataBaseInterface;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +19,7 @@ import models.Usuario;
  */
 public class GestorHorariosManagerImplementation implements GestorHorariosManager{
     
-    private DBManagerHibernate db= new DBManagerHibernate();
+    private DataBaseInterface db= new DBManagerHibernate() ;
     
     /**
      * Se envia la jornada y aparecen los usuarios con los que es posible
@@ -49,9 +50,7 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
         } catch (Exception ex) {
             Logger.getLogger(GestorHorariosManagerImplementation.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-       
-        
+     
         return u;
     }
     

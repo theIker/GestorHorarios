@@ -26,7 +26,7 @@ public class Funciones  implements java.io.Serializable {
     public Funciones(int id, String funcion, Set turnoses) {
        this.id = id;
        this.funcion = funcion;
-      // this.turnoses = turnoses;
+       this.turnoses = turnoses;
     }
    
     public int getId() {
