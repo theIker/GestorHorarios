@@ -359,8 +359,8 @@ public class DBManagerHibernate implements DataBaseInterface{
              
              
         /**
-         * Metodo que recibe objeto usuario y modifica sus datos email,nombre,apellido1
-         * y apellido2.
+         * Metodo que recibe objeto usuario y modifica sus datos email,nombre,apellido1,
+         * apellido2. y sus jornadas
          * @param usuario objeto usuario con todos sus datos
          * @throws Exception 
          */
