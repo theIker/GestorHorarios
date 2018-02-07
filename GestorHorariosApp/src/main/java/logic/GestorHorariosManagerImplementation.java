@@ -8,7 +8,6 @@ package logic;
 import datos.DBManagerHibernate;
 import datos.DataBaseInterface;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Jornada;
 import models.Solicitud;
@@ -27,7 +26,7 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
      * Se envia la jornada y aparecen los usuarios con los que es posible
      * intercambiar la jornada
      * @param jornada la jornada que se solicita
-     * @return 
+     * @return arraylist de usuarios
      */
     @Override
     public ArrayList<Usuario> getUsuarioByTurnoAndFecha(Jornada jornada) {
@@ -235,6 +234,10 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
         }
     }
 
+    /**
+     * Se envia el usuario y se modifican sus datos, y sus jornadas
+     * @param usuario se envia el usuario
+     */
     @Override
     public void modificarDatos(Usuario usuario) {
          
@@ -246,6 +249,12 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
         }
     }
 
+    
+    /**
+     * Metodo para cambiar la contraseña al usuario
+     * @param usuario se envia el usuario
+     * @param pass la nueva contraseña
+     */
     @Override
     public void modificarPass(Usuario usuario, String pass) {
         
@@ -256,7 +265,13 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
             LOGGER.severe("GestorHorariosManagerImplementation: error al modificar password usuario");
         }
     }
-
+    
+    /**
+     *  Metodo para iniciar session y que te devuelva el usuario con todos sus datos
+     * @param dni el dni 
+     * @param pass la contraseña
+     * @return el usuario si  existe con esa pass y dni
+     */
     @Override
     public Usuario validarUsuario(String dni, String pass) {
          Usuario usuario= new Usuario();
@@ -270,7 +285,11 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
         }
          return usuario;
     }
-
+  
+    /**
+     * Metodo que busca las solicitudes por validar
+     * @return las solicitudes en estado pendiente
+     */
     @Override
     public ArrayList<Solicitud> getSolicitudesPorValidar() {
         ArrayList<Solicitud> solicitud= new ArrayList<>();
