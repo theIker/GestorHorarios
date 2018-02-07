@@ -9,8 +9,7 @@ import com.gestorhorarios.GestorHorarios;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import logic.GestorHorariosManager;
-import logic.GestorHorariosManagerImplementation;
+
 
 
 
@@ -23,7 +22,6 @@ public class PrimaryPresenter {
     @FXML
     private Label label;
     
-    GestorHorariosManager g= new GestorHorariosManagerImplementation();
     
     public void initialize() {
         primary.showingProperty().addListener((obs, oldValue, newValue) -> {

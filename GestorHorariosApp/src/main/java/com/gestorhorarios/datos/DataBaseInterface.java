@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package datos;
+package com.gestorhorarios.datos;
 
 
 import java.util.ArrayList;
-import models.Jornada;
-import models.Solicitud;
-import models.Usuario;
+import com.gestorhorarios.logic.models.Jornada;
+import com.gestorhorarios.logic.models.Solicitud;
+import com.gestorhorarios.logic.models.Usuario;
 
 
 /**

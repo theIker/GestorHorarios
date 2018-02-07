@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package logic;
+package com.gestorhorarios.logic;
 
-import datos.DBManagerHibernate;
-import datos.DataBaseInterface;
+import com.gestorhorarios.datos.DBManagerHibernate;
+import com.gestorhorarios.datos.DataBaseInterface;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import models.Jornada;
-import models.Solicitud;
-import models.Usuario;
+import com.gestorhorarios.logic.models.Jornada;
+import com.gestorhorarios.logic.models.Solicitud;
+import com.gestorhorarios.logic.models.Usuario;
 
 /**
  *
@@ -19,7 +20,7 @@ import models.Usuario;
  */
 public class GestorHorariosManagerImplementation implements GestorHorariosManager{
     
-    private DataBaseInterface db= new DBManagerHibernate();
+   private DataBaseInterface db= new DBManagerHibernate();
     private static final Logger LOGGER=Logger.getLogger("GestorHorarios");
     
     /**
@@ -286,8 +287,7 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
             usuario=null;
         }
          return usuario;
-    }
-  
+    } 
     /**
      * Metodo que busca las solicitudes por validar
      * @return las solicitudes en estado pendiente
@@ -301,21 +301,7 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
         } catch (Exception ex) {
             LOGGER.severe("GestorHorariosManagerImplementation: error recibir solicitudes por validar");
             solicitud=null;
-        }
-        
+        }    
         return solicitud;
     }
-    
-    
-    
-    
-    
-    
-
-    
-    
-    
-   
-    
-    
 }
