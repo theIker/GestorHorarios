@@ -51,6 +51,7 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
         }
         } catch (Exception ex) {
             LOGGER.severe("GestorHorariosManagerImplementation: error al añadir los usuarios");
+            u=null;
         }
      
         return u;
@@ -92,6 +93,7 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
            if(pass.matches("(?=^.{8,}$)(?=.*\\d)(?=.*[!@#$%^&*]+)(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$"))
                
                   e=true;
+           
            LOGGER.info("GestorHorariosManagerImplementation: validando contraseña");
           return e;
     }
@@ -204,7 +206,7 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
     /**
      * Metodo que devuelve al usuario que se seleciona mediante el dni
      * @param usuario el usuario
-     * @return 
+     * @return el usuario
      */
     @Override
     public Usuario getUsuario(Usuario usuario) {
