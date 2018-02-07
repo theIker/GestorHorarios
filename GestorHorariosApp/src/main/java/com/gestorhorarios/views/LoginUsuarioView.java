@@ -14,11 +14,11 @@ import javafx.fxml.FXMLLoader;
  * This class load login view
  * @author Miguel Axier Lafuente Peñas
  */
-public class VistaLoginUsuarioView {
+public class LoginUsuarioView {
 
     private final String name;
 
-    public VistaLoginUsuarioView(String name) {
+    public LoginUsuarioView(String name) {
         this.name = name;
     }
     

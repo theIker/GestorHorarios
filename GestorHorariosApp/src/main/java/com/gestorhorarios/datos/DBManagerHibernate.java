@@ -1,10 +1,10 @@
-    package datos;
+    package com.gestorhorarios.datos;
 
-import entity.Funciones;
-import entity.Jornadas;
-import entity.Solicitudes;
-import entity.Turnos;
-import entity.Usuarios;
+import com.gestorhorarios.datos.entity.Funciones;
+import com.gestorhorarios.datos.entity.Jornadas;
+import com.gestorhorarios.datos.entity.Solicitudes;
+import com.gestorhorarios.datos.entity.Turnos;
+import com.gestorhorarios.datos.entity.Usuarios;
 
 
 import java.util.ArrayList;
@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import models.Funcion;
-import models.Jornada;
-import models.Solicitud;
-import models.Turno;
-import models.Usuario;
+import com.gestorhorarios.logic.models.Funcion;
+import com.gestorhorarios.logic.models.Jornada;
+import com.gestorhorarios.logic.models.Solicitud;
+import com.gestorhorarios.logic.models.Turno;
+import com.gestorhorarios.logic.models.Usuario;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

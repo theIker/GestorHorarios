@@ -8,7 +8,7 @@ package com.gestorhorarios.views;
 
 import com.gestorhorarios.DrawerManager;
 import com.gestorhorarios.GestorHorarios;
-import static com.gestorhorarios.GestorHorarios.PRIMARY_VIEW;
+import static com.gestorhorarios.GestorHorarios.AGENDA_LABORAL;
 import com.gestorhorarios.logic.GestorHorariosManager;
 import com.gestorhorarios.logic.GestorHorariosManagerImplementation;
 import com.gluonhq.charm.glisten.application.MobileApplication;
@@ -26,13 +26,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import models.Usuario;
+import com.gestorhorarios.logic.models.Usuario;
 
 /**
  *
  * @author Miguel Axier Lafuente Peñas
  */
-public class VistaLoginUsuarioPresenter {
+public class LoginUsuarioPresenter {
     
     
     @FXML
@@ -62,10 +62,11 @@ public class VistaLoginUsuarioPresenter {
             pfPass.setText(null);
             
         } else {
+            DrawerManager drawer = new DrawerManager();
             GestorHorarios.usuario = usuario;
-            DrawerManager hola = new DrawerManager();
-            hola.updateItem(PRIMARY_VIEW);
-            //Entrar a la siguiente ventana pasandole el usuario
+            //GestorHorarios.agnadirMenu();
+            drawer.updateItem(AGENDA_LABORAL);
+            
         }
     }
     @FXML

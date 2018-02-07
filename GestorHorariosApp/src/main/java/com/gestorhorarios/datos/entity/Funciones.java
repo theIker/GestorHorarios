@@ -1,4 +1,4 @@
-package entity;
+package com.gestorhorarios.datos.entity;
 // Generated 31-ene-2018 9:47:29 by Hibernate Tools 4.3.1
 
 
@@ -16,6 +16,7 @@ public class Funciones  implements java.io.Serializable {
      private Set turnoses = new HashSet(0);
 
     public Funciones() {
+        
     }
 
 	

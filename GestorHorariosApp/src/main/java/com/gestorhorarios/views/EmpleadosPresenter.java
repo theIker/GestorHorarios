@@ -29,7 +29,7 @@ public class EmpleadosPresenter {
     ListView lvEmpleados;
     
     @FXML
-    Button btnAnyadir;
+    Button btnAnyadirEmpleados;
     
      public void initialize() {
         listaEmpleados.showingProperty().addListener((obs, oldValue, newValue) -> {

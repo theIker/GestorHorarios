@@ -2,9 +2,9 @@
 package com.gestorhorarios.logic;
 
 import java.util.ArrayList;
-import models.Jornada;
-import models.Solicitud;
-import models.Usuario;
+import com.gestorhorarios.logic.models.Jornada;
+import com.gestorhorarios.logic.models.Solicitud;
+import com.gestorhorarios.logic.models.Usuario;
 
 /**
  *

@@ -5,14 +5,14 @@
  */
 package com.gestorhorarios.logic;
 
-import datos.DBManagerHibernate;
-import datos.DataBaseInterface;
+import com.gestorhorarios.datos.DBManagerHibernate;
+import com.gestorhorarios.datos.DataBaseInterface;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import models.Jornada;
-import models.Solicitud;
-import models.Usuario;
+import com.gestorhorarios.logic.models.Jornada;
+import com.gestorhorarios.logic.models.Solicitud;
+import com.gestorhorarios.logic.models.Usuario;
 
 /**
  *

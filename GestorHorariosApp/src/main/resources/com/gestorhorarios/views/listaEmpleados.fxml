@@ -55,7 +55,7 @@
             </ListView>
             <HBox alignment="BOTTOM_RIGHT" prefHeight="40.0" prefWidth="295.0">
                <children>
-                  <Button fx:id="btnAnyadir" mnemonicParsing="false" text="+" />
+                  <Button fx:id="btnAnyadirEmpleado" mnemonicParsing="false" text="+" />
                </children>
             </HBox>
          </children>
