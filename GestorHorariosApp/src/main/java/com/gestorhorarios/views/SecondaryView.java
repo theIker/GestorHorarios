@@ -14,7 +14,7 @@ public class SecondaryView {
     
     public View getView() {
         try {
-            View view = FXMLLoader.load(SecondaryView.class.getResource("secondary.fxml"));
+            View view = FXMLLoader.load(SecondaryView.class.getResource("empleadoAgenda.fxml"));
             view.setName(name);
             return view;
         } catch (IOException e) {

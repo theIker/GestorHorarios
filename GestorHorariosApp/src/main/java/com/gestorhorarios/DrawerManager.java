@@ -13,6 +13,10 @@ import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import static com.gestorhorarios.GestorHorarios.MENU_LAYER;
 import static com.gestorhorarios.GestorHorarios.PRIMARY_VIEW;
 import static com.gestorhorarios.GestorHorarios.SECONDARY_VIEW;
+import static com.gestorhorarios.GestorHorarios.AGENDA_LABORAL;
+import static com.gestorhorarios.GestorHorarios.CAMBIOS_TURNO;
+import static com.gestorhorarios.GestorHorarios.LISTA_EMPLEADOS;
+import static com.gestorhorarios.GestorHorarios.DATOS_EMPLEADO;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 
@@ -23,14 +27,17 @@ public class DrawerManager {
     public DrawerManager() {
         this.drawer = new NavigationDrawer();
         
-        NavigationDrawer.Header header = new NavigationDrawer.Header("Gluon Mobile",
-                "Multi View Project",
-                new Avatar(21, new Image(DrawerManager.class.getResourceAsStream("/icon.png"))));
+        NavigationDrawer.Header header = new NavigationDrawer.Header("Eroski",
+                "Gestor de turnos",
+                new Avatar(21, new Image(DrawerManager.class.getResourceAsStream("/icono_eroski.png"))));
         drawer.setHeader(header);
         
-        final Item primaryItem = new ViewItem("Primary", MaterialDesignIcon.HOME.graphic(), PRIMARY_VIEW, ViewStackPolicy.SKIP);
-        final Item secondaryItem = new ViewItem("Secondary", MaterialDesignIcon.DASHBOARD.graphic(), SECONDARY_VIEW);
-        drawer.getItems().addAll(primaryItem, secondaryItem);
+        final Item primaryItem = new ViewItem("Login", MaterialDesignIcon.HOME.graphic(), PRIMARY_VIEW, ViewStackPolicy.SKIP);
+        final Item datosItem = new ViewItem("Datos personales", MaterialDesignIcon.ACCOUNT_CIRCLE.graphic(), DATOS_EMPLEADO, ViewStackPolicy.SKIP); //ICONO DATOS PERSONALES
+        final Item secondaryItem = new ViewItem("Empleados", MaterialDesignIcon.SUPERVISOR_ACCOUNT.graphic(), LISTA_EMPLEADOS);//Secondary ICONO EMPLEADOS
+        final Item agendaItem = new ViewItem("Agenda laboral", MaterialDesignIcon.DATE_RANGE.graphic(), AGENDA_LABORAL);//Secondary ICONO AGENDA
+        final Item turnosItem = new ViewItem("Cambios de turno", MaterialDesignIcon.VIEW_LIST.graphic(), CAMBIOS_TURNO);
+        drawer.getItems().addAll(primaryItem,datosItem, secondaryItem,agendaItem,turnosItem);
         
         if (Platform.isDesktop()) {
             final Item quitItem = new Item("Quit", MaterialDesignIcon.EXIT_TO_APP.graphic());

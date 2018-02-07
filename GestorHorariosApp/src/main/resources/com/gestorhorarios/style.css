@@ -1,3 +1,19 @@
 .root {
+    -primary-swatch-500: #073fa3;
 
+}
+.app-bar {
+    -fx-background-color: #c32420;
+}
+.button{
+    -fx-background-color:#073fa3;
+}
+.button:hover {
+  -fx-background-color:#073fa3;
+}
+.ComboBox{
+    -fx-background-color:white;
+}
+.fondo{
+    -fx-background-color:white;
 }

@@ -8,6 +8,8 @@ import com.gestorhorarios.GestorHorarios;
 import datos.dbmanager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -22,14 +24,17 @@ public class PrimaryPresenter {
     dbmanager m= new dbmanager();
 
     public void initialize() {
-        primary.showingProperty().addListener((obs, oldValue, newValue) -> {
-            if (newValue) {
-                AppBar appBar = MobileApplication.getInstance().getAppBar();
-                appBar.setNavIcon(MaterialDesignIcon.MENU.button(e -> 
-                        MobileApplication.getInstance().showLayer(GestorHorarios.MENU_LAYER)));
-                appBar.setTitleText("Primary");
-                appBar.getActionItems().add(MaterialDesignIcon.SEARCH.button(e -> 
-                        System.out.println("Search")));
+        primary.showingProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> obs, Boolean oldValue, Boolean newValue) {
+                if (newValue) {
+                    AppBar appBar = MobileApplication.getInstance().getAppBar();
+                    appBar.setNavIcon(MaterialDesignIcon.MENU.button(e ->
+                            MobileApplication.getInstance().showLayer(GestorHorarios.MENU_LAYER)));
+                    appBar.setTitleText("Login");
+                    appBar.getActionItems().add(MaterialDesignIcon.SEARCH.button(e ->System.out.println("Search")));
+                    
+                }
             }
         });
     }
