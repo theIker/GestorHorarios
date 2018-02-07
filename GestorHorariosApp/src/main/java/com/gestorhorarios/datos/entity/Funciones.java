@@ -1,4 +1,4 @@
-package entity;
+package com.gestorhorarios.datos.entity;
 // Generated 31-ene-2018 9:47:29 by Hibernate Tools 4.3.1
 
 
@@ -26,7 +26,7 @@ public class Funciones  implements java.io.Serializable {
     public Funciones(int id, String funcion, Set turnoses) {
        this.id = id;
        this.funcion = funcion;
-      // this.turnoses = turnoses;
+       this.turnoses = turnoses;
     }
    
     public int getId() {
@@ -51,10 +51,6 @@ public class Funciones  implements java.io.Serializable {
     public void setTurnoses(Set turnoses) {
         this.turnoses = turnoses;
     }
-
-
-
-
 
 }
 

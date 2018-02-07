@@ -1,4 +1,4 @@
-package entity;
+package com.gestorhorarios.datos.entity;
 // Generated 31-ene-2018 9:47:29 by Hibernate Tools 4.3.1
 
 
@@ -93,9 +93,6 @@ public class Solicitudes  implements java.io.Serializable {
     public void setUsuarioses(Set usuarioses) {
         this.usuarioses = usuarioses;
     }
-
-
-
 
 }
 

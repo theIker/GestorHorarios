@@ -5,13 +5,11 @@ import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import com.gestorhorarios.GestorHorarios;
-import datos.DBManagerHibernate;
+
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import models.Jornada;
-import models.Solicitud;
-import models.Usuario;
+
 
 
 
@@ -23,7 +21,8 @@ public class PrimaryPresenter {
 
     @FXML
     private Label label;
-
+    
+    
     public void initialize() {
         primary.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
@@ -40,10 +39,8 @@ public class PrimaryPresenter {
     @FXML
     void buttonClick() {
         
-  
-         
-                
       
     }
-    
 }
+      
+      
