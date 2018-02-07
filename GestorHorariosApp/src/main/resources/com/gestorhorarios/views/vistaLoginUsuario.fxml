@@ -46,7 +46,7 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </PasswordField>
-                  <Hyperlink fx:id="recPass" text="Recuperar contraseña">
+                  <Hyperlink fx:id="recPass" text="Recuperar contraseña" onAction="#handleOnActionRecPass">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>

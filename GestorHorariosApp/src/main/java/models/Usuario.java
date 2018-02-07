@@ -6,7 +6,6 @@
 package models;
 
 import java.util.Collection;
-import enumerations.PerfilEmpleado;
 
 /**
  *
@@ -27,7 +26,7 @@ public class Usuario {
     private String nombre;
     private String apellido1;
     private String apellido2;
-    private PerfilEmpleado perfil;
+    private String perfil;
     private Collection <Jornada> jornadas;
     private Collection <Solicitud> solicitudes;
     
@@ -64,7 +63,7 @@ public class Usuario {
                       String nombre,
                       String apellido1,
                       String apellido2,
-                      PerfilEmpleado perfil,
+                      String perfil,
                       Collection <Jornada> jornadas,
                       Collection <Solicitud> solicitudes) {
         
@@ -119,19 +118,12 @@ public class Usuario {
         this.apellido2 = apellido2;
     }
     
-    public PerfilEmpleado getPerfil () {
+    public String getPerfil () {
         return this.perfil;
     }
     
     public void setPerfil (String perfil) {
-        if(perfil.equalsIgnoreCase("empleado"))
-            this.perfil =PerfilEmpleado.Empleado;
-        
-        if(perfil.equalsIgnoreCase("encargado"))
-            this.perfil=PerfilEmpleado.Encargado;
-        
-        if(perfil.equalsIgnoreCase("empleado"))
-        this.perfil=PerfilEmpleado.Empleado;
+        this.perfil=perfil;
     }
     
     public Collection <Jornada> getJornadas () {

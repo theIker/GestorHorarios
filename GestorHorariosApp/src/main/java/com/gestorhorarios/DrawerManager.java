@@ -16,11 +16,12 @@ import static com.gestorhorarios.GestorHorarios.PRIMARY_VIEW;
 import static com.gestorhorarios.GestorHorarios.SECONDARY_VIEW;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
+import models.Usuario;
 
 public class DrawerManager {
 
     private final NavigationDrawer drawer;
-
+    public static Usuario usuario;
     public DrawerManager() {
         this.drawer = new NavigationDrawer();
         
@@ -52,7 +53,7 @@ public class DrawerManager {
         updateItem(PRIMARY_VIEW);
     }
     
-    private void updateItem(String nameView) {
+    public void updateItem(String nameView) {
         for (Node item : drawer.getItems()) {
             if (item instanceof ViewItem && ((ViewItem) item).getViewName().equals(nameView)) {
                 drawer.setSelectedItem(item);
@@ -64,4 +65,5 @@ public class DrawerManager {
     public NavigationDrawer getDrawer() {
         return drawer;
     }
+
 }

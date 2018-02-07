@@ -9,13 +9,15 @@ import com.gluonhq.charm.glisten.visual.Swatch;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import models.Usuario;
 
 public class GestorHorarios extends MobileApplication {
-
-    public static final String PRIMARY_VIEW = HOME_VIEW;
+    public static Usuario usuario = new Usuario();
+    public static final String LOGIN = HOME_VIEW;
+    public static final String PRIMARY_VIEW = "Primary View";
     public static final String SECONDARY_VIEW = "Secondary View";
     public static final String MENU_LAYER = "Side Menu";
-    public static final String LOGIN = "Login";
+    
     
     
     
