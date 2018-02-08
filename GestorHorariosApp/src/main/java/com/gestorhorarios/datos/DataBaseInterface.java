@@ -18,7 +18,7 @@ import com.gestorhorarios.logic.models.Usuario;
  */
 public interface DataBaseInterface {               
         public void crearUsuario(Usuario usuario,String pass) throws Exception;
-        public Usuario getUsuario(Usuario usuario) throws Exception;
+        public Usuario getUsuario(String dni) throws Exception;
         public ArrayList<Usuario> getUsuarios() throws Exception;
         public void modificarPerfilUsuario(Usuario usuario) throws Exception;
         public void modificarDatos(Usuario usuario) throws Exception;

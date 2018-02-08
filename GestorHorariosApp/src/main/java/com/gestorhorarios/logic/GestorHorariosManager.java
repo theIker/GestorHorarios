@@ -20,7 +20,7 @@ public interface GestorHorariosManager {
     public void aceptarSolicitud(Usuario usuario, Solicitud solicitud,Jornada jornada);
     public void crearSolicitud(Usuario usuario, Jornada jornada);
     public ArrayList<Usuario> getUsuarios();
-    public Usuario getUsuario(Usuario usuario);
+    public Usuario getUsuario(String dni);
     public void modificarPerfilUsuario(Usuario usuario);
     public void modificarDatos(Usuario usuario);
     public void modificarPass(Usuario usuario,String pass);

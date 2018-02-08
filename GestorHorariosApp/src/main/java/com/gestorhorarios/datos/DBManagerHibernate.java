@@ -1,10 +1,10 @@
-    package com.gestorhorarios.datos;
+package com.gestorhorarios.datos;
 
-import com.gestorhorarios.datos.entity.Funciones;
-import com.gestorhorarios.datos.entity.Jornadas;
-import com.gestorhorarios.datos.entity.Solicitudes;
-import com.gestorhorarios.datos.entity.Turnos;
-import com.gestorhorarios.datos.entity.Usuarios;
+import entity.Funciones;
+import entity.Jornadas;
+import entity.Solicitudes;
+import entity.Turnos;
+import entity.Usuarios;
 
 
 import java.util.ArrayList;
@@ -306,13 +306,14 @@ public class DBManagerHibernate implements DataBaseInterface{
         * Devuelve un usuario a partir de su dni
         * @param usuario recibe el objeto usuario
         * @return todo el usuario
+        * @throws java.lang.Exception
         */ 
        @Override
-        public Usuario getUsuario(Usuario usuario) throws Exception{
+        public Usuario getUsuario(String dni) throws Exception{
             Usuario usu=new Usuario();
              this.openConnection();
              
-              List  <Usuarios> result =  session.createQuery("FROM Usuarios where dni='"+usuario.getDNI()+"'").list();
+              List  <Usuarios> result =  session.createQuery("FROM Usuarios where dni='"+dni+"'").list();
               Iterator<Usuarios> l= result.iterator();
              
               Usuarios u=l.next();

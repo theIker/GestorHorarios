@@ -27,6 +27,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import com.gestorhorarios.logic.models.Usuario;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  *
@@ -50,31 +52,42 @@ public class LoginUsuarioPresenter {
                 gh = new GestorHorariosManagerImplementation();
             }
         });
-       
     }
     @FXML
     public void handleOnActionEntrar(){
-        Usuario usuario = new Usuario();      
-        usuario = gh.validarUsuario(tfNombre.getText(), pfPass.getText().trim());
-        if(usuario==null){
-            MobileApplication.getInstance().showMessage("Usuario o contraseña incorrecta");
-            tfNombre.setText(null);
-            pfPass.setText(null);
-            
+        if(tfNombre.getText().compareTo("")==0||pfPass.getText().compareTo("")==0){
+            Dialog dialog = new Dialog();
+            dialog.setTitle(new Label("ERROR"));
+            dialog.setContent(new Label("Los campos nombre y contraseña son obligatorios"));
+            Button okButton = new Button("Acpetar");
+            okButton.setOnAction(e -> {
+                dialog.hide();
+            });
+ dialog.getButtons().add(okButton);
+ dialog.showAndWait();
         } else {
-            DrawerManager drawer = new DrawerManager();
-            GestorHorarios.usuario = usuario;
-            //GestorHorarios.agnadirMenu();
-            drawer.updateItem(AGENDA_LABORAL);
-            
+            Usuario usuario = new Usuario();      
+            usuario = gh.validarUsuario(tfNombre.getText(), pfPass.getText().trim());
+            if(usuario==null){
+                MobileApplication.getInstance().showMessage("Usuario o contraseña incorrecta");
+                tfNombre.setText(null);
+                pfPass.setText(null);
+
+            } else {
+                GestorHorarios.usuario = usuario;
+                if(usuario.getPerfil().compareTo("empleado")!=0){
+                    GestorHorarios.drawer.agnadirItem();
+                }
+                GestorHorarios.drawer.updateItem(AGENDA_LABORAL);
+            }
         }
     }
     @FXML
     public void handleOnActionRecPass(){
+        
         Dialog dialog = new Dialog();
         dialog.setTitle(new Label("Introduce el email"));
         dialog.setContent(new TextField());
-        
         Button cancelar = new Button("Cancelar");
         cancelar.setOnAction(e -> {
             dialog.hide();

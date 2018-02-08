@@ -210,11 +210,11 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
      * @return el usuario
      */
     @Override
-    public Usuario getUsuario(Usuario usuario) {
+    public Usuario getUsuario(String dni) {
          Usuario u=new Usuario();
          
         try {
-            u=db.getUsuario(usuario);
+            u=db.getUsuario(dni);
             LOGGER.info("GestorHorariosManagerImplementation: recibiendo al usuario");
         } catch (Exception ex) {
             LOGGER.severe("GestorHorariosManagerImplementation: error al recibir el usuario");

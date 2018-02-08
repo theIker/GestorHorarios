@@ -24,7 +24,7 @@ public class LoginUsuarioView {
     
     public View getView() {
         try {
-            View view = FXMLLoader.load(PrimaryView.class.getResource("vistaLoginUsuario.fxml"));
+            View view = FXMLLoader.load(PrimaryView.class.getResource("loginUsuario.fxml"));
             view.setName(name);
             return view;
         } catch (IOException e) {
