@@ -308,11 +308,11 @@ public class DBManagerHibernate implements DataBaseInterface{
         * @return todo el usuario
         */ 
        @Override
-        public Usuario getUsuario(Usuario usuario) throws Exception{
+        public Usuario getUsuario(String usuario) throws Exception{
             Usuario usu=new Usuario();
              this.openConnection();
              
-              List  <Usuarios> result =  session.createQuery("FROM Usuarios where dni='"+usuario.getDNI()+"'").list();
+              List  <Usuarios> result =  session.createQuery("FROM Usuarios where dni='"+usuario+"'").list();
               Iterator<Usuarios> l= result.iterator();
              
               Usuarios u=l.next();

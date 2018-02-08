@@ -8,7 +8,6 @@ package com.gestorhorarios.logic;
 import com.gestorhorarios.datos.DBManagerHibernate;
 import com.gestorhorarios.datos.DataBaseInterface;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.gestorhorarios.logic.models.Jornada;
 import com.gestorhorarios.logic.models.Solicitud;
@@ -214,7 +213,7 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
          Usuario u=new Usuario();
          
         try {
-            u=db.getUsuario(usuario);
+            u=db.getUsuario(usuario.getDNI());
             LOGGER.info("GestorHorariosManagerImplementation: recibiendo al usuario");
         } catch (Exception ex) {
             LOGGER.severe("GestorHorariosManagerImplementation: error al recibir el usuario");

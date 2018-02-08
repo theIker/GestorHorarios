@@ -26,8 +26,18 @@ dependencies {
     compile group: 'org.javassist', name: 'javassist', version: '3.19.0-GA'
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.8.0-beta1'
+    // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '0.7.5'
+    // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
+    compile group: 'javax.mail', name: 'javax.mail-api', version: '1.5.0'
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-email
+    compile group: 'org.apache.commons', name: 'commons-email', version: '1.5'
+    // https://mvnrepository.com/artifact/commons-net/commons-net
+    compile group: 'commons-net', name: 'commons-net', version: '3.6'
+    // https://mvnrepository.com/artifact/javax.activation/activation
+    compile group: 'javax.activation', name: 'activation', version: '1.1.1'
     testCompile group: 'junit', name: 'junit', version: '4.+'
-	}
+}
 
 jfxmobile {
     downConfig {
