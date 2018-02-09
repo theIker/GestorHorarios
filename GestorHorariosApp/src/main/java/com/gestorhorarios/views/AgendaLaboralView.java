@@ -5,20 +5,24 @@
  */
 package com.gestorhorarios.views;
 
+import com.gluonhq.charm.glisten.control.CharmListView;
 import com.gluonhq.charm.glisten.mvc.View;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
+import models.Jornada;
 
 /**
  *
  * @author 2dam
  */
-public class AgendaLaboralView {
+public class AgendaLaboralView{
      private final String name;
+     
 
     public AgendaLaboralView(String name) {
         this.name = name;
     }
+
     
     public View getView() {
         try {

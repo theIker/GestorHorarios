@@ -40,7 +40,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <View fx:id="listaEmpleados" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="335.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestorhorarios.views.EmpleadosPresenter">
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
@@ -48,14 +47,14 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
-            <ListView fx:id="lvEmpleados" prefHeight="502.0" prefWidth="295.0">
+            <ListView fx:id="lvEmpleados" prefHeight="450.0" prefWidth="295.0">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </ListView>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="40.0" prefWidth="295.0">
+            <HBox alignment="TOP_RIGHT" prefHeight="40.0" prefWidth="295.0">
                <children>
-                  <Button fx:id="btnAnyadir" mnemonicParsing="false" text="+" />
+                  <Button fx:id="btnAnyadirEmpleado" mnemonicParsing="false" />
                </children>
             </HBox>
          </children>

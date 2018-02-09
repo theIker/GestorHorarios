@@ -10,39 +10,34 @@ import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
-import datos.dbmanager;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
 /**
  *
  * @author 2dam
  */
-public class EmpleadosPresenter {
-    
+public class VistaLoginUsuarioPresenter {
+     @FXML
+    private View login;
     @FXML
-    private View listaEmpleados;
-    dbmanager m= new dbmanager();
-    
+    private TextField tfNombre;
     @FXML
-    ListView lvEmpleados;
+    private PasswordField pfPass;
     
-    @FXML
-    Button btnAnyadirEmpleado;
     
-     public void initialize() {
-        listaEmpleados.showingProperty().addListener((obs, oldValue, newValue) -> {
+    public void initialize(){
+         login.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 AppBar appBar = MobileApplication.getInstance().getAppBar();
                 appBar.setNavIcon(MaterialDesignIcon.MENU.button(e -> 
                         MobileApplication.getInstance().showLayer(GestorHorarios.MENU_LAYER)));
-                appBar.setTitleText("Empleados");
-                
-                /*appBar.getActionItems().add(MaterialDesignIcon.SEARCH.button(e -> 
-                        System.out.println("Search")));*/
+                appBar.setTitleText("Login");
             }
         });
-        //lvAgenda.setItems();
+       
     }
+    
+
 }

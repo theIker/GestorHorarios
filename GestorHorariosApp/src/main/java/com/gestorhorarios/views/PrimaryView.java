@@ -14,7 +14,7 @@ public class PrimaryView {
     
     public View getView() {
         try {
-            View view = FXMLLoader.load(PrimaryView.class.getResource("primary.fxml"));
+            View view = FXMLLoader.load(PrimaryView.class.getResource("loginUsuario.fxml"));
             view.setName(name);
             return view;
         } catch (IOException e) {
