@@ -5,6 +5,10 @@
  */
 package com.gestorhorarios.logic.models;
 
+import com.gestorhorarios.logic.GestorHorariosManager;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+
 
 
 /**
@@ -143,5 +147,28 @@ public class Solicitud {
     public void setJornadaAcepta (int jornadaAcepta) {
         this.jornadaAcepta = jornadaAcepta;
     }   
+    
+    public String toString(GestorHorariosManager gh) {
+      
+        Usuario solicita = gh.getUsuario(this.usuarioAcepta);
+        Usuario acepta = gh.getUsuario(this.usuarioAcepta);
+        Usuario valida = gh.getUsuario(this.usuarioValida);
+        
+        Jornada jacepta = new Jornada(); //gh.getJornada(this.jornadaAcepta);
+        Jornada jsolicita = new Jornada(); //gh.getJornada(this.jornadaSolicita);
+       
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        
+        String data =
+                format.format(jacepta.getFecha()) + "\n"
+                + "Turno inicial:\tTurno solicitado:\tEstado:\n"
+                + jsolicita.getTurno().getHoraEntrada() + "-" + jsolicita.getTurno().getHoraSalida()
+                +"\t"+ jacepta.getTurno().getHoraEntrada() + "-" + jacepta.getTurno().getHoraSalida()
+                +"\t"+ this.estado
+                ;
+        
+        return data;
+        
+    }
     
 }

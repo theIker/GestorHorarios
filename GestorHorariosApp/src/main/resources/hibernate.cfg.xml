@@ -5,7 +5,7 @@
     <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.password">iker2</property>
-    <property name="hibernate.connection.url">jdbc:mysql://10.22.82.146:3306/tiendadb</property>
+    <property name="hibernate.connection.url">jdbc:mysql://192.168.1.36:3306/tiendadb</property>
     <property name="hibernate.connection.username">iker2</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.search.autoregister_listeners">true</property>
