@@ -152,11 +152,25 @@ public class Solicitud {
       
         Usuario solicita = gh.getUsuario(this.usuarioAcepta);
         Usuario acepta = gh.getUsuario(this.usuarioAcepta);
-        Usuario valida = gh.getUsuario(this.usuarioValida);
         
         Jornada jacepta = new Jornada(); //gh.getJornada(this.jornadaAcepta);
+        
+        for (Jornada f : acepta.getJornadas()) {
+            
+            if (f.getID() == this.getJornadaAcepta())
+                jacepta = f;
+            
+        }
+        
         Jornada jsolicita = new Jornada(); //gh.getJornada(this.jornadaSolicita);
        
+        for (Jornada f : acepta.getJornadas()) {
+            
+            if (f.getID() == this.getJornadaSolicita())
+                jsolicita = f;
+            
+        }
+        
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         
         String data =
@@ -168,6 +182,54 @@ public class Solicitud {
                 ;
         
         return data;
+        
+    }
+    
+    public int compare (Solicitud s1, Solicitud s2, GestorHorariosManager gh) {
+        
+        int comparation;
+        
+        //Primera solicitud
+        Usuario acepta = gh.getUsuario(s1.usuarioAcepta);
+        
+        Jornada jacepta = new Jornada(); //gh.getJornada(this.jornadaAcepta);
+        
+        for (Jornada f : acepta.getJornadas()) {
+            
+            if (f.getID() == s1.getJornadaAcepta())
+                jacepta = f;
+            
+        }
+        
+        //Segunda solicitud
+        Usuario acepta2 = gh.getUsuario(s2.usuarioAcepta);
+        
+        Jornada jacepta2 = new Jornada(); //gh.getJornada(this.jornadaAcepta);
+        
+        for (Jornada f : acepta.getJornadas()) {
+            
+            if (f.getID() == s2.getJornadaAcepta())
+                jacepta = f;
+            
+        }
+        
+        //Resolución
+        
+        if (jacepta.getFecha().before(jacepta2.getFecha())) {
+            
+            comparation = 1;
+            
+        } else if (jacepta.getFecha().before(jacepta2.getFecha())) {
+            
+            comparation = -1;
+            
+        } else {
+            
+            comparation = jacepta.getTurno().getHoraEntrada().compareTo(jacepta2.getTurno().getHoraEntrada());
+            
+        }
+        
+        return comparation;
         
     }
     
