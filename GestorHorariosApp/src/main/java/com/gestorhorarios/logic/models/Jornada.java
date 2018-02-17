@@ -85,15 +85,15 @@ public class Jornada {
         this.turno = turno;
     }
     
-    public int compare (Jornada j1, Jornada j2) {
+    public int compare (Jornada j2) {
         
         int comparation;
         
-        if (j1.getFecha().before(j2.getFecha())) {
+        if (this.getFecha().before(j2.getFecha())) {
             
             comparation = 1;
             
-        } else if (j1.getFecha().after(j2.getFecha())) {
+        } else if (this.getFecha().after(j2.getFecha())) {
             
             comparation = -1;
             

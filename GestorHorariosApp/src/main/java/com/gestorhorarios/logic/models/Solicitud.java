@@ -185,24 +185,24 @@ public class Solicitud {
         
     }
     
-    public int compare (Solicitud s1, Solicitud s2, GestorHorariosManager gh) {
+    public int compare (Solicitud s2, GestorHorariosManager gh) {
         
         int comparation;
         
         //Primera solicitud
-        Usuario acepta = gh.getUsuario(s1.usuarioAcepta);
+        Usuario acepta = gh.getUsuario(this.usuarioSolicita);
         
         Jornada jacepta = new Jornada(); //gh.getJornada(this.jornadaAcepta);
         
         for (Jornada f : acepta.getJornadas()) {
             
-            if (f.getID() == s1.getJornadaAcepta())
+            if (f.getID() == this.getJornadaAcepta())
                 jacepta = f;
             
         }
         
         //Segunda solicitud
-        Usuario acepta2 = gh.getUsuario(s2.usuarioAcepta);
+        Usuario acepta2 = gh.getUsuario(s2.usuarioSolicita);
         
         Jornada jacepta2 = new Jornada(); //gh.getJornada(this.jornadaAcepta);
         
