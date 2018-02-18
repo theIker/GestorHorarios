@@ -39,7 +39,7 @@ public class DrawerManager {
         
         NavigationDrawer.Header header = new NavigationDrawer.Header("Eroski",
                 "Gestor de horarios",                                           //Añadir nuestro icono
-                new Avatar(21, new Image(DrawerManager.class.getResourceAsStream("/icon.png"))));
+                new Avatar(21, new Image(DrawerManager.class.getResourceAsStream("/icono_eroski.png"))));
         drawer.setHeader(header);
        
         item1 = new ViewItem("Agenda laboral", MaterialDesignIcon.HOME.graphic(), AGENDA_LABORAL, ViewStackPolicy.SKIP);

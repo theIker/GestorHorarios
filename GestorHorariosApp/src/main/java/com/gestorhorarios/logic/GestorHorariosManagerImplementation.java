@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import com.gestorhorarios.logic.models.Jornada;
 import com.gestorhorarios.logic.models.Solicitud;
 import com.gestorhorarios.logic.models.Usuario;
+import entity.Jornadas;
+import java.time.LocalDate;
 
 /**
  *
@@ -304,4 +306,17 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
         }    
         return solicitud;
     }
+    
+    @Override
+    public ArrayList <Jornada> getJornadasByFecha(Usuario usuario, LocalDate fecha) {
+        ArrayList <Jornada> jornadas = new ArrayList<>();
+        for(Jornada j : usuario.getJornadas()){
+            //TODO
+                
+            }
+        return null;
+        }
+         
+         
+        
 }

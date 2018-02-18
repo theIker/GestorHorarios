@@ -6,11 +6,18 @@
 package com.gestorhorarios.views;
 
 import com.gestorhorarios.GestorHorarios;
+import com.gestorhorarios.logic.GestorHorariosManager;
+import com.gestorhorarios.logic.GestorHorariosManagerImplementation;
+import com.gestorhorarios.logic.models.Jornada;
+import com.gestorhorarios.logic.models.Usuario;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
+import com.gluonhq.charm.glisten.control.CharmListView;
 
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -37,9 +44,9 @@ public class AgendaLaboralPresenter {
     @FXML 
     private Button btnBuscar;    
     @FXML
-    private ListView lvAgenda;
+    private CharmListView<Jornada, ? extends Comparable> lvAgenda;
     
-    
+    private GestorHorariosManager gh = new GestorHorariosManagerImplementation();
      public void initialize() {
         agendaLaboral.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
@@ -50,8 +57,26 @@ public class AgendaLaboralPresenter {
                 
                 /*appBar.getActionItems().add(MaterialDesignIcon.SEARCH.button(e -> 
                         System.out.println("Search")));*/
+                if(GestorHorarios.usuario.getPerfil().compareTo("empleado")==0){
+                    lbVerAgenda.setVisible(false);
+                    cbNombre.setVisible(false);
+                } else {
+                    cbNombre.setItems(FXCollections.observableArrayList(gh.getUsuarios()));
+                    cbNombre.getSelectionModel().select(GestorHorarios.usuario);
+                }
             }
         });
         //lvAgenda.setItems();
+    }
+     
+    @FXML
+    public void handleOnActionBuscar(){
+        Usuario usuarioAux = new Usuario();
+        if(cbNombre.getValue()== null){
+            usuarioAux = GestorHorarios.usuario;
+        } else {
+            usuarioAux = (Usuario) cbNombre.getSelectionModel().getSelectedItem();
+        }
+        
     }
 }

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.gestorhorarios.logic.models.Jornada;
 import com.gestorhorarios.logic.models.Solicitud;
 import com.gestorhorarios.logic.models.Usuario;
+import entity.Jornadas;
+import java.time.LocalDate;
 
 /**
  *
@@ -26,4 +28,5 @@ public interface GestorHorariosManager {
     public void modificarPass(Usuario usuario,String pass);
     public Usuario validarUsuario(String dni, String pass);
     public ArrayList<Solicitud> getSolicitudesPorValidar();
+    public ArrayList <Jornada> getJornadasByFecha(Usuario usuario, LocalDate fecha);
 }

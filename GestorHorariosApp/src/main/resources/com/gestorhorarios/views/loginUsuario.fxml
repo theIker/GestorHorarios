@@ -16,9 +16,9 @@
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="ivLogo" fitHeight="181.0" fitWidth="334.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="ivLogo" fitHeight="181.0" fitWidth="260.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../../../Sin%20título.png" />
+                  <Image url="@../eroski.png" />
                </image>
                <VBox.margin>
                   <Insets />

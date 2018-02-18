@@ -1,3 +1,204 @@
 .root {
+    /*color azul*/
+    -primary-swatch-500: #073fa3;
+    /*color gris*/
+    -primary-swatch-500: #4f4f4f;
 
 }
+#login{
+  /* -fx-background-image: url("supermarket-employee.jpg");*/
+   -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-image-opacity: 0.5;
+    
+    
+}
+.app-bar {
+    /*color rojo*/
+    -fx-background-color: #c32420;
+}
+.button{
+    -fx-background-color:#4f4f4f;
+}
+.button:hover {
+  -fx-background-color:#787878;
+}
+.ComboBox{
+    
+}
+.fondo{
+    -fx-background-color:white;
+}
+#btnAnyadir{
+    -fx-padding:0px;
+    -fx-background-image: url("add.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;    
+    -fx-background-size: 12px 12px; 
+    -fx-padding: 0px 0px 0px 0px;
+    -fx-min-width: 24px;
+    -fx-max-width:24px;
+    -fx-min-height:24px;
+    -fx-max-height:24px;
+    -fx-background-radius:12px;
+
+}
+#btnBorrar{
+    -fx-padding:0px;
+    -fx-background-image: url("delete.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;    
+    -fx-background-size: 12px 12px; 
+    -fx-padding: 0px 0px 0px 0px;
+    -fx-min-width: 24px;
+    -fx-max-width:24px;
+    -fx-min-height:24px;
+    -fx-max-height:24px;
+    -fx-background-radius:12px;
+}
+#btnBorrarUsuario{
+    -fx-background-image: url("delete.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;    
+    -fx-background-size: 14px 14px;    
+    -fx-background-position: 4%;
+    -fx-padding: 4px 4px 4px 8px;
+    -fx-min-width: 160px;
+    -fx-background-radius:6px;
+
+}
+#btnGuardarUsuario{
+    -fx-background-image: url("ok.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;    
+    -fx-background-size: 16px 13px;    
+    -fx-background-position: 7%;
+    -fx-padding:4px 4px 4px 8px;
+    -fx-min-width: 120px;
+    -fx-background-radius:6px;
+
+}
+#btnAnyadirEmpleado{
+    -fx-padding:0px;
+    -fx-background-image: url("add.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;    
+    -fx-background-size: 20px 20px; 
+    -fx-padding: 0px 0px 0px 0px;
+    -fx-min-width: 38px;
+    -fx-max-width:38px;
+    -fx-min-height:38px;
+    -fx-max-height:38px;
+    -fx-background-radius:30px;
+}
+#btnEntra{
+    -fx-background-radius:6px;
+    -fx-padding: 10px 10px 10px 10px;
+}
+.combo-box:focused {
+    
+}
+#btnBuscar{
+    -fx-padding:0px;
+    -fx-background-image: url("search.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;    
+    -fx-background-size: 14px 14px; 
+    -fx-padding: 0px 0px 0px 0px;
+    -fx-min-width: 24px;
+    -fx-max-width:24px;
+    -fx-min-height:24px;
+    -fx-max-height:24px;
+    -fx-background-radius:12px;
+}
+/*
+.combo-box  
+{
+    -fx-background: white;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-base-color;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 1.66667em; 
+}*/
+.combo-box{
+    /*-fx-border-color:#787878;*/
+   /* -fx-background-color:white;*/
+    -fx-background-color:#f2f2f4;
+}
+.combo-box .list-cell{
+    -fx-background-color:#f2f2f4;
+}
+.combo-box .list-view .list-cell{
+    -fx-background-color:#f2f2f4;
+}
+.date-picker{
+    -fx-background-color:#f2f2f4;
+        -fx-text-input-background:#f2f2f4;
+}
+.combo-box-popup .list-view .list-cell{
+    -fx-background-color:#f2f2f4;
+
+}
+.combo-box-popup .list-view .list-cell:hover {
+   /* -fx-background-color:#4f4f4f;*/
+    -fx-text-fill: white;
+}
+/*
+
+
+.combo-box-popup .list-view 
+{
+    -fx-background-color: white, white;
+    -fx-background-insets: 0, 1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 8, 0.0 , 0 , 0 );
+}    
+
+.combo-box-popup .list-view .list-cell 
+{
+    -fx-padding: 4 0 4 5;
+
+    /* No alternate highlighting 
+    -fx-background-color: white;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover 
+{
+    -fx-background: -fx-accent;
+    -fx-background-color: -fx-selection-bar;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover 
+{
+    -fx-background-color: white;
+    -fx-text-fill: -fx-text-inner-color;
+}
+
+.combo-box-base  
+{
+    -fx-skin: "com.sun.javafx.scene.control.skin.ComboBoxBaseSkin";
+    -fx-background-color: white, white, white, white;
+    -fx-background-radius: 5, 5, 4, 3;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-padding: 0;
+}
+
+.combo-box-base:hover
+{
+    -fx-color: -fx-hover-base;
+}
+
+.combo-box-base:showing 
+{
+    -fx-color: -fx-pressed-base;
+}
+
+.combo-box-base:focused {
+    -fx-background-color: -fx-focus-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-radius: 6.4, 4, 5, 3;
+    -fx-background-insets: -1.4, 0, 1, 2;
+}
+
+.combo-box-base:disabled {
+    -fx-opacity: .4;
+}*/

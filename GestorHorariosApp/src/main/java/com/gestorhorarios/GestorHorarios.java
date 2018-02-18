@@ -12,7 +12,6 @@ import com.gestorhorarios.views.AgendaLaboralView;
 import com.gestorhorarios.views.CambiosTurnoView;
 import com.gestorhorarios.views.DatosEmpleadoView;
 import com.gestorhorarios.views.EmpleadosView;
-import com.gluonhq.charm.glisten.control.NavigationDrawer;
 
 public class GestorHorarios extends MobileApplication {
     

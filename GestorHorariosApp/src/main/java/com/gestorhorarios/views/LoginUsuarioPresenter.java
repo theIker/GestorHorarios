@@ -63,8 +63,8 @@ public class LoginUsuarioPresenter {
             okButton.setOnAction(e -> {
                 dialog.hide();
             });
- dialog.getButtons().add(okButton);
- dialog.showAndWait();
+            dialog.getButtons().add(okButton);
+            dialog.showAndWait();
         } else {
             Usuario usuario = new Usuario();      
             usuario = gh.validarUsuario(tfNombre.getText(), pfPass.getText().trim());
@@ -84,16 +84,19 @@ public class LoginUsuarioPresenter {
     }
     @FXML
     public void handleOnActionRecPass(){
-        
+        TextField txtEmail = new TextField();
         Dialog dialog = new Dialog();
         dialog.setTitle(new Label("Introduce el email"));
-        dialog.setContent(new TextField());
+        dialog.setContent(txtEmail);
         Button cancelar = new Button("Cancelar");
         cancelar.setOnAction(e -> {
             dialog.hide();
         });
         Button enviar = new Button("Enviar");
         enviar.setOnAction(e -> {
+            if(txtEmail.getText().compareTo("")==0){
+                txtEmail.setPromptText("Introduce un email");
+            }
             //comprobar email
             //llamar al metodo de generar contraseña
             //enviar email

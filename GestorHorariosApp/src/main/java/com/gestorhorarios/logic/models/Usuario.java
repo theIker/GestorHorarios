@@ -142,4 +142,12 @@ public class Usuario {
         this.solicitudes = solicitudes;
     }
     
+    @Override
+    public String toString(){
+        return this.nombre.replace(nombre.substring(0, 1), nombre.substring(0, 1).toUpperCase() + " " 
+                + this.apellido1.replace(apellido1.substring(0, 1), apellido1.substring(0, 1).toUpperCase()) + " "
+                + this.apellido2.replace(apellido2.substring(0, 1), apellido2.substring(0, 1).toUpperCase()));
+    }
+    
+    
 }
