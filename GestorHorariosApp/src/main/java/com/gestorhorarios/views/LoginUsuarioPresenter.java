@@ -44,13 +44,11 @@ public class LoginUsuarioPresenter {
     private TextField tfNombre;
     @FXML
     private PasswordField pfPass;
-    private GestorHorariosManager gh;
     
     public void initialize(){
          login.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 MobileApplication.getInstance().getAppBar().setVisible(false);
-                gh = new GestorHorariosManagerImplementation();
             }
         });
     }
@@ -69,7 +67,7 @@ public class LoginUsuarioPresenter {
             dialog.showAndWait();
         } else {
             Usuario usuario = new Usuario();      
-            usuario = gh.validarUsuario(tfNombre.getText(), pfPass.getText().trim());
+            usuario = ManagerFactory.gh.validarUsuario(tfNombre.getText(), ManagerFactory.gh.getPassHash(pfPass.getText()));
             if(usuario==null){
                 MobileApplication.getInstance().showMessage("Usuario o contraseña incorrecta");
                 tfNombre.setText(null);

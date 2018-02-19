@@ -699,6 +699,7 @@ public class DBManagerHibernate implements DataBaseInterface{
                   aux.setFecha(j.getFecha());
                   aux.setID(j.getId());
                   aux.setTurno(getTurno(j.getTurnos()));
+                  jors.add(aux);
               }
               LOGGER.info("DBManagerHibernate: recibiendo todas las jornadas");
         this.closeConnection();

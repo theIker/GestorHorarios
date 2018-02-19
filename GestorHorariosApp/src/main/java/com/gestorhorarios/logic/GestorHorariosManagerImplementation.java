@@ -15,6 +15,7 @@ import com.gestorhorarios.logic.models.Solicitud;
 import com.gestorhorarios.logic.models.Turno;
 import com.gestorhorarios.logic.models.Usuario;
 import entity.Jornadas;
+import java.io.File;
 import java.time.LocalDate;
 
 /**
@@ -29,8 +30,13 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
    private static Mail mail= new Mail();
    private static final Logger LOGGER=Logger.getLogger("GestorHorarios");
    
-   public GestorHorariosManagerImplementation(){     
-       cp.encryptMailData();
+   public GestorHorariosManagerImplementation(){ 
+       
+       //NEW LOGIC IMPLEMENTATION
+       if (!(new File("./mail.mail").exists())) {
+           cp.encryptMailData();
+       }
+       
    }
    
    @Override
@@ -423,7 +429,14 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
         
         return jor;
     }
-         
-         
+    
+    //NEW LOGIC IMPLEMENTATION
+    
+    @Override
+    public String getPassHash (String pass) {
+        
+        return cp.getPasswordHash(pass);
+        
+    }  
         
 }

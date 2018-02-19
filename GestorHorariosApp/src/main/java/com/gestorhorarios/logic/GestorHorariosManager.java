@@ -38,5 +38,7 @@ public interface GestorHorariosManager {
     public void setUsuarioLogin(Usuario usuario);
     public Usuario getUsuarioLogin();
     public ArrayList<Jornada>getAllJornadas();
+    //NEW LOGIC IMPLEMENTATION
+    public String getPassHash (String pass);
     
 }
