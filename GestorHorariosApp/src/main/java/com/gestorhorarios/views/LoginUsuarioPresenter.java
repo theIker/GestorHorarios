@@ -77,8 +77,11 @@ public class LoginUsuarioPresenter {
 
             } else {
                 ManagerFactory.gh.setUsuarioLogin(usuario);
+                
                 if(usuario.getPerfil().compareTo("empleado")!=0){
-                    GestorHorarios.drawer.agnadirItem();
+                    GestorHorarios.drawer.agnadirItemEncargado();
+                } else {
+                    GestorHorarios.drawer.agnadirItemEmpleado();
                 }
                 GestorHorarios.drawer.updateItem(AGENDA_LABORAL);
             }
