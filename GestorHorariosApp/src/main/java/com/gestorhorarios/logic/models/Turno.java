@@ -98,4 +98,12 @@ public class Turno {
         this.funciones = funciones;
     }
     
+    
+    @Override
+        public String toString() {
+            String he=this.horaEntrada.substring(0, 2)+":"+this.horaEntrada.substring(2, 4);
+            String hs=this.horaSalida.substring(0,2)+":"+this.horaSalida.substring(2,4);
+            
+            return this.id.toUpperCase()+" "+he+"-"+hs;
+    }
 }

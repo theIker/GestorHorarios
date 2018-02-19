@@ -63,7 +63,7 @@ public class DBManagerHibernate implements DataBaseInterface{
              u.setApellido1(usuario.getApellido1());
              u.setApellido2(usuario.getApellido2());
              u.setPerfil(usuario.getPerfil());
-             u.setJornadases(setJornadas(usuario.getJornadas()));
+             //u.setJornadases(setJornadas(usuario.getJornadas()));
              
              u.setHashPass(pass);
               session.save(u);
@@ -581,4 +581,129 @@ public class DBManagerHibernate implements DataBaseInterface{
         
         return s;
     }
+
+    /**
+     * Metodo que devuelve todos los turnos con sus funciones
+     * @return todos los turnos
+     * @throws Exception 
+     */
+    @Override
+    public ArrayList<Turno> getTurnos() throws Exception{
+        ArrayList<Turno> turnos = new ArrayList<>();
+        
+        this.openConnection();
+        
+         List  <Turnos> result =  session.createQuery("FROM Turnos").list();
+        Iterator<Turnos> l= result.iterator();
+        Turno aux;
+         
+        while(l.hasNext()){
+              Turnos tur=l.next();
+              aux=new Turno();
+              aux.setID(tur.getId());
+              aux.setHoraEntrada(tur.getHoraEntrada());
+              aux.setHoraSalida(tur.getHoraSalida());
+              aux.setFunciones(getFunciones(tur.getFuncioneses()));
+              turnos.add(aux);
+        }
+        
+        this.closeConnection();
+        
+        return turnos;
+    }
+
+     /**
+     * Metodo que crea jornadas
+     * @param jornadas lista de jornadas
+     * @throws Exception 
+     */
+    @Override
+    public void crearJornada(Usuario usuario,ArrayList<Jornada> jornadas) throws Exception {
+            this.openConnection();
+            LOGGER.info("DBManagerHibernate: creando jornadas");
+            
+                
+            for(int i=0;i<jornadas.size();i++){
+                Transaction tx=session.beginTransaction();
+                Jornadas j=new Jornadas();
+                    j.setFecha(jornadas.get(i).getFecha());
+                    j.setTurnos(setTurno(jornadas.get(i).getTurno()));
+                   
+                       session.save(j);
+                       tx.commit();
+                     asignarJornada(usuario.getDNI(),j);
+            }
+            
+             
+            this.closeConnection();
+    }
+
+    /**
+   * Metdo de devolver jornada por ID
+   * @param id id de la jornada
+   * @return la jornada
+   * @throws Exception 
+   */
+    @Override
+    public Jornada getJornadaById(int id) throws Exception {
+       Jornada jor= new Jornada();
+         this.openConnection();
+             List  <Jornadas> result =  session.createQuery("FROM Jornadas where id="+id).list();
+              Iterator<Jornadas> l= result.iterator();
+             
+              Jornadas j=l.next();
+              jor.setID(j.getId());
+              jor.setFecha(j.getFecha());
+              jor.setTurno(getTurno(j.getTurnos()));
+              
+              LOGGER.info("DBManagerHibernate: asignando jornada al usuario");
+         this.closeConnection();
+       
+       return jor;
+    }
+
+    /**
+     * Metodo que asigna jornada a un usuario
+     * @param dni dni al que se le asigna
+     * @param j jornada que se asigna
+     */
+    @Override
+    public void asignarJornada(String dni, Jornadas j) throws Exception {
+        
+         Transaction tx=session.beginTransaction();
+              List  <Usuarios> result =  session.createQuery("FROM Usuarios where dni='"+dni+"'").list();
+              Iterator<Usuarios> l= result.iterator();
+                          
+                   Usuarios u=l.next();
+                   u.addJornada(j);
+                   session.update(u);
+                   tx.commit();
+                   LOGGER.info("DBManagerHibernate: asignando jornada al usuario");
+          
+    }
+    /**
+     * Metodo que devuelve todas las jornadas
+     * @return Una colección de jordanas
+     * @throws Exception 
+     */
+    @Override
+    public ArrayList<Jornada> getAllJornadas() throws Exception {
+        ArrayList<Jornada>jors=new ArrayList<>();
+        Jornada aux;
+        this.openConnection();
+         List  <Jornadas> result =  session.createQuery("FROM Jornadas").list();
+              Iterator<Jornadas> l= result.iterator();
+              while(l.hasNext()){
+                  aux=new Jornada();
+                  Jornadas j=l.next();
+                  aux.setFecha(j.getFecha());
+                  aux.setID(j.getId());
+                  aux.setTurno(getTurno(j.getTurnos()));
+              }
+              LOGGER.info("DBManagerHibernate: recibiendo todas las jornadas");
+        this.closeConnection();
+        
+        return jors;
+    }
+    
 }

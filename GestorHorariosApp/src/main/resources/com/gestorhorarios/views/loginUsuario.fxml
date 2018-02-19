@@ -21,9 +21,10 @@
                   <Image url="@../eroski.png" />
                </image>
                <VBox.margin>
-                  <Insets />
+                  <Insets bottom="5.0" top="60.0" />
                </VBox.margin>
             </ImageView>
+            <Label fx:id="lbNombreApp" text="gestor de turnos" />
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label text="Nombre">
@@ -46,20 +47,20 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </PasswordField>
-                  <Hyperlink fx:id="recPass" onAction="#handleOnActionRecPass" text="Recuperar contraseña">
+                  <Hyperlink fx:id="recPass" text="Recuperar contraseña" onAction="#handleOnActionRecPass">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </Hyperlink>
                </children>
                <VBox.margin>
-                  <Insets />
+                  <Insets top="40.0" />
                </VBox.margin>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
             </VBox>
-            <Button fx:id="btnEntra" mnemonicParsing="false" onAction="#handleOnActionEntrar" text="Entrar">
+            <Button fx:id="btnEntra" mnemonicParsing="false" text="ENTRAR" onAction="#handleOnActionEntrar">
                <VBox.margin>
                   <Insets top="50.0" />
                </VBox.margin>

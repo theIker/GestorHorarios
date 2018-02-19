@@ -3,13 +3,10 @@
 <!--
     Copyright (c) 2017, Gluon and/or its affiliates.
     All rights reserved. Use is subject to license terms.
-
     This file is available and licensed under the following license:
-
     Redistribution and use in source and binary forms, with or without
     modification, are permitted provided that the following conditions
     are met:
-
    - Redistributions of source code must retain the above copyright
      notice, this list of conditions and the following disclaimer.
    - Redistributions in binary form must reproduce the above copyright
@@ -18,7 +15,6 @@
    - Neither the name of Oracle Corporation and Gluon nor the names of its
      contributors may be used to endorse or promote products derived
      from this software without specific prior written permission.
-
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
   "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -118,7 +114,7 @@
             </ComboBox>
             <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="295.0">
                <children>
-                  <Button fx:id="btnAnyadir" alignment="CENTER" mnemonicParsing="false" text="+" textAlignment="CENTER">
+                  <Button fx:id="btnAnyadir" alignment="CENTER" mnemonicParsing="false" onAction="#handleOnActionAddJornada" text="+" textAlignment="CENTER">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -128,7 +124,7 @@
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <Button fx:id="btnBorrar" alignment="CENTER" minWidth="18.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="18.0" text="+" textAlignment="CENTER">
+                  <Button fx:id="btnBorrar" alignment="CENTER" minWidth="18.0" mnemonicParsing="false" onAction="#handleOnActionBorrarJornada" prefHeight="22.0" prefWidth="18.0" text="+" textAlignment="CENTER">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -148,12 +144,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="btnBorrarUsuario" mnemonicParsing="false" text="BORRAR USUARIO">
+                  <Button fx:id="btnBorrarUsuario" mnemonicParsing="false" onAction="#handleOnActionBorrar" text="BORRAR USUARIO">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnGuardarUsuario" mnemonicParsing="false" text="GUARDAR">
+                  <Button fx:id="btnGuardarUsuario" mnemonicParsing="false" onAction="#handleOnActionGuardar" text="GUARDAR">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>

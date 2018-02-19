@@ -5,6 +5,9 @@
  */
 package com.gestorhorarios.logic.models;
 
+import com.gestorhorarios.logic.ManagerFactory;
+import java.text.SimpleDateFormat;
+
 
 /**
  *
@@ -141,6 +144,92 @@ public class Solicitud {
     
     public void setJornadaAcepta (int jornadaAcepta) {
         this.jornadaAcepta = jornadaAcepta;
-    }   
+    }
+    public String toString() {
+      
+        Usuario solicita = ManagerFactory.gh.getUsuario(this.usuarioAcepta);
+        Usuario acepta = ManagerFactory.gh.getUsuario(this.usuarioAcepta);
+        
+        Jornada jacepta = new Jornada(); //gh.getJornada(this.jornadaAcepta);
+        
+        for (Jornada f : acepta.getJornadas()) {
+            
+            if (f.getID() == this.getJornadaAcepta())
+                jacepta = f;
+            
+        }
+        
+        Jornada jsolicita = new Jornada(); //gh.getJornada(this.jornadaSolicita);
+       
+        for (Jornada f : acepta.getJornadas()) {
+            
+            if (f.getID() == this.getJornadaSolicita())
+                jsolicita = f;
+            
+        }
+        
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        
+        String data =
+                format.format(jacepta.getFecha()) + "\n"
+                + "Turno inicial:\tTurno solicitado:\tEstado:\n"
+                + jsolicita.getTurno().getHoraEntrada() + "-" + jsolicita.getTurno().getHoraSalida()
+                +"\t"+ jacepta.getTurno().getHoraEntrada() + "-" + jacepta.getTurno().getHoraSalida()
+                +"\t"+ this.estado
+                ;
+        
+        return data;
+        
+    }
+    
+    public int compare (Solicitud s2) {
+        
+        int comparation;
+        
+        //Primera solicitud
+        Usuario acepta = ManagerFactory.gh.getUsuario(this.usuarioSolicita);
+        
+        Jornada jacepta = new Jornada(); //gh.getJornada(this.jornadaAcepta);
+        
+        for (Jornada f : acepta.getJornadas()) {
+            
+            if (f.getID() == this.getJornadaAcepta())
+                jacepta = f;
+            
+        }
+        
+        //Segunda solicitud
+        Usuario acepta2 = ManagerFactory.gh.getUsuario(s2.usuarioSolicita);
+        
+        Jornada jacepta2 = new Jornada(); //gh.getJornada(this.jornadaAcepta);
+        
+        for (Jornada f : acepta.getJornadas()) {
+            
+            if (f.getID() == s2.getJornadaAcepta())
+                jacepta = f;
+            
+        }
+        
+        //Resolución
+        
+        if (jacepta.getFecha().before(jacepta2.getFecha())) {
+            
+            comparation = 1;
+            
+        } else if (jacepta.getFecha().before(jacepta2.getFecha())) {
+            
+            comparation = -1;
+            
+        } else {
+            
+            comparation = jacepta.getTurno().getHoraEntrada().compareTo(jacepta2.getTurno().getHoraEntrada());
+            
+        }
+        
+        return comparation;
+        
+    }
     
 }
+    
+

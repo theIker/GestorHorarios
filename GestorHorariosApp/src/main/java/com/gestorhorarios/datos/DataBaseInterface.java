@@ -9,7 +9,9 @@ package com.gestorhorarios.datos;
 import java.util.ArrayList;
 import com.gestorhorarios.logic.models.Jornada;
 import com.gestorhorarios.logic.models.Solicitud;
+import com.gestorhorarios.logic.models.Turno;
 import com.gestorhorarios.logic.models.Usuario;
+import entity.Jornadas;
 
 
 /**
@@ -28,5 +30,10 @@ public interface DataBaseInterface {
         public void borrarUsuario(Usuario usuario) throws Exception;
         public void aceptarSolicitud(Usuario usuario, Solicitud solicitud,Jornada jornada) throws Exception;
         public void validarSolicitud(Usuario usuario,Solicitud solicitud,String estado) throws Exception;
-        public ArrayList<Solicitud> getSolicitudesPorValidar() throws Exception;			
+        public ArrayList<Solicitud> getSolicitudesPorValidar() throws Exception;
+        public ArrayList<Turno> getTurnos()throws Exception;
+        public void crearJornada(Usuario usuario,ArrayList<Jornada> jornadas) throws Exception;
+        public Jornada getJornadaById(int id) throws Exception;
+        public void asignarJornada(String dni, Jornadas j) throws Exception;
+        public ArrayList<Jornada>getAllJornadas() throws Exception;
 }

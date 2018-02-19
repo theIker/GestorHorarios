@@ -1,5 +1,6 @@
 package com.gestorhorarios;
 
+import com.gestorhorarios.logic.ManagerFactory;
 import com.gestorhorarios.views.LoginUsuarioView;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.layout.layer.SidePopupView;
@@ -15,7 +16,8 @@ import com.gestorhorarios.views.EmpleadosView;
 
 public class GestorHorarios extends MobileApplication {
     
-    public static Usuario usuario = new Usuario();
+    public static ManagerFactory managerFactory = new ManagerFactory();
+    
     public static DrawerManager drawer;
     
     
@@ -46,6 +48,6 @@ public class GestorHorarios extends MobileApplication {
     public void postInit(Scene scene) {
         Swatch.BLUE.assignTo(scene);
         scene.getStylesheets().add(GestorHorarios.class.getResource("style.css").toExternalForm());
-        ((Stage) scene.getWindow()).getIcons().add(new Image(GestorHorarios.class.getResourceAsStream("/icon.png")));
+        ((Stage) scene.getWindow()).getIcons().add(new Image(GestorHorarios.class.getResourceAsStream("/icono_eroski.png")));
     }
 }

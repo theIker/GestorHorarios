@@ -8,6 +8,7 @@ package com.gestorhorarios.views;
 import com.gestorhorarios.GestorHorarios;
 import com.gestorhorarios.logic.GestorHorariosManager;
 import com.gestorhorarios.logic.GestorHorariosManagerImplementation;
+import com.gestorhorarios.logic.ManagerFactory;
 import com.gestorhorarios.logic.models.Jornada;
 import com.gestorhorarios.logic.models.Usuario;
 import com.gluonhq.charm.glisten.application.MobileApplication;
@@ -16,6 +17,7 @@ import com.gluonhq.charm.glisten.control.CharmListView;
 
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -46,7 +48,7 @@ public class AgendaLaboralPresenter {
     @FXML
     private CharmListView<Jornada, ? extends Comparable> lvAgenda;
     
-    private GestorHorariosManager gh = new GestorHorariosManagerImplementation();
+    
      public void initialize() {
         agendaLaboral.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
@@ -57,13 +59,14 @@ public class AgendaLaboralPresenter {
                 
                 /*appBar.getActionItems().add(MaterialDesignIcon.SEARCH.button(e -> 
                         System.out.println("Search")));*/
-                if(GestorHorarios.usuario.getPerfil().compareTo("empleado")==0){
+                if(ManagerFactory.gh.getUsuarioLogin().getPerfil().compareTo("empleado")==0){
                     lbVerAgenda.setVisible(false);
                     cbNombre.setVisible(false);
                 } else {
-                    cbNombre.setItems(FXCollections.observableArrayList(gh.getUsuarios()));
-                    cbNombre.getSelectionModel().select(GestorHorarios.usuario);
+                    cbNombre.setItems(FXCollections.observableArrayList(ManagerFactory.gh.getUsuarios()));
+                    cbNombre.getSelectionModel().select(ManagerFactory.gh.getUsuarioLogin());
                 }
+                cargarLista();
             }
         });
         //lvAgenda.setItems();
@@ -73,10 +76,17 @@ public class AgendaLaboralPresenter {
     public void handleOnActionBuscar(){
         Usuario usuarioAux = new Usuario();
         if(cbNombre.getValue()== null){
-            usuarioAux = GestorHorarios.usuario;
+            usuarioAux = ManagerFactory.gh.getUsuarioLogin();
         } else {
             usuarioAux = (Usuario) cbNombre.getSelectionModel().getSelectedItem();
         }
+        
+    }
+    
+    public void cargarLista(){
+       ArrayList<Jornada> jornadas = new ArrayList<>(ManagerFactory.gh.getUsuarioLogin().getJornadas());
+       ObservableList ol = FXCollections.observableArrayList(jornadas);
+       lvAgenda.setItems(ol);
         
     }
 }

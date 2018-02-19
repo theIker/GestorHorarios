@@ -11,6 +11,7 @@ import com.gestorhorarios.GestorHorarios;
 import static com.gestorhorarios.GestorHorarios.AGENDA_LABORAL;
 import com.gestorhorarios.logic.GestorHorariosManager;
 import com.gestorhorarios.logic.GestorHorariosManagerImplementation;
+import com.gestorhorarios.logic.ManagerFactory;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.Dialog;
 
@@ -55,6 +56,7 @@ public class LoginUsuarioPresenter {
     }
     @FXML
     public void handleOnActionEntrar(){
+     
         if(tfNombre.getText().compareTo("")==0||pfPass.getText().compareTo("")==0){
             Dialog dialog = new Dialog();
             dialog.setTitle(new Label("ERROR"));
@@ -74,7 +76,7 @@ public class LoginUsuarioPresenter {
                 pfPass.setText(null);
 
             } else {
-                GestorHorarios.usuario = usuario;
+                ManagerFactory.gh.setUsuarioLogin(usuario);
                 if(usuario.getPerfil().compareTo("empleado")!=0){
                     GestorHorarios.drawer.agnadirItem();
                 }
@@ -105,5 +107,4 @@ public class LoginUsuarioPresenter {
         dialog.getButtons().add(cancelar);
         dialog.showAndWait();
     }
-
 }

@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.gestorhorarios.logic.models.Jornada;
 import com.gestorhorarios.logic.models.Solicitud;
+import com.gestorhorarios.logic.models.Turno;
 import com.gestorhorarios.logic.models.Usuario;
 import entity.Jornadas;
 import java.time.LocalDate;
@@ -21,10 +22,25 @@ import java.time.LocalDate;
  * @author Iker Iglesias
  */
 public class GestorHorariosManagerImplementation implements GestorHorariosManager{
-    
-   private DataBaseInterface db= new DBManagerHibernate();
-    private static final Logger LOGGER=Logger.getLogger("GestorHorarios");
-    
+   private static Usuario usuario = new Usuario();
+   
+   private static DataBaseInterface db= new DBManagerHibernate();
+   private static Crypto cp= new Crypto();
+   private static Mail mail= new Mail();
+   private static final Logger LOGGER=Logger.getLogger("GestorHorarios");
+   
+   public GestorHorariosManagerImplementation(){     
+       cp.encryptMailData();
+   }
+   
+   @Override
+   public void setUsuarioLogin(Usuario usuario){
+      this.usuario = usuario;
+   }
+   @Override
+   public Usuario getUsuarioLogin(){
+       return usuario;
+   }
     /**
      * Se envia la jornada y aparecen los usuarios con los que es posible
      * intercambiar la jornada
@@ -120,18 +136,20 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
      * Recibe el Usuario y la contraseña y crea al nuevo usuario
      * @param usuario usuario con sus datos 
      * @param pass contraseña encriptada
+     * @return 
      */
     @Override
-    public void crearUsuario(Usuario usuario, String pass) {
-        
+    public boolean crearUsuario(Usuario usuario, String pass) {
+        boolean e=true;
         try {
             db.crearUsuario(usuario, pass);
             LOGGER.info("GestorHorariosManagerImplementation: usuario creado");
         } catch (Exception ex) {
+            e=false;
             LOGGER.severe("GestorHorariosManagerImplementation: error al crear usuario");
         }
         
-             
+        return e;     
     }
    
     /**
@@ -316,6 +334,95 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
             }
         return null;
         }
+
+    /**
+     * Metodo que devuelve todos los turnos con sus funciones
+     * @return Una coleccion con todos los turnos
+     */
+    @Override
+    public ArrayList<Turno> getTurnos() {
+        ArrayList<Turno> turno;
+        
+        try {
+            turno=db.getTurnos();
+             LOGGER.info("GestorHorariosManagerImplementation: devolviendo turnos");
+        } catch (Exception ex) {
+            LOGGER.severe("GestorHorariosManagerImplementation: error recibir turnos");
+            turno=null;
+        }    
+        
+        return turno;
+    }
+    /**
+     * Metodo que llama al DBManager para crear jornadas de trabajo asignadas a un usuario
+     * @param usuario Usuario que tiene la jornada
+     * @param jornadas Una colección de jornadas para crear
+     */
+    @Override
+    public void crearJornada(Usuario usuario,ArrayList<Jornada> jornadas) {
+       try {
+           db.crearJornada(usuario,jornadas);
+            LOGGER.info("GestorHorariosManagerImplementation: creando jornadas");
+       } catch (Exception ex) {
+           LOGGER.severe("GestorHorariosManagerImplementation: error al crear jornadas");
+       }
+    }
+
+    /**
+     * Metodo que genera una contraseña aleatoria y la encripta
+     * @param usuario el usuario
+     * @return has contraseña
+     */
+    @Override
+    public String getGenPassHash(Usuario usuario) {
+         String hashPass,pass;
+         try{
+         pass=cp.generateAutomaticPassword();
+         hashPass=cp.getPasswordHash(pass);
+          mail.sendMailRegistro(usuario, pass);
+          LOGGER.info("GestorHorariosManagerImplementation: guardando contrasña generada y encryptada");
+         }catch(Exception ex){
+            LOGGER.severe("GestorHorariosManagerImplementation: error al guardar contrasña generada y encryptada");
+             hashPass=null;
+         }
+        return hashPass;
+    }
+
+    @Override
+    public void encryptMailData() {
+        cp.encryptMailData();
+    }
+
+    @Override
+    public Jornada getJornadaById(int id) {
+        Jornada jornada;
+       try {
+            jornada=db.getJornadaById(id);
+            LOGGER.info("GestorHorariosManagerImplementation: recibiendo jornada");
+       } catch (Exception ex) {
+           LOGGER.severe("GestorHorariosManagerImplementation: error al recibir jornada");
+           jornada=null;
+       }
+        return jornada;
+    }
+    
+    /**
+     * MEtodo que devuelve todas las jornadas
+     * @return Colección de jornadas
+     */
+    @Override
+    public ArrayList<Jornada> getAllJornadas() {
+        ArrayList<Jornada> jor=new ArrayList<>();
+         try{
+             jor=db.getAllJornadas();
+             LOGGER.info("GestorHorariosManagerImplementation: recibiendo todas las jornadas");
+         }catch(Exception ex){
+             LOGGER.severe("GestorHorariosManagerImplementation: error al recibir todas las jornadas");
+             jor=null;
+         }
+        
+        return jor;
+    }
          
          
         

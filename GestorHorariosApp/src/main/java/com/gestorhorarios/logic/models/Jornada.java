@@ -5,6 +5,8 @@
  */
 package com.gestorhorarios.logic.models;
 
+import com.gestorhorarios.logic.ManagerFactory;
+import java.util.Collection;
 import java.util.Date;
 
 /**
@@ -81,5 +83,54 @@ public class Jornada {
     public void setTurno (Turno turno) {
         this.turno = turno;
     }
+        public int compare (Jornada j2) {
+        
+        int comparation;
+        
+        if (this.getFecha().before(j2.getFecha())) {
+            
+            comparation = 1;
+            
+        } else if (this.getFecha().after(j2.getFecha())) {
+            
+            comparation = -1;
+            
+        } else {
+            
+            comparation = 0;
+            
+        }
+        
+        return comparation;
+        
+    }
+    
+    @Override
+    public String toString() {
+      
+        String data = this.fecha + "\n";
+        Integer counter = 0;
+        
+        Collection <Funcion> fs= this.getTurno().getFunciones();
+        
+        for (Funcion f : fs ) {
+            
+            counter++;
+            
+            data += f.getNombre();
+            
+            if(fs.size()!=counter) {
+                data += ",";
+            }
+                
+        }
+        data += "\n";
+        data += this.turno.toString();
+        
+        return data;
+        
+    }
     
 }
+    
+
