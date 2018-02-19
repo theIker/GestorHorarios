@@ -39,9 +39,7 @@ public class GestorHorarios extends MobileApplication {
         addViewFactory(DATOS_EMPLEADO, () -> new DatosEmpleadoView(DATOS_EMPLEADO).getView());
         addViewFactory(LOGIN, () -> new LoginUsuarioView(LOGIN).getView());
         drawer = new DrawerManager();
-        addLayerFactory(MENU_LAYER, () -> new SidePopupView(drawer.getDrawer()));
-        
-        
+        addLayerFactory(MENU_LAYER, () -> new SidePopupView(drawer.getDrawer()));  
     }
 
     @Override

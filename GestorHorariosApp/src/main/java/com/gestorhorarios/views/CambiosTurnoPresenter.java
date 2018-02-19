@@ -32,7 +32,7 @@ public class CambiosTurnoPresenter {
     
             
     
-     public void initialize() {
+    public void initialize() {
         cambiosTurno.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 AppBar appBar = MobileApplication.getInstance().getAppBar();
@@ -45,5 +45,18 @@ public class CambiosTurnoPresenter {
             }
         });
     
-}
+    }
+    
+    public void dialogPendienteAceptar(){
+        
+    }
+    public void dialogPendienteValidar(){
+        
+    }
+    public void dialogAceptarSolicitud(){
+        
+    }
+    public void dialogValidarSolicitud(){
+        
+    }
 }
