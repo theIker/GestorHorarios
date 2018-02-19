@@ -161,9 +161,9 @@ public class DatosEmpleadoPresenter {
         Dialog dialog = new Dialog();
         if(jornadas.size()>0){
             for(int i=0;i<ManagerFactory.gh.getTurnos().size();i++){
-                 String hola=ManagerFactory.gh.getTurnos().get(i).getID();
-                  hola=String.valueOf(hola.charAt(0));
-                  if(jornadas.get(0).getTurno().getID().contains(hola)){
+                 String data=ManagerFactory.gh.getTurnos().get(i).getID();
+                  data=String.valueOf(data.charAt(0));
+                  if(jornadas.get(0).getTurno().getID().contains(data)){
                       t.add(ManagerFactory.gh.getTurnos().get(i));
                   }
              }

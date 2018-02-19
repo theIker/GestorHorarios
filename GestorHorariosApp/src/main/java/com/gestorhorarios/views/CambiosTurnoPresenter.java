@@ -8,11 +8,13 @@ package com.gestorhorarios.views;
 import com.gestorhorarios.GestorHorarios;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
+import com.gluonhq.charm.glisten.control.Dialog;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
 /**
@@ -48,13 +50,38 @@ public class CambiosTurnoPresenter {
     }
     
     public void dialogPendienteAceptar(){
-        
+        Dialog dialog = new Dialog();
+            dialog.setTitle(new Label("Estado de la solicitud"));
+            dialog.setContent(new Label("El compañero aún no ha revisado su solicitud"));
+            Button okButton = new Button("Acpetar");
+            okButton.setOnAction(e -> {
+                dialog.hide();
+            });
+            dialog.getButtons().add(okButton);
+            dialog.showAndWait();
     }
     public void dialogPendienteValidar(){
-        
+        Dialog dialog = new Dialog();
+            dialog.setTitle(new Label("Estado de la solicitud"));
+            dialog.setContent(new Label("Pendiente de validar por el encargado."));
+            Button okButton = new Button("Acpetar");
+            okButton.setOnAction(e -> {
+                dialog.hide();
+            });
+            dialog.getButtons().add(okButton);
+            dialog.showAndWait();
     }
     public void dialogAceptarSolicitud(){
-        
+        Dialog dialog = new Dialog();
+            dialog.setTitle(new Label("Aceptar solicitud"));
+            dialog.setContent(new Label("No se podrá deshacer la operación. ¿Estas seguro?"));
+            Button okButton = new Button("Acpetar");
+            Button cancelButton = new Button("Cancelar");
+            okButton.setOnAction(e -> {
+                dialog.hide();
+            });
+            dialog.getButtons().add(okButton);
+            dialog.showAndWait();
     }
     public void dialogValidarSolicitud(){
         
