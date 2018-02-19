@@ -1,3 +1,6 @@
+@font-face {
+  src: url("angelina.ttf");
+}
 .root {
     /*color azul*/
     -primary-swatch-500: #073fa3;
@@ -6,13 +9,23 @@
 
 }
 #login{
-  /* -fx-background-image: url("supermarket-employee.jpg");*/
+   -fx-background-image: url("fondo4.png");
    -fx-background-size: cover;
     -fx-background-position: center center;
     -fx-background-image-opacity: 0.5;
     
     
 }
+#lbNombreApp{
+    -fx-text-fill:#073fa3;
+    -fx-font-family: "Angelina";
+    -fx-font-size:40px;
+    -fx-font-weight:bold;    
+}
+#recPass{
+    -fx-text-fill:#073fa3;
+}
+
 .app-bar {
     /*color rojo*/
     -fx-background-color: #c32420;

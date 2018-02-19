@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<View fx:id="login" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="335.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestorhorarios.views.VistaLoginUsuarioPresenter">
+<View fx:id="login" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="335.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.gestorhorarios.views.VistaLoginUsuarioPresenter">
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
@@ -21,9 +21,10 @@
                   <Image url="@../eroski.png" />
                </image>
                <VBox.margin>
-                  <Insets bottom="40.0" top="40.0" />
+                  <Insets bottom="5.0" top="60.0" />
                </VBox.margin>
             </ImageView>
+            <Label fx:id="lbNombreApp" text="gestor de turnos" />
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label text="Nombre">
@@ -53,7 +54,7 @@
                   </Hyperlink>
                </children>
                <VBox.margin>
-                  <Insets />
+                  <Insets top="40.0" />
                </VBox.margin>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
