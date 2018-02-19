@@ -6,6 +6,7 @@
 package com.gestorhorarios.views;
 
 import com.gestorhorarios.GestorHorarios;
+import static com.gestorhorarios.GestorHorarios.LISTA_EMPLEADOS;
 import static com.gestorhorarios.GestorHorarios.LOGIN;
 import com.gestorhorarios.datos.DBManagerHibernate;
 import com.gestorhorarios.logic.GestorHorariosManager;
@@ -24,6 +25,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -87,7 +90,7 @@ public class DatosEmpleadoPresenter {
     private ArrayList<Jornada> jornadas= new ArrayList<>();
     
     //dni del usuario selecciona para modificar desde la listview
-    private String dniMod;
+
     private Usuario user=new Usuario();
         
         
@@ -132,10 +135,8 @@ public class DatosEmpleadoPresenter {
                         tfDni.setDisable(false);
                     
                 else{
-                    //dni del empleado que va a modificar
-                    //TODO
-                    dniMod="2";
-                    user=ManagerFactory.gh.getUsuario(dniMod);
+                   
+                    user=ManagerFactory.gh.getUsuario(EmpleadosPresenter.dniMod);
                     tfDni.setText(user.getDNI());
                     tfNombre.setText(user.getNombre());
                     tfApellido1.setText(user.getApellido1());
@@ -242,8 +243,16 @@ public class DatosEmpleadoPresenter {
     @FXML
      public void handleOnActionBorrar(){
          
-          ManagerFactory.gh.borrarUsuario(ManagerFactory.gh.getUsuarioLogin());
-          MobileApplication.getInstance().showMessage("Usuario: "+ManagerFactory.gh.getUsuarioLogin().getDNI()+" borrado");
+          ManagerFactory.gh.borrarUsuario(ManagerFactory.gh.getUsuario(tfDni.getText()));
+          MobileApplication.getInstance().showMessage("Usuario: "+tfDni.getText()+" borrado");
+            tfDni.setText("");
+            tfNombre.setText("");
+            tfApellido1.setText("");
+            tfApellido2.setText("");
+            tfEmail.setText("");
+            jornadas.clear();
+            cbJornadas.getItems().clear();
+           GestorHorarios.drawer.updateItem(LISTA_EMPLEADOS);
      }
      
      @FXML
@@ -296,21 +305,34 @@ public class DatosEmpleadoPresenter {
                                 
                             }else{
                                 if(ManagerFactory.gh.validarEmail(tfEmail.getText())){
-                                            if(EmpleadosPresenter.crear)
-                                                user.setDNI(tfDni.getText());
-                                       user.setNombre(tfNombre.getText());
-                                       user.setApellido1(tfApellido1.getText());
-                                       user.setApellido2(tfApellido2.getText());
-                                       user.setEmail(tfEmail.getText());
-                                       user.setPerfil(cbPerfil.getSelectionModel().getSelectedItem().toString().toLowerCase());
-                                       user.setJornadas(jornadas);
+                                            
+                                       
                                        
                                    
                                         
                                         if(EmpleadosPresenter.crear){
-                                             if(ManagerFactory.gh.crearUsuario(user,ManagerFactory.gh.getGenPassHash(user))){
+                                            
+                                            user.setDNI(tfDni.getText());
+                                            user.setNombre(tfNombre.getText());
+                                            user.setApellido1(tfApellido1.getText());
+                                            user.setApellido2(tfApellido2.getText());
+                                            user.setEmail(tfEmail.getText());
+                                            user.setPerfil(cbPerfil.getSelectionModel().getSelectedItem().toString().toLowerCase());
+                                            user.setJornadas(jornadas);
+                                            
+                                             if(ManagerFactory.gh.getUsuario(user.getDNI())==null){
+                                                 ManagerFactory.gh.crearUsuario(user,ManagerFactory.gh.getGenPassHash(user));
                                                  ManagerFactory.gh.crearJornada(user,jornadas);
                                              MobileApplication.getInstance().showMessage("Usuario creado");
+                                             tfDni.setText("");
+                                             tfNombre.setText("");
+                                             tfApellido1.setText("");
+                                             tfApellido2.setText("");
+                                             tfEmail.setText("");
+                                             jornadas.clear();
+                                             cbJornadas.getItems().clear();
+                                             
+                                             GestorHorarios.drawer.updateItem(LISTA_EMPLEADOS);
                                              }
                                              else{
                                                  MobileApplication.getInstance().showMessage("Ese usuario ya existe");
@@ -318,9 +340,21 @@ public class DatosEmpleadoPresenter {
 
                                         }
                                         else{
+                                        
+                                         ManagerFactory.gh.modificarDatos(user);     
                                          ManagerFactory.gh.crearJornada(user,jornadas);
-                                         ManagerFactory.gh.modificarDatos(user);
+                                         
+                                           
                                          MobileApplication.getInstance().showMessage("Datos guardados");
+                                             tfDni.setText("");
+                                             tfNombre.setText("");
+                                             tfApellido1.setText("");
+                                             tfApellido2.setText("");
+                                             tfEmail.setText("");
+                                             jornadas.clear();
+                                             cbJornadas.getItems().clear();
+                                         
+                                         GestorHorarios.drawer.updateItem(LISTA_EMPLEADOS);
                                         }
     
                                }else{

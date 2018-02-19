@@ -80,9 +80,7 @@ public class LoginUsuarioPresenter {
                 
                 if(usuario.getPerfil().compareTo("empleado")!=0){
                     GestorHorarios.drawer.agnadirItemEncargado();
-                } else {
-                    GestorHorarios.drawer.agnadirItemEmpleado();
-                }
+                } 
                 GestorHorarios.drawer.updateItem(AGENDA_LABORAL);
             }
         }

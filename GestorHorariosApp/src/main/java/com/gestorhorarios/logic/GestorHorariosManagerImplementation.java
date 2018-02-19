@@ -136,20 +136,19 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
      * Recibe el Usuario y la contraseña y crea al nuevo usuario
      * @param usuario usuario con sus datos 
      * @param pass contraseña encriptada
-     * @return 
      */
     @Override
-    public boolean crearUsuario(Usuario usuario, String pass) {
-        boolean e=true;
+    public void crearUsuario(Usuario usuario, String pass) {
+      
         try {
             db.crearUsuario(usuario, pass);
             LOGGER.info("GestorHorariosManagerImplementation: usuario creado");
         } catch (Exception ex) {
-            e=false;
+   
             LOGGER.severe("GestorHorariosManagerImplementation: error al crear usuario");
         }
         
-        return e;     
+      
     }
    
     /**
@@ -423,6 +422,8 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
         
         return jor;
     }
+    
+    
          
          
         

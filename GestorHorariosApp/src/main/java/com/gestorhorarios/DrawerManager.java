@@ -43,10 +43,10 @@ public class DrawerManager {
         drawer.setHeader(header);
        
         item1 = new ViewItem("Agenda laboral", MaterialDesignIcon.HOME.graphic(), AGENDA_LABORAL, ViewStackPolicy.SKIP);
-        
+        item2 = new ViewItem("Datos personales", MaterialDesignIcon.DASHBOARD.graphic(), DATOS_EMPLEADO);
         item3 = new ViewItem("Cambios de turno", MaterialDesignIcon.DASHBOARD.graphic(), CAMBIOS_TURNO);
         
-        drawer.getItems().addAll(item1,item3);
+        drawer.getItems().addAll(item1,item3,item2);
       
             
         
@@ -89,10 +89,9 @@ public class DrawerManager {
     public void agnadirItemEncargado(){   
         item4 = new ViewItem("Lista empleados", MaterialDesignIcon.DASHBOARD.graphic(),  LISTA_EMPLEADOS);
         drawer.getItems().add(2, item4);
+        drawer.getItems().get(3).setVisible(false);
+     
     }
-    public void agnadirItemEmpleado(){
-        item2 = new ViewItem("Datos personales", MaterialDesignIcon.DASHBOARD.graphic(), DATOS_EMPLEADO);
-        drawer.getItems().add(2, item2);
-    }
+   
 
 }

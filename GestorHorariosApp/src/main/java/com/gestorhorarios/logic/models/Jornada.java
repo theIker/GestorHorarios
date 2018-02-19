@@ -6,6 +6,7 @@
 package com.gestorhorarios.logic.models;
 
 import com.gestorhorarios.logic.ManagerFactory;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
@@ -107,8 +108,8 @@ public class Jornada {
     
     @Override
     public String toString() {
-      
-        String data = this.fecha + "\n";
+        SimpleDateFormat dt= new SimpleDateFormat("dd/MM/yyyy");
+        String data = dt.format(this.fecha) + "\n";
         Integer counter = 0;
         
         Collection <Funcion> fs= this.getTurno().getFunciones();

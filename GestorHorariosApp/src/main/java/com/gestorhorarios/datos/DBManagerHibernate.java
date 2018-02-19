@@ -380,7 +380,7 @@ public class DBManagerHibernate implements DataBaseInterface{
               u.setNombre(usuario.getNombre());
               u.setApellido1(usuario.getApellido1());
               u.setApellido2(usuario.getApellido2());
-              u.setJornadases(setJornadas(usuario.getJornadas()));
+              //u.setJornadases(setJornadas(usuario.getJornadas()));
               
                 session.update(u);
                 tx.commit();
@@ -614,6 +614,7 @@ public class DBManagerHibernate implements DataBaseInterface{
 
      /**
      * Metodo que crea jornadas
+     * @param usuario
      * @param jornadas lista de jornadas
      * @throws Exception 
      */
@@ -630,12 +631,33 @@ public class DBManagerHibernate implements DataBaseInterface{
                     j.setTurnos(setTurno(jornadas.get(i).getTurno()));
                    
                        session.save(j);
+                     
                        tx.commit();
                      asignarJornada(usuario.getDNI(),j);
             }
             
              
             this.closeConnection();
+    }
+    
+        /**
+     * Metodo que asigna jornada a un usuario
+     * @param dni dni al que se le asigna
+     * @param j jornada que se asigna
+     */
+    @Override
+    public void asignarJornada(String dni, Jornadas j) throws Exception {
+        
+         Transaction tx=session.beginTransaction();
+              List  <Usuarios> result =  session.createQuery("FROM Usuarios where dni='"+dni+"'").list();
+              Iterator<Usuarios> l= result.iterator();
+                          
+                   Usuarios u=l.next();
+                   u.addJornada(j);
+                   session.update(u);
+                   tx.commit();
+                   LOGGER.info("DBManagerHibernate: asignando jornada al usuario");
+          
     }
 
     /**
@@ -662,25 +684,7 @@ public class DBManagerHibernate implements DataBaseInterface{
        return jor;
     }
 
-    /**
-     * Metodo que asigna jornada a un usuario
-     * @param dni dni al que se le asigna
-     * @param j jornada que se asigna
-     */
-    @Override
-    public void asignarJornada(String dni, Jornadas j) throws Exception {
-        
-         Transaction tx=session.beginTransaction();
-              List  <Usuarios> result =  session.createQuery("FROM Usuarios where dni='"+dni+"'").list();
-              Iterator<Usuarios> l= result.iterator();
-                          
-                   Usuarios u=l.next();
-                   u.addJornada(j);
-                   session.update(u);
-                   tx.commit();
-                   LOGGER.info("DBManagerHibernate: asignando jornada al usuario");
-          
-    }
+
     /**
      * Metodo que devuelve todas las jornadas
      * @return Una colección de jordanas
@@ -699,6 +703,7 @@ public class DBManagerHibernate implements DataBaseInterface{
                   aux.setFecha(j.getFecha());
                   aux.setID(j.getId());
                   aux.setTurno(getTurno(j.getTurnos()));
+                  jors.add(aux);
               }
               LOGGER.info("DBManagerHibernate: recibiendo todas las jornadas");
         this.closeConnection();

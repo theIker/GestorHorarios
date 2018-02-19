@@ -18,7 +18,7 @@ public interface GestorHorariosManager {
     public boolean validarEmail(String email);
     public boolean validarPass(String pass);
     public void borrarUsuario(Usuario usuario);
-    public boolean crearUsuario(Usuario usuario,String pass);
+    public void crearUsuario(Usuario usuario,String pass);
     public void validarSolicitud(Usuario usuario, Solicitud solicitud, String estado);
     public void aceptarSolicitud(Usuario usuario, Solicitud solicitud,Jornada jornada);
     public void crearSolicitud(Usuario usuario, Jornada jornada);
