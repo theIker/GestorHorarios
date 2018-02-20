@@ -6,6 +6,7 @@
 package com.gestorhorarios.logic.models;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  *
@@ -106,4 +107,11 @@ public class Turno {
             
             return this.id.toUpperCase()+" "+he+"-"+hs;
     }
+        
+    @Override
+        public boolean equals(Object o) {
+            
+            return (this.id.equals(((Turno)o).getID()));
+            
+        }
 }

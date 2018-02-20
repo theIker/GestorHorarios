@@ -83,7 +83,8 @@ public class Jornada {
     public void setTurno (Turno turno) {
         this.turno = turno;
     }
-        public int compare (Jornada j2) {
+    
+    public int compare (Jornada j2) {
         
         int comparation;
         
