@@ -214,7 +214,7 @@ public class DBManagerHibernate implements DataBaseInterface{
               Iterator<Solicitudes> l= result.iterator();
              
                    Solicitudes s=l.next();
-                    s.setEstado("aceptado");
+                    s.setEstado("aceptada");
                     s.setUsuarioAcepta(usuario.getDNI());
                     s.setJornadaAcepta(jornada.getID());
                     session.update(s);
@@ -228,16 +228,18 @@ public class DBManagerHibernate implements DataBaseInterface{
          * Metodo para crear una solicitud de cambio de jornada
          * @param usuario el usuario que solicita
          * @param jornada la jornada que se quiere cambiar
+     * @param acepta
          * @throws Exception 
          */
         @Override
-        public void crearSolicitud(Usuario usuario, Jornada jornada) throws Exception{
+        public void crearSolicitud(Usuario usuario, Jornada jornada, Jornada acepta) throws Exception{
             
             this.openConnection();
             Transaction tx=session.beginTransaction();
             Solicitudes s=new Solicitudes();
-             s.setEstado("pendiente");
+             s.setEstado("enviada");
              s.setJornadaSolicita(jornada.getID());
+             s.setJornadaAcepta(acepta.getID());
              s.setUsuarioSolicita(usuario.getDNI());
              session.save(s);
 	     tx.commit();

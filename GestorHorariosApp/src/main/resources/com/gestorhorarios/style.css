@@ -16,6 +16,15 @@
     
     
 }
+#agendaLaboral, #cambiosTurno, #datosEmpleado, #listaEmpleados{
+      -fx-background-image: url("fondoint.png");
+   -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-image-opacity: 0.5;
+    
+    
+    
+}
 #lbNombreApp{
     -fx-text-fill:#073fa3;
     -fx-font-family: "Angelina";
@@ -40,7 +49,7 @@
     
 }
 .fondo{
-    -fx-background-color:white;
+    /*-fx-background-color:white;*/
 }
 #btnAnyadir{
     -fx-padding:0px;
@@ -108,9 +117,7 @@
     -fx-background-radius:6px;
     -fx-padding: 10px 10px 10px 10px;
 }
-.combo-box:focused {
-    
-}
+
 #btnBuscar{
     -fx-padding:0px;
     -fx-background-image: url("search.png");
@@ -124,6 +131,69 @@
     -fx-max-height:24px;
     -fx-background-radius:12px;
 }
+#fecha{
+       -fx-font: 100px Tahoma;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, aqua 0%, red 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+}
+.list-cell {
+    -fx-background-color: transparent;
+}
+.list-view {
+    -fx-background-color: transparent;
+}
+#lvAgenda{
+    -fx-background-color: transparent;
+}
+/*.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+    
+}
+
+.list-cell:even {  
+    -fx-background-color: transparent;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #4f4f4f;
+    -fx-text-fill: white;
+}
+.list-cell:hover {
+    -fx-background-color: #4f4f4f;
+    -fx-text-fill: white;
+}
+.list-cell:filled:selected {
+    -fx-text-fill: white;
+}*/
+
+#lvAgenda .list-cell.header-cell {
+    /*  Headers: Old Glory Red */
+/*    -fx-background-color: #B22234;*/
+}
+#lvAgenda .list-cell > .list-tile > .text-box > .primary-text {
+    /* Headers primary text */
+    /*-fx-text-fill: white;*/
+    /*-fx-font-weight:bold;*/
+}
+#lvAgenda .list-cell > .list-tile > .text-box > .secondary-text {
+    /* Headers secondary text */
+    -fx-font-weight:lighter;
+}
+#lvAgenda .list-cell:hover{
+    -fx-text-fill:#fff;
+}
+.charm-list-view:hover {
+    /* Headers secondary text */
+    -fx-text-fill: #FFFFFFDE;
+}
+
+
+
+
+
+
 /*
 .combo-box  
 {
@@ -137,6 +207,7 @@
     /*-fx-border-color:#787878;*/
    /* -fx-background-color:white;*/
     -fx-background-color:#f2f2f4;
+    
 }
 .combo-box .list-cell{
     -fx-background-color:#f2f2f4;
@@ -146,7 +217,11 @@
 }
 .date-picker{
     -fx-background-color:#f2f2f4;
-        -fx-text-input-background:#f2f2f4;
+        -fx-text-input-background:#fff;
+}
+#dpFecha{
+    -fx-background-color:#fff;
+        -fx-text-input-background:#fff;
 }
 .combo-box-popup .list-view .list-cell{
     -fx-background-color:#f2f2f4;
@@ -154,53 +229,5 @@
 }
 .combo-box-popup .list-view .list-cell:hover {
    /* -fx-background-color:#4f4f4f;*/
-    -fx-text-fill: white;
+    /*-fx-text-fill: white;*/
 }
-/*
-.combo-box-popup .list-view 
-{
-    -fx-background-color: white, white;
-    -fx-background-insets: 0, 1;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 8, 0.0 , 0 , 0 );
-}    
-.combo-box-popup .list-view .list-cell 
-{
-    -fx-padding: 4 0 4 5;
-    /* No alternate highlighting 
-    -fx-background-color: white;
-}
-.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover 
-{
-    -fx-background: -fx-accent;
-    -fx-background-color: -fx-selection-bar;
-    -fx-text-fill: -fx-selection-bar-text;
-}
-.combo-box-popup .list-view .list-cell:filled:hover 
-{
-    -fx-background-color: white;
-    -fx-text-fill: -fx-text-inner-color;
-}
-.combo-box-base  
-{
-    -fx-skin: "com.sun.javafx.scene.control.skin.ComboBoxBaseSkin";
-    -fx-background-color: white, white, white, white;
-    -fx-background-radius: 5, 5, 4, 3;
-    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
-    -fx-padding: 0;
-}
-.combo-box-base:hover
-{
-    -fx-color: -fx-hover-base;
-}
-.combo-box-base:showing 
-{
-    -fx-color: -fx-pressed-base;
-}
-.combo-box-base:focused {
-    -fx-background-color: -fx-focus-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
-    -fx-background-radius: 6.4, 4, 5, 3;
-    -fx-background-insets: -1.4, 0, 1, 2;
-}
-.combo-box-base:disabled {
-    -fx-opacity: .4;
-}*/

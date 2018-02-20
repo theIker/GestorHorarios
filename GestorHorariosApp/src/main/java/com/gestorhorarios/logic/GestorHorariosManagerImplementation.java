@@ -200,10 +200,10 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
     * @param jornada  la jornada que se quiere intercambiar
     */
     @Override
-    public void crearSolicitud(Usuario usuario, Jornada jornada) {
+    public void crearSolicitud(Usuario usuario, Jornada jornada, Jornada acepta) {
         
         try {
-            db.crearSolicitud(usuario, jornada);
+            db.crearSolicitud(usuario, jornada, acepta);
             LOGGER.info("GestorHorariosManagerImplementation: solicitud creada");
         } catch (Exception ex) {
              LOGGER.severe("GestorHorariosManagerImplementation: error al crear solicitud");

@@ -12,6 +12,7 @@ import com.gestorhorarios.logic.ManagerFactory;
 import com.gestorhorarios.logic.models.Jornada;
 import com.gestorhorarios.logic.models.Usuario;
 import com.gestorhorarios.logic.models.Funcion;
+import com.gestorhorarios.logic.models.Solicitud;
 import com.gestorhorarios.logic.models.Turno;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
@@ -153,21 +154,7 @@ public class AgendaLaboralPresenter {
        ArrayList<Jornada> jornadas = new ArrayList<>(ManagerFactory.gh.getUsuarioLogin().getJornadas());
        ObservableList ol = FXCollections.observableArrayList(jornadas);
        lvAgenda.setItems(ol);
-//        lvAgenda.setCellFactory(new Callback<CharmListView<Jornada, ? extends Comparable>, CharmListCell<Jornada>> () {
-//           @Override
-//           public CharmListCell<Jornada> call(CharmListView<Jornada, ? extends Comparable> param) {
-//               throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//           }
-//        lvAgenda.setCellFactory(Callback<CharmListView <Jornada, ? extends Comparable>, CharmListCell<Jornada>> value){
-//          
-//
-//           @Override
-//            CharmListCell<Jornada> call(CharmListView<Jornada, ? extends Comparable> param) {
-//               throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//           }
-//    });
     }
-       //NEW LOGIC IMPLEMENTATION
 
     /**
      *
@@ -176,21 +163,52 @@ public class AgendaLaboralPresenter {
     public void clickList(Jornada j){
         
         Dialog dialog = new Dialog();
-        dialog.setGraphic(new Label("Realizar una solicitud"));
         
+        ArrayList <Solicitud> solicitudes = (ArrayList <Solicitud>) ManagerFactory.gh.getUsuarioLogin().getSolicitudes();
+        ObservableList <Solicitud> solicitudesList = FXCollections.observableArrayList(solicitudes);
+        boolean isInUser = false;
+        
+        for (Solicitud s : solicitudesList) {
+            
+            if (s.getJornadaSolicita() == j.getID()) {
+                isInUser = true;
+            }
+            
+        }
+        
+        if (!isInUser) {
+            
+            
         //Obtener los turnos que hay ese mismo día
         ArrayList <Jornada> jornadaList = ManagerFactory.gh.getAllJornadas();
         ObservableList <Jornada> jornadas = FXCollections.observableArrayList(jornadaList) ;
         ObservableList <Turno> turnos = FXCollections.observableArrayList();
         
+        ArrayList <Jornada> jornadaList2 = (ArrayList <Jornada>) ManagerFactory.gh.getUsuarioLogin().getJornadas();
+        ObservableList <Jornada> jornadasUsuario =  FXCollections.observableArrayList(jornadaList2);
+        boolean isFromUser;
+        
         for (Jornada jor : jornadas) {
             
-            if (jor.getFecha().equals(j.getFecha())) {
-                if (jor.getTurno().getID().substring(0, 1).compareTo(j.getTurno().getID().substring(0,1)) == 0
-                        && jor.getTurno().getID().substring(1, 2).compareTo(j.getTurno().getID().substring(1,2)) != 0) {
-                    
-                    turnos.add(jor.getTurno());
-                    
+            isFromUser = false;
+            
+            for (Jornada jor2 : jornadasUsuario) {
+                
+                if (jor.getID() == jor2.getID()) {
+                    isFromUser = true;
+                }
+                
+            }
+            
+            if (!isFromUser) {
+                
+                if (jor.getFecha().equals(j.getFecha())) {
+                    if (jor.getTurno().getID().substring(0, 1).compareTo(j.getTurno().getID().substring(0,1)) == 0
+                            && jor.getTurno().getID().substring(1, 2).compareTo(j.getTurno().getID().substring(1,2)) != 0) {
+
+                        turnos.add(jor.getTurno());
+
+                    }
                 }
             }
             
@@ -198,14 +216,15 @@ public class AgendaLaboralPresenter {
         
         if (turnos.isEmpty()) {
             
-            Label l = new Label("No hay jornadas disponibles para realizar cambios");
-            dialog.setContent(l);
+            dialog.setGraphic(new Label("No se puede realizar una solicitud"));
             
             Button okayButton = new Button("Okay");
             
             okayButton.setOnAction(e -> {
                 dialog.hide();
             });
+            
+            dialog.getButtons().add(okayButton);
             
         } else {
             
@@ -228,6 +247,7 @@ public class AgendaLaboralPresenter {
             ComboBox combo= new ComboBox();
             combo.setItems(turnosDisponibles);
             dialog.setContent(combo);
+            dialog.setGraphic(new Label("Realizar solicitud"));
         
             combo.getSelectionModel().selectFirst();
         
@@ -241,12 +261,39 @@ public class AgendaLaboralPresenter {
 
             guardarButton.setOnAction(e -> {
 
+                Jornada jor = null;
+                
+                for (Jornada j2 : jornadas) {
+                    
+                    if (j2.getTurno().equals(combo.getSelectionModel().getSelectedItem())){
+                        jor = j2;
+                    }
+                    
+                }
+                
+                ManagerFactory.gh.crearSolicitud(ManagerFactory.gh.getUsuarioLogin(), j, jor);
+                ManagerFactory.gh.setUsuarioLogin(ManagerFactory.gh.getUsuarioLogin());
+                
                dialog.hide();
 
             });
 
             dialog.getButtons().add(guardarButton);
             dialog.getButtons().add(cancelarButton);
+            
+        }
+            
+        } else {
+            
+            dialog.setGraphic(new Label("Ya hay una solicitud realizada"));
+            
+            Button okayButton = new Button("Okay");
+            
+            okayButton.setOnAction(e -> {
+                dialog.hide();
+            });
+            
+            dialog.getButtons().add(okayButton);
             
         }
               
