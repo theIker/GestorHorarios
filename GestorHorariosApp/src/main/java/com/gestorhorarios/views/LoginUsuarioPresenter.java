@@ -91,6 +91,7 @@ public class LoginUsuarioPresenter {
                 if(usuario.getPerfil().compareTo("empleado")!=0){
                     GestorHorarios.drawer.agnadirItemEncargado();
                 }
+                mediaPlayer.stop();
                 GestorHorarios.drawer.updateItem(AGENDA_LABORAL);
             }
         }

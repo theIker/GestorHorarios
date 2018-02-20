@@ -278,10 +278,10 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
      * @param pass la nueva contraseña
      */
     @Override
-    public void modificarPass(Usuario usuario, String pass) {
+    public void modificarPass(String dni, String pass) {
         
         try {
-            db.modificarPass(usuario, pass);
+            db.modificarPass(dni, pass);
             LOGGER.info("GestorHorariosManagerImplementation: modificando password usuario");
         } catch (Exception ex) {
             LOGGER.severe("GestorHorariosManagerImplementation: error al modificar password usuario");
@@ -481,6 +481,21 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
            LOGGER.info("GestorHorariosManagerImplementation: error recibiendo todas las jornadas");
        }
        return solicitudes;
+    }
+
+    @Override
+    public String getPassHash(String pass) {
+        
+        String hash;
+        try{
+            hash=cp.getPasswordHash(pass);
+            LOGGER.info("GestorHorariosManagerImplementation: hash generado");
+        }catch(Exception ex){
+            LOGGER.info("GestorHorariosManagerImplementation: error al generar hash");
+            hash=null;
+        }
+        
+        return hash;
     }
          
          
