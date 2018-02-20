@@ -304,7 +304,7 @@ public class DBManagerHibernate implements DataBaseInterface{
              
        /**
         * Devuelve un usuario a partir de su dni
-        * @param usuario recibe el objeto usuario
+        * @param dni recibe el objeto usuario
         * @return todo el usuario
         * @throws java.lang.Exception
         */ 
@@ -380,6 +380,8 @@ public class DBManagerHibernate implements DataBaseInterface{
               u.setNombre(usuario.getNombre());
               u.setApellido1(usuario.getApellido1());
               u.setApellido2(usuario.getApellido2());
+              u.setPerfil(usuario.getPerfil().toLowerCase());
+              System.out.println("eeeeeee<: "+usuario.getPerfil());
               //u.setJornadases(setJornadas(usuario.getJornadas()));
               
                 session.update(u);

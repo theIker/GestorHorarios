@@ -27,7 +27,7 @@ import javafx.scene.control.ListView;
 
 /**
  *
- * @author 2dam
+ * @author Iker Iglesias
  */
 public class EmpleadosPresenter {
     public static Boolean crear = true;

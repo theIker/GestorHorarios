@@ -131,9 +131,17 @@ public class DatosEmpleadoPresenter {
                 }
                 
                 else{
-                    if(EmpleadosPresenter.crear)
+                    if(EmpleadosPresenter.crear){
                         tfDni.setDisable(false);
-                    
+                        tfDni.setText("");
+                        tfNombre.setText("");
+                        tfApellido1.setText("");
+                        tfApellido2.setText("");
+                        tfEmail.setText("");
+                        jornadas.clear();
+                        cbJornadas.getItems().clear();
+                        btnBorrarUsuario.setVisible(false);
+                    }
                 else{
                    
                     user=ManagerFactory.gh.getUsuario(EmpleadosPresenter.dniMod);
@@ -306,12 +314,6 @@ public class DatosEmpleadoPresenter {
                             }else{
                                 if(ManagerFactory.gh.validarEmail(tfEmail.getText())){
                                             
-                                       
-                                       
-                                   
-                                        
-                                        if(EmpleadosPresenter.crear){
-                                            
                                             user.setDNI(tfDni.getText());
                                             user.setNombre(tfNombre.getText());
                                             user.setApellido1(tfApellido1.getText());
@@ -319,6 +321,12 @@ public class DatosEmpleadoPresenter {
                                             user.setEmail(tfEmail.getText());
                                             user.setPerfil(cbPerfil.getSelectionModel().getSelectedItem().toString().toLowerCase());
                                             user.setJornadas(jornadas);
+                                       
+                                         
+                                        
+                                        if(EmpleadosPresenter.crear){
+                                            
+                                           
                                             
                                              if(ManagerFactory.gh.getUsuario(user.getDNI())==null){
                                                  ManagerFactory.gh.crearUsuario(user,ManagerFactory.gh.getGenPassHash(user));
