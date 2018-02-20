@@ -145,6 +145,7 @@ public class Solicitud {
     public void setJornadaAcepta (int jornadaAcepta) {
         this.jornadaAcepta = jornadaAcepta;
     }
+    @Override
     public String toString() {
       
         Usuario solicita = ManagerFactory.gh.getUsuario(this.usuarioSolicita);
@@ -159,10 +160,12 @@ public class Solicitud {
         String e = format.format(jacepta.getFecha());
         String data =
                 e + "\n"
-                + "Turno inicial:\tTurno solicitado:\tEstado:\n"
-                + jsolicita.getTurno().getHoraEntrada() + "-" + jsolicita.getTurno().getHoraSalida()
-                +"\t"+ jacepta.getTurno().getHoraEntrada() + "-" + jacepta.getTurno().getHoraSalida()
-                +"\t"+ this.estado
+                + "Turno inicial   \tTurno solicitado     \tEstado\n"
+                + jsolicita.getTurno().getHoraEntrada().substring(0, 2)+":"+jsolicita.getTurno().getHoraEntrada().substring(2) + "-" 
+                + jsolicita.getTurno().getHoraSalida().substring(0, 2)+":"+jsolicita.getTurno().getHoraSalida().substring(2) 
+                +"\t\t\t"+ jacepta.getTurno().getHoraEntrada().substring(0,2)+":"+jacepta.getTurno().getHoraEntrada().substring(2) + "-" 
+                + jacepta.getTurno().getHoraSalida().substring(0,2)+":"+jacepta.getTurno().getHoraSalida().substring(2)
+                +"\t\t\t"+ this.estado
                 ;
         
         return data;

@@ -278,10 +278,10 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
      * @param pass la nueva contraseña
      */
     @Override
-    public void modificarPass(Usuario usuario, String pass) {
+    public void modificarPass(String dni, String pass) {
         
         try {
-            db.modificarPass(usuario, pass);
+            db.modificarPass(dni, pass);
             LOGGER.info("GestorHorariosManagerImplementation: modificando password usuario");
         } catch (Exception ex) {
             LOGGER.severe("GestorHorariosManagerImplementation: error al modificar password usuario");
@@ -325,25 +325,29 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
             if(estado.equals("enviado")){
                 solicitudes = solicitudes.stream()
                             .filter(s -> s.getUsuarioSolicita().equals(usuario.getDNI()))
+                            .filter(s -> !s.getEstado().equals("validado"))
                             .map(s -> s).collect(Collectors.toList());
                 
             //Peticiones de cambio de turno que lanza cualquier otro usuario y son compatibles para cambiar por el usuario login
             } else if (estado.equals("recibido")) {
-                solicitudes.forEach((solicitud)-> {
-                    usuario.getJornadas().forEach((jornada) ->{
-                        //Comprobamos que sea la misma fecha
-                        if(jornada.getFecha()==getJornadaById(solicitud.getJornadaSolicita()).getFecha()){
-                            //Comprobamos que la letra del turno sea la misma. Ej: Turno A1 y A2 --> A==A
-                            if(jornada.getTurno().getID().substring(0, 1).equals(getJornadaById(solicitud.getJornadaSolicita()).getTurno().getID().substring(0, 1))){
-                                //Comprobamos que el numero del turno sea diferente(para poder cambiar el horario) Ej: Turno A1 y A2 --> 1!=2
-                                if(jornada.getTurno().getID().substring(1).compareTo(getJornadaById(solicitud.getJornadaSolicita()).getTurno().getID().substring(1))!=0){
-                                    solicitudesAux.add(solicitud);
-                                }
-                            }
-                        }
-                    });
-                });
-                solicitudes = solicitudesAux;
+                  solicitudes = solicitudes.stream()
+                                .filter(s -> s.getUsuarioAcepta().equals(usuario.getDNI()))
+                          .map(s -> s).collect(Collectors.toList());
+//                solicitudes.forEach((solicitud)-> {
+//                    usuario.getJornadas().forEach((jornada) ->{
+//                        //Comprobamos que sea la misma fecha
+//                        if(jornada.getFecha()==getJornadaById(solicitud.getJornadaSolicita()).getFecha()){
+//                            //Comprobamos que la letra del turno sea la misma. Ej: Turno A1 y A2 --> A==A
+//                            if(jornada.getTurno().getID().substring(0, 1).equals(getJornadaById(solicitud.getJornadaSolicita()).getTurno().getID().substring(0, 1))){
+//                                //Comprobamos que el numero del turno sea diferente(para poder cambiar el horario) Ej: Turno A1 y A2 --> 1!=2
+//                                if(jornada.getTurno().getID().substring(1).compareTo(getJornadaById(solicitud.getJornadaSolicita()).getTurno().getID().substring(1))!=0){
+//                                    solicitudesAux.add(solicitud);
+//                                }
+//                            }
+//                        }
+//                    });
+//                });
+          
                 
             //Solicitudes que han sido aceptadas por dos empleados y que estan pendientes de validar por un encargado o gerente
             } else {
@@ -475,6 +479,7 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
                solicitudes = solicitudes.stream()
                        .filter(s -> s.getEstado().equals(estado))
                        .map(s -> s).collect(Collectors.toList());
+               
            }
        } catch (Exception ex) {
            Logger.getLogger(GestorHorariosManagerImplementation.class.getName()).log(Level.SEVERE, null, ex);
@@ -482,7 +487,25 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
        }
        return solicitudes;
     }
-         
+    /**
+     * 
+     * @param pass
+     * @return 
+     */
+    @Override
+    public String getPassHash(String pass) {
+        
+        String hash;
+        try{
+            hash=cp.getPasswordHash(pass);
+            LOGGER.info("GestorHorariosManagerImplementation: hash generado");
+        }catch(Exception ex){
+            LOGGER.info("GestorHorariosManagerImplementation: error al generar hash");
+            hash=null;
+        }
+        
+        return hash;
+    }
          
         
 }

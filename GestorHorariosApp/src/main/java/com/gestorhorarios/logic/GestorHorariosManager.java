@@ -27,7 +27,7 @@ public interface GestorHorariosManager {
     public Usuario getUsuario(String dni);
     public void modificarPerfilUsuario(Usuario usuario);
     public void modificarDatos(Usuario usuario);
-    public void modificarPass(Usuario usuario,String pass);
+    public void modificarPass(String dni,String pass);
     public Usuario validarUsuario(String dni, String pass);
     
     public List<Solicitud> getSolicitudesByUsuario(Usuario usuario, String estado);
@@ -42,7 +42,7 @@ public interface GestorHorariosManager {
     public Usuario getUsuarioLogin();
     public ArrayList<Jornada>getAllJornadas();
     
-    
+    public String getPassHash(String pass);
     public List<Solicitud> getSolicitudesByEstado(String estado);
     
 }

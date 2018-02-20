@@ -395,11 +395,11 @@ public class DBManagerHibernate implements DataBaseInterface{
          * @throws Exception 
          */
         @Override
-        public void modificarPass(Usuario usuario,String pass) throws Exception{
+        public void modificarPass(String dni,String pass) throws Exception{
             this.openConnection();
             
               Transaction tx=session.beginTransaction();
-              List  <Usuarios> result =  session.createQuery("FROM Usuarios where dni='"+usuario.getDNI()+"'").list();
+              List  <Usuarios> result =  session.createQuery("FROM Usuarios where dni='"+dni+"'").list();
               Iterator<Usuarios> l= result.iterator();
              
               Usuarios u=l.next();

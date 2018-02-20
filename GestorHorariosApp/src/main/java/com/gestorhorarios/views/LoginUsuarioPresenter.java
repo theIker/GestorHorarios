@@ -91,6 +91,7 @@ public class LoginUsuarioPresenter {
                 if(usuario.getPerfil().compareTo("empleado")!=0){
                     GestorHorarios.drawer.agnadirItemEncargado();
                 }
+                mediaPlayer.stop();
                 GestorHorarios.drawer.updateItem(AGENDA_LABORAL);
             }
         }
@@ -111,6 +112,17 @@ public class LoginUsuarioPresenter {
                 txtEmail.setPromptText("Introduce un email");
             }
             //comprobar email
+            if(!ManagerFactory.gh.validarEmail(AGENDA_LABORAL)){
+                Dialog dialog2 = new Dialog();
+                dialog2.setTitle(new Label("ERROR"));
+                dialog2.setContentText("Email incorrecto");
+                Button aceptar2 = new Button("Aceptar");
+                aceptar2.setOnAction(a -> {
+                    dialog2.hide();
+                });
+                dialog2.getButtons().add(aceptar2);
+                dialog2.showAndWait();
+            }
             //llamar al metodo de generar contraseña
             //enviar email
         });

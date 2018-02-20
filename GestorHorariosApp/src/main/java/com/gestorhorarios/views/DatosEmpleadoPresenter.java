@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.jar.Pack200;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -33,7 +34,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 
@@ -85,11 +88,13 @@ public class DatosEmpleadoPresenter {
     private Button btnBorrarUsuario;
     @FXML
     private Button btnGuardarUsuario;
+    @FXML
+    private Hyperlink resPass;
     
    
     private ArrayList<Jornada> jornadas= new ArrayList<>();
     
-    //dni del usuario selecciona para modificar desde la listview
+    
 
     private Usuario user=new Usuario();
         
@@ -122,6 +127,7 @@ public class DatosEmpleadoPresenter {
                       lbPerfil.setVisible(false);
                       lbBorrarJornada.setVisible(false);
                       lbAnyadirJornada.setVisible(false);
+                      resPass.setVisible(true);
                       
                 tfDni.setText(ManagerFactory.gh.getUsuarioLogin().getDNI());
                 tfNombre.setText(ManagerFactory.gh.getUsuarioLogin().getNombre());
@@ -162,6 +168,40 @@ public class DatosEmpleadoPresenter {
             }
         });
     }
+    
+    @FXML
+        public void handleOnActionResPass(){
+            Dialog dialog = new Dialog();
+            PasswordField p1=new PasswordField();
+            PasswordField p2=new PasswordField();
+            p1.setPromptText("Contraseña nueva: ");
+            p2.setPromptText("Repetir contraseña: ");
+            
+            dialog.setGraphic(p1);
+            dialog.setContent(p2);
+            Button okButton = new Button("Restablecer");
+            okButton.setOnAction(e -> {
+               if(p1.getText().equals(p2.getText())){ 
+                    ManagerFactory.gh.modificarPass(tfDni.getText(), ManagerFactory.gh.getPassHash(p1.getText()));
+                    dialog.hide();
+               }else{
+                  p1.setPromptText("Contraseña nueva: ");
+                  p2.setPromptText("Tiene que coincidir: ");
+                  p2.setText("");
+               }
+              
+            });
+            Button cancelButton = new Button("Cancelar");
+            cancelButton.setOnAction(e -> {
+                
+              dialog.hide();
+            });
+            dialog.getButtons().add(cancelButton);
+            dialog.getButtons().add(okButton);
+            dialog.showAndWait();
+       }
+    
+    
     
     @FXML
     public void handleOnActionAddJornada(){
