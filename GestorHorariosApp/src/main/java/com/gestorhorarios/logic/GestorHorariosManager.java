@@ -8,6 +8,7 @@ import com.gestorhorarios.logic.models.Turno;
 import com.gestorhorarios.logic.models.Usuario;
 import entity.Jornadas;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
@@ -18,7 +19,7 @@ public interface GestorHorariosManager {
     public boolean validarEmail(String email);
     public boolean validarPass(String pass);
     public void borrarUsuario(Usuario usuario);
-    public boolean crearUsuario(Usuario usuario,String pass);
+    public void crearUsuario(Usuario usuario,String pass);
     public void validarSolicitud(Usuario usuario, Solicitud solicitud, String estado);
     public void aceptarSolicitud(Usuario usuario, Solicitud solicitud,Jornada jornada);
     public void crearSolicitud(Usuario usuario, Jornada jornada);
@@ -28,7 +29,9 @@ public interface GestorHorariosManager {
     public void modificarDatos(Usuario usuario);
     public void modificarPass(Usuario usuario,String pass);
     public Usuario validarUsuario(String dni, String pass);
-    public ArrayList<Solicitud> getSolicitudesPorValidar();
+    
+    public List<Solicitud> getSolicitudesByUsuario(Usuario usuario, String estado);
+    
     public ArrayList<Turno> getTurnos();
     public void crearJornada(Usuario usuario,ArrayList<Jornada> jornadas);
     public String getGenPassHash(Usuario usuario);
@@ -38,5 +41,8 @@ public interface GestorHorariosManager {
     public void setUsuarioLogin(Usuario usuario);
     public Usuario getUsuarioLogin();
     public ArrayList<Jornada>getAllJornadas();
+    
+    
+    public List<Solicitud> getSolicitudesByEstado(String estado);
     
 }

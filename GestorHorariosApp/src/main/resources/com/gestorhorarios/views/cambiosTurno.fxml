@@ -31,7 +31,7 @@
   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-
+<?import com.gluonhq.charm.glisten.control.CharmListView?>
 <?import com.gluonhq.charm.glisten.mvc.View?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -59,18 +59,18 @@
                         <Insets right="5.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <Button fx:id="btnBuscar" mnemonicParsing="false" text="buscar">
+                  <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#handleOnActionBuscar">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
                   </Button>
                </children>
             </HBox>
-            <ListView fx:id="lvSolicitudes" prefHeight="450.0" prefWidth="295.0">
+            <CharmListView fx:id="lvSolicitudes" prefHeight="450.0" prefWidth="295.0">
                <VBox.margin>
                   <Insets top="10.0" />
                </VBox.margin>
-            </ListView>
+            </CharmListView>
          </children>
       </VBox>
    </center>

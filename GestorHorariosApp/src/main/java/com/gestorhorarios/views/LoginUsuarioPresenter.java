@@ -28,8 +28,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import com.gestorhorarios.logic.models.Usuario;
+import static javafx.animation.Animation.INDEFINITE;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  *
@@ -45,12 +48,19 @@ public class LoginUsuarioPresenter {
     @FXML
     private PasswordField pfPass;
     private GestorHorariosManager gh;
+    private static MediaPlayer mediaPlayer;
     
     public void initialize(){
          login.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 MobileApplication.getInstance().getAppBar().setVisible(false);
                 gh = new GestorHorariosManagerImplementation();
+                final Media sound = new Media(this.getClass().getResource("/intro.mp3").toExternalForm());
+                mediaPlayer = new MediaPlayer(sound);
+                mediaPlayer.seek(javafx.util.Duration.INDEFINITE);
+                mediaPlayer.setCycleCount(INDEFINITE);
+                mediaPlayer.play();  
+                
             }
         });
     }

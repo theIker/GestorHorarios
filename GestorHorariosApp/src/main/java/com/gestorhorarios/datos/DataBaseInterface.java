@@ -30,7 +30,7 @@ public interface DataBaseInterface {
         public void borrarUsuario(Usuario usuario) throws Exception;
         public void aceptarSolicitud(Usuario usuario, Solicitud solicitud,Jornada jornada) throws Exception;
         public void validarSolicitud(Usuario usuario,Solicitud solicitud,String estado) throws Exception;
-        public ArrayList<Solicitud> getSolicitudesPorValidar() throws Exception;
+        public ArrayList<Solicitud> getSolicitudes() throws Exception;
         public ArrayList<Turno> getTurnos()throws Exception;
         public void crearJornada(Usuario usuario,ArrayList<Jornada> jornadas) throws Exception;
         public Jornada getJornadaById(int id) throws Exception;

@@ -6,20 +6,25 @@
 package com.gestorhorarios.views;
 
 import com.gestorhorarios.GestorHorarios;
+import com.gestorhorarios.logic.ManagerFactory;
+import com.gestorhorarios.logic.models.Solicitud;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
+import com.gluonhq.charm.glisten.control.CharmListView;
 import com.gluonhq.charm.glisten.control.Dialog;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
+import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 
 /**
  *
- * @author 2dam
+ * @author Miguel Axier Lafuente Peñas
  */
 public class CambiosTurnoPresenter {
     
@@ -30,7 +35,7 @@ public class CambiosTurnoPresenter {
     @FXML
     private Button btnBuscar;
     @FXML
-    private ListView lvSolicitudes;
+    private CharmListView lvSolicitudes;
     
             
     
@@ -41,14 +46,36 @@ public class CambiosTurnoPresenter {
                 appBar.setNavIcon(MaterialDesignIcon.MENU.button(e -> 
                         MobileApplication.getInstance().showLayer(GestorHorarios.MENU_LAYER)));
                 appBar.setTitleText("Cambios de turno");
-                
-                /*appBar.getActionItems().add(MaterialDesignIcon.SEARCH.button(e -> 
-                        System.out.println("Search")));*/
+                if(ManagerFactory.gh.getUsuarioLogin().getPerfil().compareTo("empleado")!=0){
+                    cbSolicitudes.setItems(FXCollections.observableArrayList("Solicitudes enviadas"
+                                                                            ,"Solicitudes recibidas"
+                                                                            ,"Validar solicitudes"));
+                } else {
+                    cbSolicitudes.setItems(FXCollections.observableArrayList("Solicitudes enviadas"
+                                                                            ,"Solicitudes recibidas"));
+                }
+                cbSolicitudes.getSelectionModel().selectFirst();
+                cargarListaEnviado();
             }
         });
     
     }
-    
+    /**
+     * Metodo que controla la acción sobre el boton buscar
+     */
+    @FXML
+    public void handleOnActionBuscar(){
+        if(cbSolicitudes.getSelectionModel().isSelected(0)){
+            cargarListaEnviado();
+        } else if(cbSolicitudes.getSelectionModel().isSelected(1)){
+            cargarListaRecibido();
+        } else if(cbSolicitudes.getSelectionModel().isSelected(2)){
+            cargarListaPendiente();
+        }
+    }
+    /**
+     * Metodo que crea y muestra un dialog que informa al usuario del estado de una solicitud
+     */
     public void dialogPendienteAceptar(){
         Dialog dialog = new Dialog();
             dialog.setTitle(new Label("Estado de la solicitud"));
@@ -60,6 +87,9 @@ public class CambiosTurnoPresenter {
             dialog.getButtons().add(okButton);
             dialog.showAndWait();
     }
+    /**
+     * Metodo que crea y muestra un dialog que informa al usuario del estado de una solicitud
+     */
     public void dialogPendienteValidar(){
         Dialog dialog = new Dialog();
             dialog.setTitle(new Label("Estado de la solicitud"));
@@ -71,19 +101,72 @@ public class CambiosTurnoPresenter {
             dialog.getButtons().add(okButton);
             dialog.showAndWait();
     }
+    /**
+     * Metodo que crea y muestra un dialog para que un usuario acepte una solicitud de cambio
+     */
     public void dialogAceptarSolicitud(){
         Dialog dialog = new Dialog();
+        Solicitud solicitud;
             dialog.setTitle(new Label("Aceptar solicitud"));
             dialog.setContent(new Label("No se podrá deshacer la operación. ¿Estas seguro?"));
             Button okButton = new Button("Acpetar");
             Button cancelButton = new Button("Cancelar");
             okButton.setOnAction(e -> {
                 dialog.hide();
+                //que modifique los turnos
             });
-            dialog.getButtons().add(okButton);
+            cancelButton.setOnAction(e ->{
+                dialog.hide();
+            });
+            dialog.getButtons().addAll(okButton,cancelButton);
             dialog.showAndWait();
     }
+    //Metodo que crea y muestra un dialog para validar un cambio de turno
     public void dialogValidarSolicitud(){
-        
+        Dialog dialog = new Dialog();
+            dialog.setTitle(new Label("Validar solicitud"));
+            dialog.setContent(new Label("No se podrá deshacer la operación. ¿Estas seguro?"));
+            Button okButton = new Button("Acpetar");
+            Button cancelButton = new Button("Cancelar");
+            okButton.setOnAction(e -> {
+                dialog.hide();
+                //que modifique los turnos
+            });
+            cancelButton.setOnAction(e ->{
+                dialog.hide();
+            });
+            dialog.getButtons().addAll(okButton,cancelButton);
+            dialog.showAndWait();
+    }
+    /**
+     * Metodo que carga la lista con las solicitudes realizadas por el usuario
+     */
+    public void cargarListaEnviado(){
+        ArrayList<Solicitud> solEnviadas;
+        solEnviadas = (ArrayList<Solicitud>) ManagerFactory.gh
+                .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(),"enviado");
+        ObservableList ol = FXCollections.observableArrayList(solEnviadas);
+        lvSolicitudes.setItems(ol);
+                
+    }
+    /**
+     * Metodo que carga la lista con las solicitudes que pueden ser aceptadas por el usuario
+     */
+    public void cargarListaRecibido(){
+        ArrayList<Solicitud> solRecibidas;
+        solRecibidas = (ArrayList<Solicitud>) ManagerFactory.gh
+                .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(), "recibido");
+        ObservableList ol = FXCollections.observableArrayList(solRecibidas);
+        lvSolicitudes.setItems(ol);
+    }
+    /**
+     * Metodo que carga la lista con las solicitudes penientes de validar por un encargado o gerente
+     */
+    public void cargarListaPendiente(){
+        ArrayList<Solicitud> solPendientes;
+        solPendientes = (ArrayList<Solicitud>) ManagerFactory.gh
+                .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(), null);
+        ObservableList ol = FXCollections.observableArrayList(solPendientes);
+        lvSolicitudes.setItems(ol);
     }
 }

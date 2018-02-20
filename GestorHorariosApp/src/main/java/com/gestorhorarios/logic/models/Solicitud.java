@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 public class Solicitud {
 
     private int id;
-    private String estado;
+    private String estado; //pendiente, aceptado, validado, denegado.
     private String usuarioSolicita;
     private String usuarioAcepta;
     private String usuarioValida;
@@ -147,31 +147,18 @@ public class Solicitud {
     }
     public String toString() {
       
-        Usuario solicita = ManagerFactory.gh.getUsuario(this.usuarioAcepta);
+        Usuario solicita = ManagerFactory.gh.getUsuario(this.usuarioSolicita);
         Usuario acepta = ManagerFactory.gh.getUsuario(this.usuarioAcepta);
         
-        Jornada jacepta = new Jornada(); //gh.getJornada(this.jornadaAcepta);
+        Jornada jacepta = ManagerFactory.gh.getJornadaById(this.jornadaAcepta); //gh.getJornada(this.jornadaAcepta);
         
-        for (Jornada f : acepta.getJornadas()) {
-            
-            if (f.getID() == this.getJornadaAcepta())
-                jacepta = f;
-            
-        }
-        
-        Jornada jsolicita = new Jornada(); //gh.getJornada(this.jornadaSolicita);
-       
-        for (Jornada f : acepta.getJornadas()) {
-            
-            if (f.getID() == this.getJornadaSolicita())
-                jsolicita = f;
-            
-        }
+        Jornada jsolicita = ManagerFactory.gh.getJornadaById(this.jornadaSolicita);
+     
         
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        
+        String e = format.format(jacepta.getFecha());
         String data =
-                format.format(jacepta.getFecha()) + "\n"
+                e + "\n"
                 + "Turno inicial:\tTurno solicitado:\tEstado:\n"
                 + jsolicita.getTurno().getHoraEntrada() + "-" + jsolicita.getTurno().getHoraSalida()
                 +"\t"+ jacepta.getTurno().getHoraEntrada() + "-" + jacepta.getTurno().getHoraSalida()

@@ -16,6 +16,8 @@ import com.gestorhorarios.logic.models.Turno;
 import com.gestorhorarios.logic.models.Usuario;
 import entity.Jornadas;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -139,17 +141,14 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
      * @return 
      */
     @Override
-    public boolean crearUsuario(Usuario usuario, String pass) {
-        boolean e=true;
+    public void crearUsuario(Usuario usuario, String pass) {
         try {
             db.crearUsuario(usuario, pass);
             LOGGER.info("GestorHorariosManagerImplementation: usuario creado");
         } catch (Exception ex) {
-            e=false;
+           
             LOGGER.severe("GestorHorariosManagerImplementation: error al crear usuario");
-        }
-        
-        return e;     
+        }    
     }
    
     /**
@@ -309,20 +308,57 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
          return usuario;
     } 
     /**
-     * Metodo que busca las solicitudes por validar
-     * @return las solicitudes en estado pendiente
+     * Metodo que devuelve una lista de solicitudes segun el usuario y si son solicitudes enviadas, recibidas o pendientes de validar
+     * @param usuario Usuario que consulta las solicitudes
+     * @param estado Estado de la solicitud (enviado, recibido o null)
+     * @return una lista de las solicitudes que cumplen con los criterios de busqueda
      */
     @Override
-    public ArrayList<Solicitud> getSolicitudesPorValidar() {
-        ArrayList<Solicitud> solicitud= new ArrayList<>();
+    public List<Solicitud> getSolicitudesByUsuario(Usuario usuario, String estado) {
+        List<Solicitud> solicitudes;
+        List<Jornada> jornadas = new ArrayList();
+        List<Solicitud> solicitudesAux = new ArrayList();
         try {
-            solicitud=db.getSolicitudesPorValidar();
-             LOGGER.info("GestorHorariosManagerImplementation: devolviendo solicitudes por validar");
+            solicitudes = db.getSolicitudes();
+            
+            //Peticiones de cambio de turno que lanza el usuario
+            if(estado.equals("enviado")){
+                solicitudes = solicitudes.stream()
+                            .filter(s -> s.getUsuarioSolicita().equals(usuario.getDNI()))
+                            .map(s -> s).collect(Collectors.toList());
+                
+            //Peticiones de cambio de turno que lanza cualquier otro usuario y son compatibles para cambiar por el usuario login
+            } else if (estado.equals("recibido")) {
+                solicitudes.forEach((solicitud)-> {
+                    usuario.getJornadas().forEach((jornada) ->{
+                        //Comprobamos que sea la misma fecha
+                        if(jornada.getFecha()==getJornadaById(solicitud.getJornadaSolicita()).getFecha()){
+                            //Comprobamos que la letra del turno sea la misma. Ej: Turno A1 y A2 --> A==A
+                            if(jornada.getTurno().getID().substring(0, 1).equals(getJornadaById(solicitud.getJornadaSolicita()).getTurno().getID().substring(0, 1))){
+                                //Comprobamos que el numero del turno sea diferente(para poder cambiar el horario) Ej: Turno A1 y A2 --> 1!=2
+                                if(jornada.getTurno().getID().substring(1).compareTo(getJornadaById(solicitud.getJornadaSolicita()).getTurno().getID().substring(1))!=0){
+                                    solicitudesAux.add(solicitud);
+                                }
+                            }
+                        }
+                    });
+                });
+                solicitudes = solicitudesAux;
+                
+            //Solicitudes que han sido aceptadas por dos empleados y que estan pendientes de validar por un encargado o gerente
+            } else {
+                solicitudes = solicitudes.stream()
+                            .filter(s -> s.getEstado().equals("pendiente"))
+                            .map(s -> s).collect(Collectors.toList());
+            }
+            
+                    
+             //LOGGER.info("GestorHorariosManagerImplementation: devolviendo solicitudes por validar");
         } catch (Exception ex) {
             LOGGER.severe("GestorHorariosManagerImplementation: error recibir solicitudes por validar");
-            solicitud=null;
+            solicitudes=null;
         }    
-        return solicitud;
+        return solicitudes;
     }
     
     @Override
@@ -422,6 +458,29 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
          }
         
         return jor;
+    }
+    /**
+     * Metodo que llama a la base de datos y devuelve una colección de las solicitudes
+     * filtradas por estado
+     * @param estado Estado de la solicitud
+     * @return Colección de solicitudes filtradas por estado
+     */
+    @Override
+    public List<Solicitud> getSolicitudesByEstado(String estado) {
+        List<Solicitud> solicitudes = new ArrayList<>();
+       try {
+           LOGGER.info("GestorHorariosManagerImplementation: recibiendo todas las solicitudes");
+           solicitudes = db.getSolicitudes();
+           if(estado != null){
+               solicitudes = solicitudes.stream()
+                       .filter(s -> s.getEstado().equals(estado))
+                       .map(s -> s).collect(Collectors.toList());
+           }
+       } catch (Exception ex) {
+           Logger.getLogger(GestorHorariosManagerImplementation.class.getName()).log(Level.SEVERE, null, ex);
+           LOGGER.info("GestorHorariosManagerImplementation: error recibiendo todas las jornadas");
+       }
+       return solicitudes;
     }
          
          

@@ -10,11 +10,16 @@ import static com.gestorhorarios.GestorHorarios.AGENDA_LABORAL;
 import static com.gestorhorarios.GestorHorarios.DATOS_EMPLEADO;
 import com.gestorhorarios.logic.GestorHorariosManager;
 import com.gestorhorarios.logic.GestorHorariosManagerImplementation;
+import com.gestorhorarios.logic.ManagerFactory;
+import com.gestorhorarios.logic.models.Usuario;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.control.CharmListView;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,10 +27,11 @@ import javafx.scene.control.ListView;
 
 /**
  *
- * @author 2dam
+ * @author Iker Iglesias
  */
 public class EmpleadosPresenter {
     public static Boolean crear = true;
+    public static String dniMod;
     
     @FXML
     private View listaEmpleados;
@@ -45,7 +51,16 @@ public class EmpleadosPresenter {
                         MobileApplication.getInstance().showLayer(GestorHorarios.MENU_LAYER)));
                 appBar.setTitleText("Empleados");
                 
-                empleados = (ObservableList) gh.getUsuarios();
+                cargarLista();
+                lvEmpleados.selectedItemProperty().addListener(new ChangeListener() {
+                    @Override
+                    public void changed(ObservableValue obs, Object ov, Object nv) {
+                            crear=false;
+                            Usuario usu=(Usuario) lvEmpleados.getSelectedItem();
+                            dniMod=usu.getDNI();
+                            GestorHorarios.drawer.updateItem(DATOS_EMPLEADO);
+                    }
+                });
                 /*appBar.getActionItems().add(MaterialDesignIcon.SEARCH.button(e -> 
                         System.out.println("Search")));*/
                 //lvAgenda.setItems();
@@ -55,7 +70,9 @@ public class EmpleadosPresenter {
     }
      
     public void cargarLista(){
-        
+       
+        empleados=FXCollections.observableArrayList(ManagerFactory.gh.getUsuarios());
+        lvEmpleados.setItems(empleados);
     }
     
     @FXML
@@ -65,6 +82,8 @@ public class EmpleadosPresenter {
     }
     @FXML
     public void handleOnTouchPressedModificar(){
-        //
+        Usuario usu=(Usuario) lvEmpleados.getSelectedItem();
+        dniMod=usu.getDNI();
+        GestorHorarios.drawer.updateItem(DATOS_EMPLEADO);
     }
 }

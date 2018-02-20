@@ -63,7 +63,7 @@ public class DBManagerHibernate implements DataBaseInterface{
              u.setApellido1(usuario.getApellido1());
              u.setApellido2(usuario.getApellido2());
              u.setPerfil(usuario.getPerfil());
-             //u.setJornadases(setJornadas(usuario.getJornadas()));
+     
              
              u.setHashPass(pass);
               session.save(u);
@@ -380,8 +380,7 @@ public class DBManagerHibernate implements DataBaseInterface{
               u.setNombre(usuario.getNombre());
               u.setApellido1(usuario.getApellido1());
               u.setApellido2(usuario.getApellido2());
-              u.setJornadases(setJornadas(usuario.getJornadas()));
-              
+              u.setPerfil(usuario.getPerfil().toLowerCase());
                 session.update(u);
                 tx.commit();
                 LOGGER.info("DBManagerHibernate: modificando datos usuario");
@@ -550,39 +549,6 @@ public class DBManagerHibernate implements DataBaseInterface{
     }
 
     /**
-     * Devuelve las solicitudes por ser validadas
-     * @return las solicitudes por validar
-     * @throws Exception 
-     */
-    @Override
-    public ArrayList<Solicitud> getSolicitudesPorValidar() throws Exception {
-         
-        ArrayList<Solicitud> s=new ArrayList<>();
-        Solicitud aux;
-        this.openConnection();
-        
-        List  <Solicitudes> result =  session.createQuery("FROM Solicitudes where estado='aceptado'").list();
-        Iterator<Solicitudes> l= result.iterator();
-         
-        while(l.hasNext()){
-              Solicitudes sol=l.next();
-              aux= new Solicitud();
-              aux.setEstado(sol.getEstado());
-              aux.setID(sol.getId());
-              aux.setJornadaAcepta(sol.getJornadaAcepta());
-              aux.setJornadaSolicita(sol.getJornadaSolicita());
-              aux.setUsuarioSolicita(sol.getUsuarioSolicita());
-              aux.setUsuarioAcepta(sol.getUsuarioSolicita());
-             
-              s.add(aux);
-        }
-        LOGGER.info("DBManagerHibernate: devolviendo solicitudes por validar");
-        this.closeConnection();
-        
-        return s;
-    }
-
-    /**
      * Metodo que devuelve todos los turnos con sus funciones
      * @return todos los turnos
      * @throws Exception 
@@ -699,11 +665,43 @@ public class DBManagerHibernate implements DataBaseInterface{
                   aux.setFecha(j.getFecha());
                   aux.setID(j.getId());
                   aux.setTurno(getTurno(j.getTurnos()));
+                  jors.add(aux);
               }
               LOGGER.info("DBManagerHibernate: recibiendo todas las jornadas");
         this.closeConnection();
         
         return jors;
+    }
+    /**
+     * Devuelve las solicitudes filtradas por estado
+     * @return ArrayList con las solicitudes filstradas por estado
+     * @throws Exception 
+     */
+    @Override
+    public ArrayList<Solicitud> getSolicitudes() throws Exception {
+    ArrayList<Solicitud> s=new ArrayList<>();
+        Solicitud aux;
+        this.openConnection();
+        
+        List  <Solicitudes> result =  session.createQuery("FROM Solicitudes").list();
+        Iterator<Solicitudes> l= result.iterator();
+         
+        while(l.hasNext()){
+              Solicitudes sol=l.next();
+              aux= new Solicitud();
+              aux.setEstado(sol.getEstado());
+              aux.setID(sol.getId());
+              aux.setJornadaAcepta(sol.getJornadaAcepta());
+              aux.setJornadaSolicita(sol.getJornadaSolicita());
+              aux.setUsuarioSolicita(sol.getUsuarioSolicita());
+              aux.setUsuarioAcepta(sol.getUsuarioSolicita());
+             
+              s.add(aux);
+        }
+        LOGGER.info("DBManagerHibernate: devolviendo solicitudes por validar");
+        this.closeConnection();
+        
+        return s;
     }
     
 }
