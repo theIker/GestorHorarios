@@ -96,7 +96,7 @@ public class DatosEmpleadoPresenter {
     
     
 
-    private Usuario user=new Usuario();
+    private Usuario user= new Usuario();
         
         
     
@@ -115,7 +115,7 @@ public class DatosEmpleadoPresenter {
                 cbPerfil.getSelectionModel().selectFirst();
                 
                 cbJornadas.setPromptText("Ninguna jornada");
-                
+                user= new Usuario();
               
                 if(ManagerFactory.gh.getUsuarioLogin().getPerfil().equals("empleado")){
                       cbPerfil.setVisible(false);
@@ -353,6 +353,7 @@ public class DatosEmpleadoPresenter {
                                 
                             }else{
                                 if(ManagerFactory.gh.validarEmail(tfEmail.getText())){
+                                            user= new Usuario();
                                             
                                             user.setDNI(tfDni.getText());
                                             user.setNombre(tfNombre.getText());
@@ -366,7 +367,7 @@ public class DatosEmpleadoPresenter {
                                         
                                         if(EmpleadosPresenter.crear){
                                             
-                                           
+                                            
                                             
                                              if(ManagerFactory.gh.getUsuario(user.getDNI())==null){
                                                  ManagerFactory.gh.crearUsuario(user,ManagerFactory.gh.getGenPassHash(user));
@@ -379,6 +380,7 @@ public class DatosEmpleadoPresenter {
                                              tfEmail.setText("");
                                              jornadas.clear();
                                              cbJornadas.getItems().clear();
+                                             
                                              
                                              GestorHorarios.drawer.updateItem(LISTA_EMPLEADOS);
                                              }

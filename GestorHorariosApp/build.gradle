@@ -56,7 +56,9 @@ jfxmobile {
         buildToolsVersion = '26.0.2'
         
         // Replace by your local SDK path
-        androidSdk='C:/Users/H/AppData/Local/Android/Sdk'
+        //androidSdk='C:/Users/H/AppData/Local/Android/Sdk'
+        androidSdk='C:/Users/2dam/AppData/Local/Android/Sdk'
+        
     
     }
     ios {
