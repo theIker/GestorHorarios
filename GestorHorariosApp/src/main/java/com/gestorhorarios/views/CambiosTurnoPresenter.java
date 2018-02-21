@@ -7,7 +7,9 @@ package com.gestorhorarios.views;
 
 import com.gestorhorarios.GestorHorarios;
 import com.gestorhorarios.logic.ManagerFactory;
+import com.gestorhorarios.logic.models.Jornada;
 import com.gestorhorarios.logic.models.Solicitud;
+import com.gestorhorarios.logic.models.Usuario;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.control.CharmListView;
@@ -15,6 +17,7 @@ import com.gluonhq.charm.glisten.control.Dialog;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -60,7 +63,9 @@ public class CambiosTurnoPresenter {
                 lvSolicitudes.selectedItemProperty().addListener(new ChangeListener(){
                     @Override
                     public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                        Solicitud solicitud = (Solicitud) lvSolicitudes.getSelectedItem();
+                        clickList(solicitud);
+                        lvSolicitudes.setSelectedItem(null);
                     }
                 
                 });
@@ -113,16 +118,17 @@ public class CambiosTurnoPresenter {
     /**
      * Metodo que crea y muestra un dialog para que un usuario acepte una solicitud de cambio
      */
-    public void dialogAceptarSolicitud(){
+    public void dialogAceptarSolicitud(Solicitud solicitud){
         Dialog dialog = new Dialog();
-        Solicitud solicitud;
+        Usuario usuario = ManagerFactory.gh.getUsuarioLogin();
+        Jornada jornadaCambio = ManagerFactory.gh.getJornadaCambio((List<Jornada>) usuario.getJornadas(), ManagerFactory.gh.getJornadaById(solicitud.getJornadaSolicita()));
             dialog.setTitle(new Label("Aceptar solicitud"));
             dialog.setContent(new Label("No se podrá deshacer la operación. ¿Estas seguro?"));
             Button okButton = new Button("Acpetar");
             Button cancelButton = new Button("Cancelar");
-            okButton.setOnAction(e -> {
-                dialog.hide();
-                //que modifique los turnos
+            okButton.setOnAction(e -> {  
+                ManagerFactory.gh.aceptarSolicitud(usuario, solicitud, jornadaCambio);
+                dialog.hide();   
             });
             cancelButton.setOnAction(e ->{
                 dialog.hide();
@@ -131,17 +137,20 @@ public class CambiosTurnoPresenter {
             dialog.showAndWait();
     }
     //Metodo que crea y muestra un dialog para validar un cambio de turno
-    public void dialogValidarSolicitud(){
+    public void dialogValidarSolicitud(Solicitud solicitud){
         Dialog dialog = new Dialog();
             dialog.setTitle(new Label("Validar solicitud"));
             dialog.setContent(new Label("No se podrá deshacer la operación. ¿Estas seguro?"));
             Button okButton = new Button("Acpetar");
-            Button cancelButton = new Button("Cancelar");
+            Button cancelButton = new Button("Denegar");
             okButton.setOnAction(e -> {
+                ManagerFactory.gh.validarSolicitud(ManagerFactory.gh.getUsuarioLogin(), solicitud, "validada");
+                cargarListaPendiente();
                 dialog.hide();
-                //que modifique los turnos
             });
             cancelButton.setOnAction(e ->{
+                ManagerFactory.gh.validarSolicitud(ManagerFactory.gh.getUsuarioLogin(), solicitud, "denegada");
+                cargarListaPendiente();
                 dialog.hide();
             });
             dialog.getButtons().addAll(okButton,cancelButton);
@@ -177,5 +186,28 @@ public class CambiosTurnoPresenter {
                 .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(), null);
         ObservableList ol = FXCollections.observableArrayList(solPendientes);
         lvSolicitudes.setItems(ol);
+    }
+    /**
+     * Metodo que interactua con las solicitudes cuando son seleccionadas en la lista
+     * @param solicitud 
+     */
+    public void clickList(Solicitud solicitud){
+        //Solicitudes que estan pendiente de validar por un encargado
+        if(solicitud.getEstado().equals("pendiente")){
+            if(ManagerFactory.gh.getUsuarioLogin().getPerfil().equals("empleado")){
+                dialogPendienteValidar();
+            } else {
+                dialogValidarSolicitud(solicitud);
+            }
+            
+        }
+        //Solicitudes que lanza el usuario login y que aún no han sido aceptadas por otro empleado
+        if(solicitud.getEstado().equals("enviada") && solicitud.getUsuarioSolicita().equals(ManagerFactory.gh.getUsuarioLogin().getDNI())){
+            dialogPendienteAceptar();
+        }
+        //solicitudes que lanza otro empleado y estan pendiente de aceptar por el usuario login
+        if(solicitud.getEstado().equals("enviada") && !solicitud.getUsuarioSolicita().equals(ManagerFactory.gh.getUsuarioLogin().getDNI())){
+            dialogAceptarSolicitud(solicitud);
+        }
     }
 }

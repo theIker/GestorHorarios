@@ -264,6 +264,7 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
     public void modificarDatos(Usuario usuario) {
          
         try {
+            
             db.modificarDatos(usuario);
             LOGGER.info("GestorHorariosManagerImplementation: modificando usuario");
         } catch (Exception ex) {
@@ -511,6 +512,17 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
         }
         
         return hash;
+    }
+
+    @Override
+    public Jornada getJornadaCambio(List<Jornada> jornadas, Jornada jornada) {
+        Jornada jornadaAux = null;
+            for(Jornada jor : jornadas){
+                if(jor.compare(jornada)==0){
+                    jornadaAux = jor;
+                }
+        }
+        return jornadaAux;
     }
          
         

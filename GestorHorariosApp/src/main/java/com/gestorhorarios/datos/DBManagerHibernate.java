@@ -214,7 +214,7 @@ public class DBManagerHibernate implements DataBaseInterface{
               Iterator<Solicitudes> l= result.iterator();
              
                    Solicitudes s=l.next();
-                    s.setEstado("aceptado");
+                    s.setEstado("aceptada");
                     s.setUsuarioAcepta(usuario.getDNI());
                     s.setJornadaAcepta(jornada.getID());
                     session.update(s);
