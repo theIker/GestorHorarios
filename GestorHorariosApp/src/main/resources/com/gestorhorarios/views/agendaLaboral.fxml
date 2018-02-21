@@ -31,7 +31,7 @@
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin></DatePicker>
-                  <Button fx:id="btnBuscar" minWidth="32.0" mnemonicParsing="false" onAction="#handleOnActionBuscar" prefHeight="29.0" prefWidth="32.0">
+                  <Button fx:id="btnBuscar" onAction="#filtrarList" minWidth="32.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="32.0">
                      <HBox.margin>
                         <Insets left="5.0" />
                      </HBox.margin>
