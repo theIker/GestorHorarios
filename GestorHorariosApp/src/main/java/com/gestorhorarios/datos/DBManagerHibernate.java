@@ -150,7 +150,7 @@ public class DBManagerHibernate implements DataBaseInterface{
                     tx.commit();
                     LOGGER.info("DBManagerHibernate: validando solicitud");
               this.closeConnection();
-              if(estado.equals("validado"))
+              if(estado.equals("validada"))
                   cambiarJornadaUsuario(solicitud);
     }
     
@@ -231,12 +231,13 @@ public class DBManagerHibernate implements DataBaseInterface{
          * @throws Exception 
          */
         @Override
-        public void crearSolicitud(Usuario usuario, Jornada jornada) throws Exception{
+        public void crearSolicitud(Usuario usuario, Jornada jornada, Jornada acepta) throws Exception{
             
             this.openConnection();
             Transaction tx=session.beginTransaction();
             Solicitudes s=new Solicitudes();
-             s.setEstado("pendiente");
+             s.setEstado("enviada");
+             s.setJornadaAcepta(acepta.getID());
              s.setJornadaSolicita(jornada.getID());
              s.setUsuarioSolicita(usuario.getDNI());
              session.save(s);

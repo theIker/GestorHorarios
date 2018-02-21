@@ -21,6 +21,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 /**
  *
@@ -55,6 +57,13 @@ public class CambiosTurnoPresenter {
                                                                             ,"Solicitudes recibidas"));
                 }
                 cbSolicitudes.getSelectionModel().selectFirst();
+                lvSolicitudes.selectedItemProperty().addListener(new ChangeListener(){
+                    @Override
+                    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    }
+                
+                });
                 cargarListaEnviado();
             }
         });

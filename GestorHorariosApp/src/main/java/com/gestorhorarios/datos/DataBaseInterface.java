@@ -26,7 +26,7 @@ public interface DataBaseInterface {
         public void modificarDatos(Usuario usuario) throws Exception;
         public void modificarPass(String dni,String pass) throws Exception;
         public Usuario validarUsuario(String dni, String pass) throws Exception;
-        public void crearSolicitud(Usuario usuario, Jornada jornada) throws Exception;
+        public void crearSolicitud(Usuario usuario, Jornada jornada, Jornada acepta) throws Exception;
         public void borrarUsuario(Usuario usuario) throws Exception;
         public void aceptarSolicitud(Usuario usuario, Solicitud solicitud,Jornada jornada) throws Exception;
         public void validarSolicitud(Usuario usuario,Solicitud solicitud,String estado) throws Exception;
