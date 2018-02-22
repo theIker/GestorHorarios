@@ -86,6 +86,7 @@ public class AgendaLaboralPresenter {
                 } else {
                     cbNombre.setItems(FXCollections.observableArrayList(ManagerFactory.gh.getUsuarios()));
                     cbNombre.getSelectionModel().select(ManagerFactory.gh.getUsuarioLogin());
+                    cbNombre.getSelectionModel().select(ManagerFactory.gh.getUsuarioLogin());
                 }
                 cargarLista(ManagerFactory.gh.getUsuarioLogin());
             }
