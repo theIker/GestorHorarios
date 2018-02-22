@@ -6,15 +6,18 @@
     -primary-swatch-500: #073fa3;
     /*color gris*/
     -primary-swatch-500: #4f4f4f;
-
 }
 #login{
    -fx-background-image: url("fondo4.png");
    -fx-background-size: cover;
     -fx-background-position: center center;
-    -fx-background-image-opacity: 0.5;
-    
-    
+    -fx-background-image-opacity: 0.5;  
+}
+#agendaLaboral, #cambiosTurno, #datosEmpleado, #listaEmpleados{
+      -fx-background-image: url("fondoint.png");
+   -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-image-opacity: 0.5;    
 }
 #lbNombreApp{
     -fx-text-fill:#073fa3;
@@ -40,7 +43,7 @@
     
 }
 .fondo{
-    -fx-background-color:white;
+    /*-fx-background-color:white;*/
 }
 #btnAnyadir{
     -fx-padding:0px;
@@ -108,9 +111,7 @@
     -fx-background-radius:6px;
     -fx-padding: 10px 10px 10px 10px;
 }
-.combo-box:focused {
-    
-}
+
 #btnBuscar{
     -fx-padding:0px;
     -fx-background-image: url("search.png");
@@ -124,19 +125,40 @@
     -fx-max-height:24px;
     -fx-background-radius:12px;
 }
-/*
-.combo-box  
-{
-    -fx-background: white;
+#fecha{
+       -fx-font: 100px Tahoma;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, aqua 0%, red 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+}
+.list-cell {
     -fx-background-color: transparent;
-    -fx-text-fill: -fx-text-base-color;
-    -fx-padding: 3 0 2 7;
-    -fx-cell-size: 1.66667em; 
+}
+.list-view {
+    -fx-background-color: transparent;
+}
+.charm-list-view:hover {
+    /* Headers secondary text */
+    -fx-text-fill: #FFFFFFDE;
+}
+/*establece el tamaño de fuente de los ítems de las listas CharmListView*/
+.tile{
+    -fx-font-size:12px;
+}
+/* Modifica el estilo de la tercera línea de texto de las listas CharmListView  */
+.charm-list-view .list-cell > .list-tile > .text-box > .tertiary-text{
+    -fx-text-fill:#4f4f4f;
+}
+/* Modifica el estilo de la primera línea de texto de las listas CharmListView  */
+/*.charm-list-view .list-cell > .list-tile > .text-box > .primary-text{
+   -fx-text-fill:#073fa3;
+   
 }*/
 .combo-box{
     /*-fx-border-color:#787878;*/
    /* -fx-background-color:white;*/
     -fx-background-color:#f2f2f4;
+    
 }
 .combo-box .list-cell{
     -fx-background-color:#f2f2f4;
@@ -146,7 +168,11 @@
 }
 .date-picker{
     -fx-background-color:#f2f2f4;
-        -fx-text-input-background:#f2f2f4;
+        -fx-text-input-background:#fff;
+}
+#dpFecha{
+    -fx-background-color:#fff;
+        -fx-text-input-background:#fff;
 }
 .combo-box-popup .list-view .list-cell{
     -fx-background-color:#f2f2f4;
@@ -154,53 +180,5 @@
 }
 .combo-box-popup .list-view .list-cell:hover {
    /* -fx-background-color:#4f4f4f;*/
-    -fx-text-fill: white;
+    /*-fx-text-fill: white;*/
 }
-/*
-.combo-box-popup .list-view 
-{
-    -fx-background-color: white, white;
-    -fx-background-insets: 0, 1;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 8, 0.0 , 0 , 0 );
-}    
-.combo-box-popup .list-view .list-cell 
-{
-    -fx-padding: 4 0 4 5;
-    /* No alternate highlighting 
-    -fx-background-color: white;
-}
-.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover 
-{
-    -fx-background: -fx-accent;
-    -fx-background-color: -fx-selection-bar;
-    -fx-text-fill: -fx-selection-bar-text;
-}
-.combo-box-popup .list-view .list-cell:filled:hover 
-{
-    -fx-background-color: white;
-    -fx-text-fill: -fx-text-inner-color;
-}
-.combo-box-base  
-{
-    -fx-skin: "com.sun.javafx.scene.control.skin.ComboBoxBaseSkin";
-    -fx-background-color: white, white, white, white;
-    -fx-background-radius: 5, 5, 4, 3;
-    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
-    -fx-padding: 0;
-}
-.combo-box-base:hover
-{
-    -fx-color: -fx-hover-base;
-}
-.combo-box-base:showing 
-{
-    -fx-color: -fx-pressed-base;
-}
-.combo-box-base:focused {
-    -fx-background-color: -fx-focus-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
-    -fx-background-radius: 6.4, 4, 5, 3;
-    -fx-background-insets: -1.4, 0, 1, 2;
-}
-.combo-box-base:disabled {
-    -fx-opacity: .4;
-}*/

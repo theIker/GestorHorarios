@@ -360,9 +360,11 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
                 
             //Solicitudes que han sido aceptadas por dos empleados y que estan pendientes de validar por un encargado o gerente
             } else {
-                solicitudesAux = solicitudes.stream()
-                            .filter(s -> s.getEstado().equals("pendiente"))
-                            .map(s -> s).collect(Collectors.toList());
+                for(Solicitud solicitud : solicitudes){
+                    if(solicitud.getEstado().equals("aceptada")){
+                        solicitudesAux.add(solicitud);
+                    }
+                }
             }
             
                     

@@ -13,6 +13,8 @@ import com.gestorhorarios.logic.models.Usuario;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.AppBar;
 import com.gluonhq.charm.glisten.control.CharmListView;
+import com.gluonhq.charm.glisten.control.CharmListCell;
+import com.gluonhq.charm.glisten.control.ListTile;
 import com.gluonhq.charm.glisten.control.Dialog;
 import com.gluonhq.charm.glisten.mvc.View;
 import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
@@ -26,13 +28,16 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
+import javafx.scene.layout.VBox;
+import java.text.SimpleDateFormat;
 
 /**
  *
  * @author Miguel Axier Lafuente Peñas
  */
 public class CambiosTurnoPresenter {
-    
+
     @FXML
     private View cambiosTurno;
     @FXML
@@ -41,177 +46,232 @@ public class CambiosTurnoPresenter {
     private Button btnBuscar;
     @FXML
     private CharmListView lvSolicitudes;
-    
-            
-    
+
     public void initialize() {
         cambiosTurno.showingProperty().addListener((obs, oldValue, newValue) -> {
             if (newValue) {
                 AppBar appBar = MobileApplication.getInstance().getAppBar();
-                appBar.setNavIcon(MaterialDesignIcon.MENU.button(e -> 
-                        MobileApplication.getInstance().showLayer(GestorHorarios.MENU_LAYER)));
+                appBar.setNavIcon(MaterialDesignIcon.MENU.button(e
+                        -> MobileApplication.getInstance().showLayer(GestorHorarios.MENU_LAYER)));
                 appBar.setTitleText("Cambios de turno");
-                if(ManagerFactory.gh.getUsuarioLogin().getPerfil().compareTo("empleado")!=0){
-                    cbSolicitudes.setItems(FXCollections.observableArrayList("Solicitudes enviadas"
-                                                                            ,"Solicitudes recibidas"
-                                                                            ,"Validar solicitudes"));
+                if (ManagerFactory.gh.getUsuarioLogin().getPerfil().compareTo("empleado") != 0) {
+                    cbSolicitudes.setItems(FXCollections.observableArrayList("Solicitudes enviadas",
+                             "Solicitudes recibidas",
+                             "Validar solicitudes"));
                 } else {
-                    cbSolicitudes.setItems(FXCollections.observableArrayList("Solicitudes enviadas"
-                                                                            ,"Solicitudes recibidas"));
+                    cbSolicitudes.setItems(FXCollections.observableArrayList("Solicitudes enviadas",
+                             "Solicitudes recibidas"));
                 }
                 cbSolicitudes.getSelectionModel().selectFirst();
-                lvSolicitudes.selectedItemProperty().addListener(new ChangeListener(){
+                lvSolicitudes.selectedItemProperty().addListener(new ChangeListener() {
                     @Override
                     public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                         Solicitud solicitud = (Solicitud) lvSolicitudes.getSelectedItem();
                         clickList(solicitud);
-                        try{
+                        try {
                             lvSolicitudes.setSelectedItem(null);
-                        } catch (Exception e){}
+                        } catch (Exception e) {
+                        }
                     }
-                
+
                 });
                 cargarListaEnviado();
             }
         });
-    
+        lvSolicitudes.setCellFactory(p -> new CharmListCell<Solicitud>() {
+            @Override
+            public void updateItem(Solicitud item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item != null && !empty) {
+                    VBox buttons = new VBox(MaterialDesignIcon.DONE.graphic());
+                    VBox buttons2 = new VBox(MaterialDesignIcon.DONE_ALL.graphic());
+                    buttons.setMaxHeight(Double.MAX_VALUE);
+                    buttons.setAlignment(Pos.BOTTOM_RIGHT);
+                    buttons2.setMaxHeight(Double.MAX_VALUE);
+                    buttons2.setAlignment(Pos.BOTTOM_RIGHT);
+                    ListTile tile = new ListTile();
+                    SimpleDateFormat ef = new SimpleDateFormat("yyyy-MM-dd");
+                    tile.textProperty().setAll(item.toString());
+                    Jornada jor = ManagerFactory.gh.getJornadaById(item.getJornadaSolicita());
+                    Jornada jor2 = ManagerFactory.gh.getJornadaById(item.getJornadaAcepta());
+                    String fecha = ef.format(jor.getFecha());
+                    tile.setTextLine(0, fecha);
+                    tile.setTextLine(1, "Turno inicial:     Turno solicitado:");
+                    int js = item.getJornadaSolicita();
+                    int ja = item.getJornadaAcepta();
+
+                    tile.setTextLine(2, jor.getTurno().toString() + "    " + jor2.getTurno().toString());
+                    if (item.getEstado().equals("enviada")) {
+                        tile.setSecondaryGraphic(buttons);
+                        tile.setOnMouseClicked(e -> buttons.getChildren().setAll(MaterialDesignIcon.DONE.graphic()));
+                        setText(null);
+                        setGraphic(tile);
+                    } else {
+                        tile.setSecondaryGraphic(buttons2);
+                        tile.setOnMouseClicked(e -> buttons2.getChildren().setAll(MaterialDesignIcon.DONE_ALL.graphic()));
+                        setText(null);
+                        setGraphic(tile);
+                    }
+                } else {
+                    setText(null);
+                    setGraphic(null);
+                }
+            }
+        });
+
     }
+
     /**
      * Metodo que controla la acción sobre el boton buscar
      */
     @FXML
-    public void handleOnActionBuscar(){
-        if(cbSolicitudes.getSelectionModel().isSelected(0)){
+    public void handleOnActionBuscar() {
+        if (cbSolicitudes.getSelectionModel().isSelected(0)) {
             cargarListaEnviado();
-        } else if(cbSolicitudes.getSelectionModel().isSelected(1)){
+        } else if (cbSolicitudes.getSelectionModel().isSelected(1)) {
             cargarListaRecibido();
-        } else if(cbSolicitudes.getSelectionModel().isSelected(2)){
+        } else if (cbSolicitudes.getSelectionModel().isSelected(2)) {
             cargarListaPendiente();
         }
     }
+
     /**
-     * Metodo que crea y muestra un dialog que informa al usuario del estado de una solicitud
+     * Metodo que crea y muestra un dialog que informa al usuario del estado de
+     * una solicitud
      */
-    public void dialogPendienteAceptar(){
+    public void dialogPendienteAceptar() {
         Dialog dialog = new Dialog();
-            dialog.setTitle(new Label("Estado de la solicitud"));
-            dialog.setContent(new Label("El compañero aún no ha revisado su solicitud"));
-            Button okButton = new Button("Aceptar");
-            okButton.setOnAction(e -> {
-                dialog.hide();
-            });
-            dialog.getButtons().add(okButton);
-            dialog.showAndWait();
+        dialog.setTitle(new Label("Estado de la solicitud"));
+        dialog.setContent(new Label("El compañero aún no ha revisado su solicitud"));
+        Button okButton = new Button("Aceptar");
+        okButton.setOnAction(e -> {
+            dialog.hide();
+        });
+        dialog.getButtons().add(okButton);
+        dialog.showAndWait();
     }
+
     /**
-     * Metodo que crea y muestra un dialog que informa al usuario del estado de una solicitud
+     * Metodo que crea y muestra un dialog que informa al usuario del estado de
+     * una solicitud
      */
-    public void dialogPendienteValidar(){
+    public void dialogPendienteValidar() {
         Dialog dialog = new Dialog();
-            dialog.setTitle(new Label("Estado de la solicitud"));
-            dialog.setContent(new Label("Pendiente de validar por el encargado."));
-            Button okButton = new Button("Acpetar");
-            okButton.setOnAction(e -> {
-                dialog.hide();
-            });
-            dialog.getButtons().add(okButton);
-            dialog.showAndWait();
+        dialog.setTitle(new Label("Estado de la solicitud"));
+        dialog.setContent(new Label("Pendiente de validar por el encargado."));
+        Button okButton = new Button("Acpetar");
+        okButton.setOnAction(e -> {
+            dialog.hide();
+        });
+        dialog.getButtons().add(okButton);
+        dialog.showAndWait();
     }
+
     /**
-     * Metodo que crea y muestra un dialog para que un usuario acepte una solicitud de cambio
+     * Metodo que crea y muestra un dialog para que un usuario acepte una
+     * solicitud de cambio
      */
-    public void dialogAceptarSolicitud(Solicitud solicitud){
+    public void dialogAceptarSolicitud(Solicitud solicitud) {
         Dialog dialog = new Dialog();
         Usuario usuario = ManagerFactory.gh.getUsuarioLogin();
         Jornada jornadaCambio = ManagerFactory.gh.getJornadaCambio((List<Jornada>) usuario.getJornadas(), ManagerFactory.gh.getJornadaById(solicitud.getJornadaSolicita()));
-            dialog.setTitle(new Label("Aceptar solicitud"));
-            dialog.setContent(new Label("No se podrá deshacer la operación. ¿Estas seguro?"));
-            Button okButton = new Button("Aceptar");
-            Button cancelButton = new Button("Cancelar");
-            okButton.setOnAction(e -> {  
-                ManagerFactory.gh.aceptarSolicitud(usuario, solicitud, jornadaCambio);
-                dialog.hide();   
-            });
-            cancelButton.setOnAction(e ->{
-                dialog.hide();
-            });
-            dialog.getButtons().addAll(okButton,cancelButton);
-            dialog.showAndWait();
-            
-            ManagerFactory.gh.setUsuarioLogin(ManagerFactory.gh.getUsuario(ManagerFactory.gh.getUsuarioLogin().getDNI()));
-            cargarListaRecibido();
+        dialog.setTitle(new Label("Aceptar solicitud"));
+        dialog.setContent(new Label("No se podrá deshacer la operación. ¿Estas seguro?"));
+        Button okButton = new Button("Aceptar");
+        Button cancelButton = new Button("Cancelar");
+        okButton.setOnAction(e -> {
+            ManagerFactory.gh.aceptarSolicitud(usuario, solicitud, jornadaCambio);
+            dialog.hide();
+        });
+        cancelButton.setOnAction(e -> {
+            dialog.hide();
+        });
+        dialog.getButtons().addAll(okButton, cancelButton);
+        dialog.showAndWait();
+
+        ManagerFactory.gh.setUsuarioLogin(ManagerFactory.gh.getUsuario(ManagerFactory.gh.getUsuarioLogin().getDNI()));
+        cargarListaRecibido();
     }
+
     //Metodo que crea y muestra un dialog para validar un cambio de turno
-    public void dialogValidarSolicitud(Solicitud solicitud){
+    public void dialogValidarSolicitud(Solicitud solicitud) {
         Dialog dialog = new Dialog();
-            dialog.setTitle(new Label("Validar solicitud"));
-            dialog.setContent(new Label("No se podrá deshacer la operación. ¿Estas seguro?"));
-            Button okButton = new Button("Acpetar");
-            Button cancelButton = new Button("Denegar");
-            okButton.setOnAction(e -> {
-                ManagerFactory.gh.validarSolicitud(ManagerFactory.gh.getUsuarioLogin(), solicitud, "validada");
-                cargarListaPendiente();
-                dialog.hide();
-            });
-            cancelButton.setOnAction(e ->{
-                ManagerFactory.gh.validarSolicitud(ManagerFactory.gh.getUsuarioLogin(), solicitud, "denegada");
-                cargarListaPendiente();
-                dialog.hide();
-            });
-            dialog.getButtons().addAll(okButton,cancelButton);
-            dialog.showAndWait();
+        dialog.setTitle(new Label("Validar solicitud"));
+        dialog.setContent(new Label("No se podrá deshacer la operación. ¿Estas seguro?"));
+        Button okButton = new Button("Acpetar");
+        Button cancelButton = new Button("Denegar");
+        okButton.setOnAction(e -> {
+            ManagerFactory.gh.validarSolicitud(ManagerFactory.gh.getUsuarioLogin(), solicitud, "validada");
+            cargarListaPendiente();
+            dialog.hide();
+        });
+        cancelButton.setOnAction(e -> {
+            ManagerFactory.gh.validarSolicitud(ManagerFactory.gh.getUsuarioLogin(), solicitud, "denegada");
+            cargarListaPendiente();
+            dialog.hide();
+        });
+        dialog.getButtons().addAll(okButton, cancelButton);
+        dialog.showAndWait();
     }
+
     /**
      * Metodo que carga la lista con las solicitudes realizadas por el usuario
      */
-    public void cargarListaEnviado(){
+    public void cargarListaEnviado() {
         ArrayList<Solicitud> solEnviadas;
         solEnviadas = (ArrayList<Solicitud>) ManagerFactory.gh
-                .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(),"enviada");
+                .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(), "enviada");
         ObservableList ol = FXCollections.observableArrayList(solEnviadas);
         lvSolicitudes.setItems(ol);
-                
+
     }
+
     /**
-     * Metodo que carga la lista con las solicitudes que pueden ser aceptadas por el usuario
+     * Metodo que carga la lista con las solicitudes que pueden ser aceptadas
+     * por el usuario
      */
-    public void cargarListaRecibido(){
+    public void cargarListaRecibido() {
         ArrayList<Solicitud> solRecibidas;
         solRecibidas = (ArrayList<Solicitud>) ManagerFactory.gh
                 .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(), "recibida");
         ObservableList ol = FXCollections.observableArrayList(solRecibidas);
         lvSolicitudes.setItems(ol);
     }
+
     /**
-     * Metodo que carga la lista con las solicitudes penientes de validar por un encargado o gerente
+     * Metodo que carga la lista con las solicitudes penientes de validar por un
+     * encargado o gerente
      */
-    public void cargarListaPendiente(){
+    public void cargarListaPendiente() {
         ArrayList<Solicitud> solPendientes;
         solPendientes = (ArrayList<Solicitud>) ManagerFactory.gh
-                .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(), null);
+                .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(), "pendiente");
         ObservableList ol = FXCollections.observableArrayList(solPendientes);
         lvSolicitudes.setItems(ol);
     }
+
     /**
-     * Metodo que interactua con las solicitudes cuando son seleccionadas en la lista
-     * @param solicitud 
+     * Metodo que interactua con las solicitudes cuando son seleccionadas en la
+     * lista
+     *
+     * @param solicitud
      */
-    public void clickList(Solicitud solicitud){
+    public void clickList(Solicitud solicitud) {
         //Solicitudes que estan pendiente de validar por un encargado
-        if(solicitud.getEstado().equals("pendiente")){
-            if(ManagerFactory.gh.getUsuarioLogin().getPerfil().equals("empleado")){
+        if (solicitud.getEstado().equals("aceptada")) {
+            if (ManagerFactory.gh.getUsuarioLogin().getPerfil().equals("empleado")) {
                 dialogPendienteValidar();
             } else {
                 dialogValidarSolicitud(solicitud);
             }
-            
+
         }
         //Solicitudes que lanza el usuario login y que aún no han sido aceptadas por otro empleado
-        if(solicitud.getEstado().equals("enviada") && solicitud.getUsuarioSolicita().equals(ManagerFactory.gh.getUsuarioLogin().getDNI())){
+        if (solicitud.getEstado().equals("enviada") && solicitud.getUsuarioSolicita().equals(ManagerFactory.gh.getUsuarioLogin().getDNI())) {
             dialogPendienteAceptar();
         }
         //solicitudes que lanza otro empleado y estan pendiente de aceptar por el usuario login
-        if(solicitud.getEstado().equals("enviada") && !solicitud.getUsuarioSolicita().equals(ManagerFactory.gh.getUsuarioLogin().getDNI())){
+        if (solicitud.getEstado().equals("enviada") && !solicitud.getUsuarioSolicita().equals(ManagerFactory.gh.getUsuarioLogin().getDNI())) {
             dialogAceptarSolicitud(solicitud);
         }
     }

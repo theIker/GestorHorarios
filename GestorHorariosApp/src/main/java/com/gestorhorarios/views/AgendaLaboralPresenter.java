@@ -87,7 +87,7 @@ public class AgendaLaboralPresenter {
                     cbNombre.setItems(FXCollections.observableArrayList(ManagerFactory.gh.getUsuarios()));
                     cbNombre.getSelectionModel().select(ManagerFactory.gh.getUsuarioLogin());
                 }
-                cargarLista();
+                cargarLista(ManagerFactory.gh.getUsuarioLogin());
             }
         });
         
@@ -143,8 +143,8 @@ public class AgendaLaboralPresenter {
         
     }
     
-    public void cargarLista(){
-       ArrayList<Jornada> jornadas = new ArrayList<>(ManagerFactory.gh.getUsuarioLogin().getJornadas());
+    public void cargarLista(Usuario usuario){
+       ArrayList<Jornada> jornadas = new ArrayList<>(ManagerFactory.gh.getUsuario(usuario.getDNI()).getJornadas());
        ObservableList ol = FXCollections.observableArrayList(jornadas);
        lvAgenda.setItems(ol);
     }
@@ -152,46 +152,93 @@ public class AgendaLaboralPresenter {
     @FXML
     public void filtrarList() {
         
-        if (dpFecha.getEditor().getText().equals("")) {
+        if (ManagerFactory.gh.getUsuarioLogin().getPerfil().equals("empleado")) {
             
-            cargarLista();
+            if (dpFecha.getEditor().getText().equals("")) {
+
+                cargarLista(ManagerFactory.gh.getUsuarioLogin());
+
+            } else {
+
+                ArrayList <Jornada> jornadas = new ArrayList (ManagerFactory.gh.getUsuarioLogin().getJornadas());
+                ArrayList <Jornada> jornadasFiltradas = new ArrayList ();
+
+                String dia = dpFecha.getEditor().getText().substring(0,2);
+                String mes = dpFecha.getEditor().getText().substring(3,5);
+                String ano = dpFecha.getEditor().getText().substring(8,9);
+
+                String dia2 = "";
+                String mes2 = "";
+                String ano2 = "";
+
+                String fecha1 = dia+mes+ano;
+                String fecha2;
+
+                for (Jornada j : jornadas) {
+
+                    ano2 = j.getFecha().toString().substring(0,4);
+                    mes2 = j.getFecha().toString().substring(5,7);
+                    dia2 = j.getFecha().toString().substring(8,10);
+
+                    fecha2 = dia2+mes2+ano2;
+
+                    if (fecha1.compareTo(fecha2) == 0
+                            || fecha1.compareTo(fecha2) == -1) {
+
+                        jornadasFiltradas.add(j);
+
+                    }
+
+                }
+
+                ObservableList ol = FXCollections.observableArrayList(jornadasFiltradas);
+
+                lvAgenda.setItems(ol);
+
+            }
             
         } else {
             
-            ArrayList <Jornada> jornadas = new ArrayList (ManagerFactory.gh.getUsuarioLogin().getJornadas());
-            ArrayList <Jornada> jornadasFiltradas = new ArrayList ();
+                Usuario usu = (Usuario) cbNombre.getSelectionModel().getSelectedItem();
+                ArrayList <Jornada> jornadas = new ArrayList (usu.getJornadas());
+                ArrayList <Jornada> jornadasFiltradas = new ArrayList ();
 
-            String dia = dpFecha.getEditor().getText().substring(0,2);
-            String mes = dpFecha.getEditor().getText().substring(3,5);
-            String ano = dpFecha.getEditor().getText().substring(8,9);
-            
-            String dia2 = "";
-            String mes2 = "";
-            String ano2 = "";
-            
-            String fecha1 = dia+mes+ano;
-            String fecha2;
-            
-            for (Jornada j : jornadas) {
-
-                ano2 = j.getFecha().toString().substring(0,4);
-                mes2 = j.getFecha().toString().substring(5,7);
-                dia2 = j.getFecha().toString().substring(8,10);
-
-                fecha2 = dia2+mes2+ano2;
-                
-                if (fecha1.compareTo(fecha2) == 0
-                        || fecha1.compareTo(fecha2) == -1) {
+                if (!(dpFecha.getEditor().getText().equals(""))) {
                     
-                    jornadasFiltradas.add(j);
-                    
+                    String dia = dpFecha.getEditor().getText().substring(0,2);
+                    String mes = dpFecha.getEditor().getText().substring(3,5);
+                    String ano = dpFecha.getEditor().getText().substring(8,9);
+
+                    String dia2 = "";
+                    String mes2 = "";
+                    String ano2 = "";
+
+                    String fecha1 = dia+mes+ano;
+                    String fecha2;
+
+                    for (Jornada j : jornadas) {
+
+                        ano2 = j.getFecha().toString().substring(0,4);
+                        mes2 = j.getFecha().toString().substring(5,7);
+                        dia2 = j.getFecha().toString().substring(8,10);
+
+                        fecha2 = dia2+mes2+ano2;
+
+                        if (fecha1.compareTo(fecha2) == 0
+                                || fecha1.compareTo(fecha2) == -1) {
+
+                            jornadasFiltradas.add(j);
+
+                        }
+
                 }
-                
-            }
+                } else {
+                    jornadasFiltradas = jornadas;
+                }
 
-            ObservableList ol = FXCollections.observableArrayList(jornadasFiltradas);
+                ObservableList ol = FXCollections.observableArrayList(jornadasFiltradas);
 
-            lvAgenda.setItems(ol);
+                lvAgenda.setItems(ol);
             
         }
         
@@ -203,7 +250,8 @@ public class AgendaLaboralPresenter {
      */
     public void clickList(Jornada j){
         
-        Dialog dialog = new Dialog();
+        if (ManagerFactory.gh.getUsuarioLogin().getPerfil().equals("empleado")) {
+            Dialog dialog = new Dialog();
         
         ArrayList <Solicitud> solicitudes = (ArrayList <Solicitud>) ManagerFactory.gh.getUsuarioLogin().getSolicitudes();
         ObservableList <Solicitud> solicitudesList = FXCollections.observableArrayList(solicitudes);
@@ -342,7 +390,10 @@ public class AgendaLaboralPresenter {
               
         dialog.showAndWait();
      
-     } 
+     
+        }
+        
+    } 
         
     
 }

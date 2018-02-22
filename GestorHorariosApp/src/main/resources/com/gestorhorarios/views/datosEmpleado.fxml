@@ -116,7 +116,7 @@
             </ComboBox>
             <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="295.0">
                <children>
-                  <Button fx:id="btnAnyadir" alignment="CENTER" mnemonicParsing="false" onAction="#handleOnActionAddJornada" text="+" textAlignment="CENTER">
+                  <Button fx:id="btnAnyadir" alignment="CENTER" mnemonicParsing="false" onAction="#handleOnActionAddJornada"  textAlignment="CENTER">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -126,7 +126,7 @@
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
                   </Label>
-                  <Button fx:id="btnBorrar" alignment="CENTER" minWidth="18.0" mnemonicParsing="false" onAction="#handleOnActionBorrarJornada" prefHeight="22.0" prefWidth="18.0" text="+" textAlignment="CENTER">
+                  <Button fx:id="btnBorrar" alignment="CENTER" minWidth="18.0" mnemonicParsing="false" onAction="#handleOnActionBorrarJornada" prefHeight="22.0" prefWidth="18.0"  textAlignment="CENTER">
                      <font>
                         <Font size="10.0" />
                      </font>
