@@ -251,7 +251,18 @@ public class AgendaLaboralPresenter {
      */
     public void clickList(Jornada j){
         
-        if (ManagerFactory.gh.getUsuarioLogin().getPerfil().equals("empleado")) {
+        ArrayList <Jornada> jornadasComprob = (ArrayList <Jornada>) ManagerFactory.gh.getUsuarioLogin().getJornadas();
+        boolean isJornadaFromUser = false;
+        
+        for (Jornada jor : jornadasComprob) {
+            
+            if (jor.getID() == j.getID()) {
+                isJornadaFromUser = true;
+            }
+            
+        }
+        
+        if (isJornadaFromUser) {
             Dialog dialog = new Dialog();
         
         ArrayList <Solicitud> solicitudes = (ArrayList <Solicitud>) ManagerFactory.gh.getUsuarioLogin().getSolicitudes();
