@@ -147,6 +147,7 @@ public class AgendaLaboralPresenter {
        ArrayList<Jornada> jornadas = new ArrayList<>(ManagerFactory.gh.getUsuario(usuario.getDNI()).getJornadas());
        ObservableList ol = FXCollections.observableArrayList(jornadas);
        lvAgenda.setItems(ol);
+       lvAgenda.setComparator((j1,j2) -> j2.compare(j1));
     }
 
     @FXML

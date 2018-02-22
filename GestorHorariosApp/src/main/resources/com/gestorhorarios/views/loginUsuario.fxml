@@ -27,7 +27,7 @@
             <Label fx:id="lbNombreApp" text="gestor de turnos" />
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label text="Nombre">
+                  <Label text="DNI">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
