@@ -323,42 +323,44 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
             solicitudes = db.getSolicitudes();
             
             //Peticiones de cambio de turno que lanza el usuario
-            if(estado.equals("enviado")){
-                solicitudes = solicitudes.stream()
+            if(estado.equals("enviada")){
+                solicitudesAux = solicitudes.stream()
                             .filter(s -> s.getUsuarioSolicita().equals(usuario.getDNI()))
                             .filter(s -> !s.getEstado().equals("validada"))
                             .filter(s -> !s.getEstado().equals("denegada"))
                             .map(s -> s).collect(Collectors.toList());
                 
             //Peticiones de cambio de turno que lanza cualquier otro usuario y son compatibles para cambiar por el usuario login
-            } else if (estado.equals("recibido")) {
+            } else if (estado.equals("recibida")) {
 
-                solicitudes.forEach((solicitud)-> {
-                    usuario.getJornadas().forEach((jornada) ->{
-    
-                        //Comprobamos que sea la misma fecha
-                        if(jornada.compare(getJornadaById(solicitud.getJornadaSolicita()))==0){
-                            //Filtramos para que solo muestre las que puede aceptar o las que ya ha aceptadi y estan pendientes de revisar
-                            if(solicitud.getEstado().equals("enviada") || solicitud.getUsuarioAcepta().equals(usuario.getDNI())){
-                                //Comprobamos que la letra del turno sea la misma. Ej: Turno A1 y A2 --> A==A
-                                if(jornada.getTurno().getID().substring(0, 1).equals(getJornadaById(solicitud.getJornadaSolicita()).getTurno().getID().substring(0, 1))){
-                                    //Comprobamos que el numero del turno sea diferente(para poder cambiar el horario) Ej: Turno A1 y A2 --> 1!=2
-                                    if(jornada.getTurno().getID().substring(1).compareTo(getJornadaById(solicitud.getJornadaSolicita()).getTurno().getID().substring(1))!=0){
-                                        //quitamos las jornadas que ya han sido validadas o denegadas
-                                        if(!solicitud.getEstado().equals("validada")&&!solicitud.getEstado().equals("denegada")){
-                                            solicitudesAux.add(solicitud);
-                                        }
-                                    }
-                                }
-                            }                            
+                boolean isFromUser;
+                
+                for (Solicitud solicitud : solicitudes){
+                    isFromUser = false;
+                    for (Solicitud solicitud2 : usuario.getSolicitudes()) {
+                        if(solicitud.getID()==solicitud2.getID()) {
+                            isFromUser = true;
                         }
-                    });
-                });
-               solicitudes = solicitudesAux;
+                    }
+                    if(!isFromUser) {
+                        Jornada jor = ManagerFactory.gh.getJornadaById(solicitud.getJornadaSolicita());
+                        boolean isSuitable = false;
+                        for (Jornada jornada : usuario.getJornadas()) {
+                            if (jor.getFecha().compareTo(jornada.getFecha())==0) {
+                                if (jor.getTurno().getID().substring(0, 1).equals(jornada.getTurno().getID().substring(0, 1))) {
+                                   if (!jor.getTurno().getID().substring(1, 2).equals(jornada.getTurno().getID().substring(1, 2))) {
+                                       solicitudesAux.add(solicitud);
+                                       break;
+                                    } 
+                                }
+                            }
+                        }
+                    }
+                }
                 
             //Solicitudes que han sido aceptadas por dos empleados y que estan pendientes de validar por un encargado o gerente
             } else {
-                solicitudes = solicitudes.stream()
+                solicitudesAux = solicitudes.stream()
                             .filter(s -> s.getEstado().equals("pendiente"))
                             .map(s -> s).collect(Collectors.toList());
             }
@@ -369,7 +371,7 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
             LOGGER.severe("GestorHorariosManagerImplementation: error recibir solicitudes por validar");
             solicitudes=null;
         }    
-        return solicitudes;
+        return solicitudesAux;
     }
     
     @Override
@@ -523,6 +525,17 @@ public class GestorHorariosManagerImplementation implements GestorHorariosManage
                 }
         }
         return jornadaAux;
+    }
+
+    @Override
+    public String getDniByEmail(String email) {
+        String dni;
+        try{
+            dni = db.getDniByEmail(email);
+        }catch (Exception e){
+            dni = null;
+        }
+        return dni;
     }
          
         

@@ -44,7 +44,7 @@ public interface GestorHorariosManager {
     
     public String getPassHash(String pass);
     public List<Solicitud> getSolicitudesByEstado(String estado);
-    
+    public String getDniByEmail(String email);
     public Jornada getJornadaCambio(List<Jornada> jornadas, Jornada jornada);
     
 }

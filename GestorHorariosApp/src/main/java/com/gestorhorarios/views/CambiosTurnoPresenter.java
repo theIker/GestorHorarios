@@ -126,7 +126,7 @@ public class CambiosTurnoPresenter {
         Jornada jornadaCambio = ManagerFactory.gh.getJornadaCambio((List<Jornada>) usuario.getJornadas(), ManagerFactory.gh.getJornadaById(solicitud.getJornadaSolicita()));
             dialog.setTitle(new Label("Aceptar solicitud"));
             dialog.setContent(new Label("No se podrá deshacer la operación. ¿Estas seguro?"));
-            Button okButton = new Button("Acpetar");
+            Button okButton = new Button("Aceptar");
             Button cancelButton = new Button("Cancelar");
             okButton.setOnAction(e -> {  
                 ManagerFactory.gh.aceptarSolicitud(usuario, solicitud, jornadaCambio);
@@ -137,6 +137,9 @@ public class CambiosTurnoPresenter {
             });
             dialog.getButtons().addAll(okButton,cancelButton);
             dialog.showAndWait();
+            
+            ManagerFactory.gh.setUsuarioLogin(ManagerFactory.gh.getUsuario(ManagerFactory.gh.getUsuarioLogin().getDNI()));
+            cargarListaRecibido();
     }
     //Metodo que crea y muestra un dialog para validar un cambio de turno
     public void dialogValidarSolicitud(Solicitud solicitud){
@@ -164,7 +167,7 @@ public class CambiosTurnoPresenter {
     public void cargarListaEnviado(){
         ArrayList<Solicitud> solEnviadas;
         solEnviadas = (ArrayList<Solicitud>) ManagerFactory.gh
-                .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(),"enviado");
+                .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(),"enviada");
         ObservableList ol = FXCollections.observableArrayList(solEnviadas);
         lvSolicitudes.setItems(ol);
                 
@@ -175,7 +178,7 @@ public class CambiosTurnoPresenter {
     public void cargarListaRecibido(){
         ArrayList<Solicitud> solRecibidas;
         solRecibidas = (ArrayList<Solicitud>) ManagerFactory.gh
-                .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(), "recibido");
+                .getSolicitudesByUsuario(ManagerFactory.gh.getUsuarioLogin(), "recibida");
         ObservableList ol = FXCollections.observableArrayList(solRecibidas);
         lvSolicitudes.setItems(ol);
     }

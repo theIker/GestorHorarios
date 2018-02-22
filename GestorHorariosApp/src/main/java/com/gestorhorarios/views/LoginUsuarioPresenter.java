@@ -9,8 +9,10 @@ package com.gestorhorarios.views;
 import com.gestorhorarios.DrawerManager;
 import com.gestorhorarios.GestorHorarios;
 import static com.gestorhorarios.GestorHorarios.AGENDA_LABORAL;
+import com.gestorhorarios.logic.Crypto;
 import com.gestorhorarios.logic.GestorHorariosManager;
 import com.gestorhorarios.logic.GestorHorariosManagerImplementation;
+import com.gestorhorarios.logic.Mail;
 import com.gestorhorarios.logic.ManagerFactory;
 import com.gluonhq.charm.glisten.application.MobileApplication;
 import com.gluonhq.charm.glisten.control.Dialog;
@@ -48,6 +50,7 @@ public class LoginUsuarioPresenter {
     @FXML
     private PasswordField pfPass;
     private static MediaPlayer mediaPlayer;
+    
     
     public void initialize(){
          login.showingProperty().addListener((obs, oldValue, newValue) -> {
@@ -110,7 +113,7 @@ public class LoginUsuarioPresenter {
                 txtEmail.setPromptText("Introduce un email");
             }
             //comprobar email
-            if(!ManagerFactory.gh.validarEmail(AGENDA_LABORAL)){
+            if(!ManagerFactory.gh.validarEmail(txtEmail.getText())){
                 Dialog dialog2 = new Dialog();
                 dialog2.setTitle(new Label("ERROR"));
                 dialog2.setContentText("Email incorrecto");
@@ -121,8 +124,14 @@ public class LoginUsuarioPresenter {
                 dialog2.getButtons().add(aceptar2);
                 dialog2.showAndWait();
             }
-            //llamar al metodo de generar contraseña
-            //enviar email
+            Crypto cp = new Crypto();
+            Mail mail = new Mail();
+            String pass;
+            pass = cp.generateAutomaticPassword();
+            mail.sendMailRecuperación(txtEmail.getText(), pass);
+            pass = cp.getPasswordHash(pass);
+            ManagerFactory.gh.modificarPass(ManagerFactory.gh.getDniByEmail(txtEmail.getText()), pass);
+            dialog.hide();
         });
         dialog.getButtons().add(enviar);
         dialog.getButtons().add(cancelar);

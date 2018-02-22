@@ -705,4 +705,26 @@ public class DBManagerHibernate implements DataBaseInterface{
         return s;
     }
     
+    /**
+   * Metdo de devolver jornada por ID
+   * @param id id de la jornada
+   * @return la jornada
+   * @throws Exception 
+   */
+    @Override
+    public String getDniByEmail(String email) throws Exception {
+       String dni;
+         this.openConnection();
+             List  <Usuarios> result =  session.createQuery("FROM Usuarios where email='"+email+"'").list();
+              Iterator<Usuarios> l= result.iterator();
+             
+              Usuarios u=l.next();
+              dni=u.getDni();
+              
+              LOGGER.info("DBManagerHibernate: recibiendco dni");
+         this.closeConnection();
+       
+       return dni;
+    }
+    
 }

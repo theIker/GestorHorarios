@@ -36,4 +36,5 @@ public interface DataBaseInterface {
         public Jornada getJornadaById(int id) throws Exception;
         public void asignarJornada(String dni, Jornadas j) throws Exception;
         public ArrayList<Jornada>getAllJornadas() throws Exception;
+        public String getDniByEmail(String email) throws Exception;
 }

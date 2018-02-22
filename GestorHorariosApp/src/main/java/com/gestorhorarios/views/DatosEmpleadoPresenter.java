@@ -184,6 +184,7 @@ public class DatosEmpleadoPresenter {
             okButton.setOnAction(e -> {
                if(p1.getText().equals(p2.getText())){ 
                     ManagerFactory.gh.modificarPass(tfDni.getText(), ManagerFactory.gh.getPassHash(p1.getText()));
+                    MobileApplication.getInstance().showMessage("Contraseña modificada");
                     dialog.hide();
                }else{
                   p1.setPromptText("Contraseña nueva: ");
