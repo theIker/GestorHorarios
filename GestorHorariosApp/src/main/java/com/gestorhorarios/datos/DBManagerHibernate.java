@@ -160,7 +160,7 @@ public class DBManagerHibernate implements DataBaseInterface{
      * @param solicitud se envia la solicitud validada
      * @throws Exception 
      */
-     private void cambiarJornadaUsuario(Solicitud solicitud) throws Exception {
+    private void cambiarJornadaUsuario(Solicitud solicitud) throws Exception {
              
              this.openConnection();
               Transaction tx=session.beginTransaction();

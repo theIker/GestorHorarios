@@ -202,6 +202,7 @@ public class CambiosTurnoPresenter {
         Button cancelButton = new Button("Denegar");
         okButton.setOnAction(e -> {
             ManagerFactory.gh.validarSolicitud(ManagerFactory.gh.getUsuarioLogin(), solicitud, "validada");
+            
             cargarListaPendiente();
             dialog.hide();
         });
