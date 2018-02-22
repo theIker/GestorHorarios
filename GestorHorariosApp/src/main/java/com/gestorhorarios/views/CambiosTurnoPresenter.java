@@ -65,7 +65,9 @@ public class CambiosTurnoPresenter {
                     public void changed(ObservableValue observable, Object oldValue, Object newValue) {
                         Solicitud solicitud = (Solicitud) lvSolicitudes.getSelectedItem();
                         clickList(solicitud);
-                        lvSolicitudes.setSelectedItem(null);
+                        try{
+                            lvSolicitudes.setSelectedItem(null);
+                        } catch (Exception e){}
                     }
                 
                 });
@@ -94,7 +96,7 @@ public class CambiosTurnoPresenter {
         Dialog dialog = new Dialog();
             dialog.setTitle(new Label("Estado de la solicitud"));
             dialog.setContent(new Label("El compañero aún no ha revisado su solicitud"));
-            Button okButton = new Button("Acpetar");
+            Button okButton = new Button("Aceptar");
             okButton.setOnAction(e -> {
                 dialog.hide();
             });

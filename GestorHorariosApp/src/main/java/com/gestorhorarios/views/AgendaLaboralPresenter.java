@@ -27,6 +27,7 @@ import com.gluonhq.charm.glisten.visual.MaterialDesignIcon;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.beans.value.ChangeListener;
@@ -138,16 +139,7 @@ public class AgendaLaboralPresenter {
         }
 
       });
-    }
-     
-    @FXML
-    public void handleOnActionBuscar(){
-        Usuario usuarioAux = new Usuario();
-        if(cbNombre.getValue()== null){
-            usuarioAux = ManagerFactory.gh.getUsuarioLogin();
-        } else {
-            usuarioAux = (Usuario) cbNombre.getSelectionModel().getSelectedItem();
-        }
+       
         
     }
     
@@ -157,6 +149,54 @@ public class AgendaLaboralPresenter {
        lvAgenda.setItems(ol);
     }
 
+    @FXML
+    public void filtrarList() {
+        
+        if (dpFecha.getEditor().getText().equals("")) {
+            
+            cargarLista();
+            
+        } else {
+            
+            ArrayList <Jornada> jornadas = new ArrayList (ManagerFactory.gh.getUsuarioLogin().getJornadas());
+            ArrayList <Jornada> jornadasFiltradas = new ArrayList ();
+
+            String dia = dpFecha.getEditor().getText().substring(0,2);
+            String mes = dpFecha.getEditor().getText().substring(3,5);
+            String ano = dpFecha.getEditor().getText().substring(8,9);
+            
+            String dia2 = "";
+            String mes2 = "";
+            String ano2 = "";
+            
+            String fecha1 = dia+mes+ano;
+            String fecha2;
+            
+            for (Jornada j : jornadas) {
+
+                ano2 = j.getFecha().toString().substring(0,4);
+                mes2 = j.getFecha().toString().substring(5,7);
+                dia2 = j.getFecha().toString().substring(8,10);
+
+                fecha2 = dia2+mes2+ano2;
+                
+                if (fecha1.compareTo(fecha2) == 0
+                        || fecha1.compareTo(fecha2) == -1) {
+                    
+                    jornadasFiltradas.add(j);
+                    
+                }
+                
+            }
+
+            ObservableList ol = FXCollections.observableArrayList(jornadasFiltradas);
+
+            lvAgenda.setItems(ol);
+            
+        }
+        
+    }
+    
     /**
      *
      * @param j
@@ -211,6 +251,8 @@ public class AgendaLaboralPresenter {
 
                     }
                 }
+            } else {
+                
             }
             
         }
@@ -273,7 +315,7 @@ public class AgendaLaboralPresenter {
                 }
                 
                 ManagerFactory.gh.crearSolicitud(ManagerFactory.gh.getUsuarioLogin(), j, jor);
-                ManagerFactory.gh.setUsuarioLogin(ManagerFactory.gh.getUsuarioLogin());
+                ManagerFactory.gh.setUsuarioLogin(ManagerFactory.gh.getUsuario(ManagerFactory.gh.getUsuarioLogin().getDNI()));
                 
                dialog.hide();
 
